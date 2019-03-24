@@ -6,6 +6,8 @@
 
   var Sprite = Two.Sprite = function(path, ox, oy, cols, rows, frameRate) {
 
+    var applyDimensions = _.bind(Sprite.ApplyDimensions, this);
+
     Path.call(this, [
       new Two.Anchor(),
       new Two.Anchor(),
@@ -17,9 +19,19 @@
     this.noFill();
 
     if (path instanceof Two.Texture) {
+
       this.texture = path;
+
+      if (this.texture.loaded) {
+        applyDimensions();
+      } else {
+        this.texture.bind(Two.Events.load, applyDimensions);
+      }
+
     } else if (_.isString(path)) {
-      this.texture = new Two.Texture(path);
+
+      this.texture = new Two.Texture(path, applyDimensions);
+
     }
 
     this.origin = new Two.Vector();
@@ -44,6 +56,22 @@
     Properties: [
       'texture', 'columns', 'rows', 'frameRate', 'index'
     ],
+
+    ApplyDimensions: function() {
+
+      var width = this.texture.image.width;
+      var height = this.texture.image.height;
+
+      if (!this.width) {
+        this.width = width;
+      }
+      if (!this.height) {
+        this.height = height;
+      }
+
+      this.texture.unbind(Two.Events.load, Sprite.ApplyDimensions);
+
+    },
 
     MakeObservable: function(obj) {
 
@@ -174,13 +202,6 @@
         width = iw / cols;
         height = ih / rows;
         amount = this._amount;
-
-        if (this.width !== width) {
-          this.width = width;
-        }
-        if (this.height !== height) {
-          this.height = height;
-        }
 
         if (this._playing && this._frameRate > 0) {
 
