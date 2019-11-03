@@ -1,9 +1,6 @@
 (function(Two) {
 
-  /**
-   * Constants
-   */
-
+  // Constants
   var root = Two.root,
     multiplyMatrix = Two.Matrix.Multiply,
     mod = Two.Utils.mod,
@@ -405,10 +402,8 @@
 
       },
 
-      /**
-       * Returns the rect of a set of verts. Typically takes vertices that are
-       * "centered" around 0 and returns them to be anchored upper-left.
-       */
+      // Returns the rect of a set of verts. Typically takes vertices that are
+      // "centered" around 0 and returns them to be anchored upper-left.
       getBoundingClientRect: function(vertices, border, rect) {
 
         var left = Infinity, right = -Infinity,
@@ -1335,11 +1330,11 @@
     /**
      * @name Two.WebGLRenderer#setSize
      * @function
+     * @fires resize
      * @param {Number} width - The new width of the renderer.
      * @param {Number} height - The new height of the renderer.
      * @param {Number} [ratio] - The new pixel ratio (pixel density) of the renderer. Defaults to calculate the pixel density of the user's screen.
      * @description Change the size of the renderer.
-     * @nota-bene Triggers a `Two.Events.resize`.
      */
     setSize: function(width, height, ratio) {
 
