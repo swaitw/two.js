@@ -348,7 +348,7 @@ SOFTWARE.
    * @param {Boolean} [options.fullscreen=false] - Set to `true` to automatically make the stage adapt to the width and height of the parent document. This parameter overrides `width` and `height` parameters if set to `true`.
    * @param {Number} [options.width=640] - The width of the stage on construction. This can be set at a later time.
    * @param {Number} [options.height=480] - The height of the stage on construction. This can be set at a later time.
-   * @param {String} [options.type=Two.Types.svg] - The type of renderer to setup drawing with. See {@link  Two.Types} for available options.
+   * @param {String} [options.type=Two.Types.svg] - The type of renderer to setup drawing with. See {@link Two.Types} for available options.
    * @param {Boolean} [options.autostart=false] - Set to `true` to add the instance to draw on `requestAnimationFrame`. This is a convenient substitute for {@link Two#play}.
    * @description The entrypoint for Two.js. Instantiate a `new Two` in order to setup a scene to render to. `Two` is also the publicly accessible namespace that all other sub-classes, functions, and utilities attach to.
    */
@@ -472,7 +472,7 @@ SOFTWARE.
      * @name Two.PublishDate
      * @property {String} - The automatically generated publish date in the build process to verify version release candidates.
      */
-    PublishDate: '2019-11-01T17:02:19+01:00',
+    PublishDate: '2019-11-03T20:45:03+01:00',
 
     /**
      * @name Two.Identifier
@@ -1103,7 +1103,7 @@ SOFTWARE.
       },
 
       /**
-       * @name two.Utils.getScene
+       * @name Two.Utils.getScene
        * @param {Two.Shape} node - The currently available object in the scenegraph.
        * @returns {Two.Group} - The highest order {@link Two.Group} in the scenegraph.
        * @property {Function}
@@ -2506,7 +2506,7 @@ SOFTWARE.
     /**
      * @name Two#play
      * @function
-     * @fires Two.Events.play event
+     * @fires play
      * @description Call to start an internal animation loop.
      * @nota-bene This function initiates a `requestAnimationFrame` loop.
      */
@@ -2521,7 +2521,7 @@ SOFTWARE.
     /**
      * @name Two#pause
      * @function
-     * @fires Two.Events.pause event
+     * @fires pause
      * @description Call to stop the internal animation loop for a specific instance of Two.js.
      */
     pause: function() {
@@ -2533,7 +2533,7 @@ SOFTWARE.
 
     /**
      * @name Two#update
-     * @fires Two.Events.update event
+     * @fires update
      * @description Update positions and calculations in one pass before rendering. Then render to the canvas.
      * @nota-bene This function is called automatically if using {@link Two#play} or the `autostart` parameter in construction.
      */
@@ -2564,7 +2564,7 @@ SOFTWARE.
 
     /**
      * @name Two#render
-     * @fires Two.Events.render event
+     * @fires render
      * @description Render all drawable and visible objects of the scene.
      */
     render: function() {
@@ -2579,7 +2579,7 @@ SOFTWARE.
     /**
      * @name Two#add
      * @function
-     * @param {(Two.Shape[]|...Two.Shape)}} [objects] - An array of Two.js objects. Alternatively can add objects as individual arguments.
+     * @param {(Two.Shape[]|...Two.Shape)} [objects] - An array of Two.js objects. Alternatively can add objects as individual arguments.
      * @description A shorthand method to add specific Two.js objects to the scene.
      */
     add: function(o) {
@@ -3210,7 +3210,7 @@ SOFTWARE.
      * @name Two.Registry#get
      * @function
      * @param {String} id - A unique identifier.
-     * @returns value - The associated value. If unavailable then `undefined` is returned.
+     * @returns The associated value. If unavailable then `undefined` is returned.
      * @description Get a registered value by its `id`.
      */
     get: function(id) {
@@ -4948,9 +4948,7 @@ SOFTWARE.
       right: 'end'
     },
 
-    /**
-     * Create an svg namespaced element.
-     */
+    // Create an svg namespaced element.
     createElement: function(name, attrs) {
       var tag = name;
       var elem = document.createElementNS(svg.ns, tag);
@@ -4965,9 +4963,8 @@ SOFTWARE.
       return elem;
     },
 
-    /**
-     * Add attributes from an svg element.
-     */
+
+    // Add attributes from an svg element.
     setAttributes: function(elem, attrs) {
       var keys = Object.keys(attrs);
       for (var i = 0; i < keys.length; i++) {
@@ -4980,9 +4977,7 @@ SOFTWARE.
       return this;
     },
 
-    /**
-     * Remove attributes from an svg element.
-     */
+    // Remove attributes from an svg element.
     removeAttributes: function(elem, attrs) {
       for (var key in attrs) {
         elem.removeAttribute(key);
@@ -4990,12 +4985,10 @@ SOFTWARE.
       return this;
     },
 
-    /**
-     * Turn a set of vertices into a string for the d property of a path
-     * element. It is imperative that the string collation is as fast as
-     * possible, because this call will be happening multiple times a
-     * second.
-     */
+    // Turn a set of vertices into a string for the d property of a path
+    // element. It is imperative that the string collation is as fast as
+    // possible, because this call will be happening multiple times a
+    // second.
     toString: function(points, closed) {
 
       var l = points.length,
@@ -5252,11 +5245,9 @@ SOFTWARE.
           this.children.forEach(svg.group.orderChild, context);
         }
 
-        /**
-         * Commented two-way functionality of clips / masks with groups and
-         * polygons. Uncomment when this bug is fixed:
-         * https://code.google.com/p/chromium/issues/detail?id=370951
-         */
+        // Commented two-way functionality of clips / masks with groups and
+        // polygons. Uncomment when this bug is fixed:
+        // https://code.google.com/p/chromium/issues/detail?id=370951
 
         // if (this._flagClip) {
 
@@ -5400,11 +5391,9 @@ SOFTWARE.
 
         }
 
-        /**
-         * Commented two-way functionality of clips / masks with groups and
-         * polygons. Uncomment when this bug is fixed:
-         * https://code.google.com/p/chromium/issues/detail?id=370951
-         */
+        // Commented two-way functionality of clips / masks with groups and
+        // polygons. Uncomment when this bug is fixed:
+        // https://code.google.com/p/chromium/issues/detail?id=370951
 
         // if (this._flagMask) {
         //   if (this._mask) {
@@ -5825,15 +5814,32 @@ SOFTWARE.
   };
 
   /**
+   * @name Two.SVGRenderer
    * @class
+   * @extends Two.Utils.Events
+   * @param {Object} [parameters] - This object is inherited when constructing a new instance of {@link Two}.
+   * @param {Element} [parameters.domElement] - The `<svg />` to draw to. If none given a new one will be constructed.
+   * @description This class is used by {@link Two} when constructing with `type` of `Two.Types.svg` (the default type). It takes Two.js' scenegraph and renders it to a `<svg />`.
    */
   var Renderer = Two[Two.Types.svg] = function(params) {
 
+    /**
+     * @name Two.SVGRenderer#domElement
+     * @property {Element} - The `<svg />` associated with the Two.js scene.
+     */
     this.domElement = params.domElement || svg.createElement('svg');
 
+    /**
+     * @name Two.SVGRenderer#scene
+     * @property {Two.Group} - The root group of the scenegraph.
+     */
     this.scene = new Two.Group();
     this.scene.parent = this;
 
+    /**
+     * @name Two.SVGRenderer#defs
+     * @property {SvgDefintionsElement} - The `<defs />` to apply gradients, patterns, and bitmap imagery.
+     */
     this.defs = svg.createElement('defs');
     this.domElement.appendChild(this.defs);
     this.domElement.defs = this.defs;
@@ -5843,6 +5849,10 @@ SOFTWARE.
 
   _.extend(Renderer, {
 
+    /**
+     * @name Two.SVGRenderer.Utils
+     * @property {Object} - A massive object filled with utility functions and properties to render Two.js objects to a `<svg />`.
+     */
     Utils: svg
 
   });
@@ -5851,6 +5861,14 @@ SOFTWARE.
 
     constructor: Renderer,
 
+    /**
+     * @name Two.SVGRenderer#setSize
+     * @function
+     * @fires resize
+     * @param {Number} width - The new width of the renderer.
+     * @param {Number} height - The new height of the renderer.
+     * @description Change the size of the renderer.
+     */
     setSize: function(width, height) {
 
       this.width = width;
@@ -5865,6 +5883,11 @@ SOFTWARE.
 
     },
 
+    /**
+     * @name Two.SVGRenderer#render
+     * @function
+     * @description Render the current scene to the `<svg />`.
+     */
     render: function() {
 
       svg.group.render.call(this.scene, this.domElement);
@@ -5879,9 +5902,7 @@ SOFTWARE.
 
 (function(Two) {
 
-  /**
-   * Constants
-   */
+  // Constants
   var mod = Two.Utils.mod, toFixed = Two.Utils.toFixed;
   var getRatio = Two.Utils.getRatio;
   var _ = Two.Utils;
@@ -5970,11 +5991,9 @@ SOFTWARE.
           ctx.restore();
         }
 
-       /**
-         * Commented two-way functionality of clips / masks with groups and
-         * polygons. Uncomment when this bug is fixed:
-         * https://code.google.com/p/chromium/issues/detail?id=370951
-         */
+        // Commented two-way functionality of clips / masks with groups and
+        // polygons. Uncomment when this bug is fixed:
+        // https://code.google.com/p/chromium/issues/detail?id=370951
 
         // if (clip) {
         //   ctx.clip();
@@ -6026,11 +6045,9 @@ SOFTWARE.
           ctx.transform(matrix[0], matrix[3], matrix[1], matrix[4], matrix[2], matrix[5]);
         }
 
-       /**
-         * Commented two-way functionality of clips / masks with groups and
-         * polygons. Uncomment when this bug is fixed:
-         * https://code.google.com/p/chromium/issues/detail?id=370951
-         */
+        // Commented two-way functionality of clips / masks with groups and
+        // polygons. Uncomment when this bug is fixed:
+        // https://code.google.com/p/chromium/issues/detail?id=370951
 
         // if (mask) {
         //   canvas[mask._renderer.type].render.call(mask, ctx, true);
@@ -6265,11 +6282,9 @@ SOFTWARE.
           ctx.transform(matrix[0], matrix[3], matrix[1], matrix[4], matrix[2], matrix[5]);
         }
 
-       /**
-         * Commented two-way functionality of clips / masks with groups and
-         * polygons. Uncomment when this bug is fixed:
-         * https://code.google.com/p/chromium/issues/detail?id=370951
-         */
+        // Commented two-way functionality of clips / masks with groups and
+        // polygons. Uncomment when this bug is fixed:
+        // https://code.google.com/p/chromium/issues/detail?id=370951
 
         // if (mask) {
         //   canvas[mask._renderer.type].render.call(mask, ctx, true);
@@ -6566,21 +6581,48 @@ SOFTWARE.
 
   };
 
+  /**
+   * @name Two.CanvasRenderer
+   * @class
+   * @extends Two.Utils.Events
+   * @param {Object} [parameters] - This object is inherited when constructing a new instance of {@link Two}.
+   * @param {Element} [parameters.domElement] - The `<canvas />` to draw to. If none given a new one will be constructed.
+   * @param {Boolean} [parameters.overdraw] - Determines whether the canvas should clear the background or not. Defaults to `true`.
+   * @param {Boolean} [parameters.smoothing=true] - Determines whether the canvas should antialias drawing. Set it to `false` when working with pixel art. `false` can lead to better performance, since it would use a cheaper interpolation algorithm.
+   * @description This class is used by {@link Two} when constructing with `type` of `Two.Types.canvas`. It takes Two.js' scenegraph and renders it to a `<canvas />`.
+   */
   var Renderer = Two[Two.Types.canvas] = function(params) {
-    // Smoothing property. Defaults to true
-    // Set it to false when working with pixel art.
-    // false can lead to better performance, since it would use a cheaper interpolation algorithm.
+
     // It might not make a big difference on GPU backed canvases.
     var smoothing = (params.smoothing !== false);
+
+    /**
+     * @name Two.CanvasRenderer#domElement
+     * @property {Element} - The `<canvas />` associated with the Two.js scene.
+     */
     this.domElement = params.domElement || document.createElement('canvas');
+
+    /**
+     * @name Two.CanvasRenderer#ctx
+     * @property {Canvas2DContext} - Associated two dimensional context to render on the `<canvas />`.
+     */
     this.ctx = this.domElement.getContext('2d');
+
+    /**
+     * @name Two.CanvasRenderer#overdraw
+     * @property {Boolean} - Determines whether the canvas clears the background each draw call.
+     * @default true
+     */
     this.overdraw = params.overdraw || false;
 
     if (!_.isUndefined(this.ctx.imageSmoothingEnabled)) {
       this.ctx.imageSmoothingEnabled = smoothing;
     }
 
-    // Everything drawn on the canvas needs to be added to the scene.
+    /**
+     * @name Two.CanvasRenderer#scene
+     * @property {Two.Group} - The root group of the scenegraph.
+     */
     this.scene = new Two.Group();
     this.scene.parent = this;
   };
@@ -6588,6 +6630,10 @@ SOFTWARE.
 
   _.extend(Renderer, {
 
+    /**
+     * @name Two.CanvasRenderer.Utils
+     * @property {Object} - A massive object filled with utility functions and properties to render Two.js objects to a `<canvas />`.
+     */
     Utils: canvas
 
   });
@@ -6596,6 +6642,15 @@ SOFTWARE.
 
     constructor: Renderer,
 
+    /**
+     * @name Two.CanvasRenderer#setSize
+     * @function
+     * @fires resize
+     * @param {Number} width - The new width of the renderer.
+     * @param {Number} height - The new height of the renderer.
+     * @param {Number} [ratio] - The new pixel ratio (pixel density) of the renderer. Defaults to calculate the pixel density of the user's screen.
+     * @description Change the size of the renderer.
+     */
     setSize: function(width, height, ratio) {
 
       this.width = width;
@@ -6617,6 +6672,11 @@ SOFTWARE.
 
     },
 
+    /**
+     * @name Two.CanvasRenderer#render
+     * @function
+     * @description Render the current scene to the `<canvas />`.
+     */
     render: function() {
 
       var isOne = this.ratio === 1;
@@ -6729,10 +6789,7 @@ SOFTWARE.
 
 (function(Two) {
 
-  /**
-   * Constants
-   */
-
+  // Constants
   var root = Two.root,
     multiplyMatrix = Two.Matrix.Multiply,
     mod = Two.Utils.mod,
@@ -7134,10 +7191,8 @@ SOFTWARE.
 
       },
 
-      /**
-       * Returns the rect of a set of verts. Typically takes vertices that are
-       * "centered" around 0 and returns them to be anchored upper-left.
-       */
+      // Returns the rect of a set of verts. Typically takes vertices that are
+      // "centered" around 0 and returns them to be anchored upper-left.
       getBoundingClientRect: function(vertices, border, rect) {
 
         var left = Infinity, right = -Infinity,
@@ -7941,17 +7996,36 @@ SOFTWARE.
 
   webgl.ctx = webgl.canvas.getContext('2d');
 
-  var Renderer = Two[Two.Types.webgl] = function(options) {
+  /**
+   * @name Two.WebGLRenderer
+   * @class
+   * @extends Two.Utils.Events
+   * @param {Object} [parameters] - This object is inherited when constructing a new instance of {@link Two}.
+   * @param {Element} [parameters.domElement] - The `<canvas />` to draw to. If none given a new one will be constructed.
+   * @param {CanvasElement} [parameters.offscreenElement] - The offscreen two dimensional `<canvas />` to render each element on WebGL texture updates.
+   * @param {Boolean} [parameters.antialias] - Determines whether the canvas should clear render with antialias on.
+   * @description This class is used by {@link Two} when constructing with `type` of `Two.Types.webgl`. It takes Two.js' scenegraph and renders it to a `<canvas />` through the WebGL api.
+   * @see {@link https://www.khronos.org/registry/webgl/specs/latest/1.0/}
+   */
+  var Renderer = Two[Two.Types.webgl] = function(params) {
 
     var params, gl, vs, fs;
-    this.domElement = options.domElement || document.createElement('canvas');
 
-    if (!_.isUndefined(options.offscreenElement)) {
-      webgl.canvas = options.offscreenElement;
+    /**
+     * @name Two.WebGLRenderer#domElement
+     * @property {Element} - The `<canvas />` associated with the Two.js scene.
+     */
+    this.domElement = params.domElement || document.createElement('canvas');
+
+    if (!_.isUndefined(params.offscreenElement)) {
+      webgl.canvas = params.offscreenElement;
       webgl.ctx = webgl.canvas.getContext('2d');
     }
 
-    // Everything drawn on the canvas needs to come from the stage.
+    /**
+     * @name Two.WebGLRenderer#scene
+     * @property {Two.Group} - The root group of the scenegraph.
+     */
     this.scene = new Two.Group();
     this.scene.parent = this;
 
@@ -7965,7 +8039,7 @@ SOFTWARE.
 
     // http://games.greggman.com/game/webgl-and-alpha/
     // http://www.khronos.org/registry/webgl/specs/latest/#5.2
-    params = _.defaults(options || {}, {
+    params = _.defaults(params || {}, {
       antialias: false,
       alpha: true,
       premultipliedAlpha: true,
@@ -7974,8 +8048,17 @@ SOFTWARE.
       overdraw: false
     });
 
+    /**
+     * @name Two.WebGLRenderer#overdraw
+     * @property {Boolean} - Determines whether the canvas clears the background each draw call.
+     * @default true
+     */
     this.overdraw = params.overdraw;
 
+    /**
+     * @name Two.WebGLRenderer#ctx
+     * @property {WebGLContext} - Associated two dimensional context to render on the `<canvas />`.
+     */
     gl = this.ctx = this.domElement.getContext('webgl', params) ||
       this.domElement.getContext('experimental-webgl', params);
 
@@ -7990,6 +8073,10 @@ SOFTWARE.
     fs = webgl.shaders.create(
       gl, webgl.shaders.fragment, webgl.shaders.types.fragment);
 
+    /**
+     * @name Two.WebGLRenderer#program
+     * @property {WebGLProgram} - Associated WebGL program to render all elements from the scenegraph.
+     */
     this.program = webgl.program.create(gl, [vs, fs]);
     gl.useProgram(this.program);
 
@@ -8017,6 +8104,10 @@ SOFTWARE.
 
   _.extend(Renderer, {
 
+    /**
+     * @name Two.WebGLRenderer.Utils
+     * @property {Object} - A massive object filled with utility functions and properties to render Two.js objects to a `<canvas />` through the WebGL API.
+     */
     Utils: webgl
 
   });
@@ -8025,6 +8116,15 @@ SOFTWARE.
 
     constructor: Renderer,
 
+    /**
+     * @name Two.WebGLRenderer#setSize
+     * @function
+     * @fires resize
+     * @param {Number} width - The new width of the renderer.
+     * @param {Number} height - The new height of the renderer.
+     * @param {Number} [ratio] - The new pixel ratio (pixel density) of the renderer. Defaults to calculate the pixel density of the user's screen.
+     * @description Change the size of the renderer.
+     */
     setSize: function(width, height, ratio) {
 
       this.width = width;
@@ -8057,6 +8157,11 @@ SOFTWARE.
 
     },
 
+    /**
+     * @name Two.WebGLRenderer#render
+     * @function
+     * @description Render the current scene to the `<canvas />`.
+     */
     render: function() {
 
       var gl = this.ctx;
@@ -14704,6 +14809,42 @@ SOFTWARE.
   var _ = Two.Utils;
 
   /**
+   * @name Two.Group
+   * @class
+   * @extends Two.Shape
+   * @description This is a container object for two.js — it can hold shapes as well as other groups. At a technical level it can be considered an empty transformation matrix. It is recommended to use `two.makeGroup()` in order to add groups to your instance of two, but it's not necessary. Unless specified methods return their instance of `Two.Group` for the purpose of chaining.
+   */
+  var Group = Two.Group = function(children) {
+
+    Two.Shape.call(this, true);
+
+    this._renderer.type = 'group';
+
+    /**
+     * @name Two.Group#additions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
+     */
+    this.additions = [];
+
+    /**
+     * @name Two.Group#subtractions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
+     */
+    this.subtractions = [];
+
+    /**
+     * @name Two.Group#additions
+     * @property {Two.Group.Children[]}
+     * @description A list of all the children in the scenegraph.
+     * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
+     */
+    this.children = _.isArray(children) ? children : arguments;
+
+  };
+
+  /**
    * @class
    * @name Two.Group.Children
    * @extends Two.Utils.Collection
@@ -14763,40 +14904,6 @@ SOFTWARE.
     }
 
   });
-
-  /**
-   * @class
-   * @name Two.Group
-   */
-  var Group = Two.Group = function(children) {
-
-    Two.Shape.call(this, true);
-
-    this._renderer.type = 'group';
-
-    /**
-     * @name Two.Group#additions
-     * @property {Two.Shape[]}
-     * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
-     */
-    this.additions = [];
-
-    /**
-     * @name Two.Group#subtractions
-     * @property {Two.Shape[]}
-     * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
-     */
-    this.subtractions = [];
-
-    /**
-     * @name Two.Group#additions
-     * @property {Two.Group.Children[]}
-     * @description A list of all the children in the scenegraph.
-     * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
-     */
-    this.children = _.isArray(children) ? children : arguments;
-
-  };
 
   _.extend(Group, {
 
