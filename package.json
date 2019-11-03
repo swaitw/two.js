@@ -16,10 +16,16 @@
     "extras",
     "src"
   ],
+  "scripts": {
+    "build": "node ./utils/build",
+    "docs:generate": "node ./utils/document",
+    "docs:dev": "vuepress dev wiki",
+    "docs:build": "vuepress build wiki"
+  },
   "directories": {
-    "doc": "documentation",
+    "doc": "wiki/documentation",
     "test": "tests",
-    "example": "utils"
+    "example": "wiki/examples"
   },
   "keywords": [
     "svg",
@@ -48,15 +54,18 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@vuepress/plugin-active-header-links": "^1.2.0",
+    "@vuepress/plugin-medium-zoom": "^1.2.0",
+    "@vuepress/plugin-nprogress": "^1.2.0",
     "animation-frame": "^0.1.7",
     "blueimp-canvas-to-blob": "^2.1.0",
-    "jsdoc": "~3.5.5",
-    "jsdoc-to-markdown": "^4.0.1",
+    "jsdoc-api": "^5.0.4",
     "moment": "^2.22.2",
     "node-minify": "^2.0.3",
     "qunitjs": "^2.4.0",
     "resemblejs": "^1.1.1",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "vuepress": "^1.2.0"
   },
   "autoupdate": {
     "source": "git",
