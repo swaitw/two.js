@@ -6,6 +6,42 @@
   var _ = Two.Utils;
 
   /**
+   * @name Two.Group
+   * @class
+   * @extends Two.Shape
+   * @description This is a container object for two.js — it can hold shapes as well as other groups. At a technical level it can be considered an empty transformation matrix. It is recommended to use `two.makeGroup()` in order to add groups to your instance of two, but it's not necessary. Unless specified methods return their instance of `Two.Group` for the purpose of chaining.
+   */
+  var Group = Two.Group = function(children) {
+
+    Two.Shape.call(this, true);
+
+    this._renderer.type = 'group';
+
+    /**
+     * @name Two.Group#additions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
+     */
+    this.additions = [];
+
+    /**
+     * @name Two.Group#subtractions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
+     */
+    this.subtractions = [];
+
+    /**
+     * @name Two.Group#additions
+     * @property {Two.Group.Children[]}
+     * @description A list of all the children in the scenegraph.
+     * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
+     */
+    this.children = _.isArray(children) ? children : arguments;
+
+  };
+
+  /**
    * @class
    * @name Two.Group.Children
    * @extends Two.Utils.Collection
@@ -65,40 +101,6 @@
     }
 
   });
-
-  /**
-   * @class
-   * @name Two.Group
-   */
-  var Group = Two.Group = function(children) {
-
-    Two.Shape.call(this, true);
-
-    this._renderer.type = 'group';
-
-    /**
-     * @name Two.Group#additions
-     * @property {Two.Shape[]}
-     * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
-     */
-    this.additions = [];
-
-    /**
-     * @name Two.Group#subtractions
-     * @property {Two.Shape[]}
-     * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
-     */
-    this.subtractions = [];
-
-    /**
-     * @name Two.Group#additions
-     * @property {Two.Group.Children[]}
-     * @description A list of all the children in the scenegraph.
-     * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
-     */
-    this.children = _.isArray(children) ? children : arguments;
-
-  };
 
   _.extend(Group, {
 

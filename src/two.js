@@ -322,7 +322,7 @@
    * @param {Boolean} [options.fullscreen=false] - Set to `true` to automatically make the stage adapt to the width and height of the parent document. This parameter overrides `width` and `height` parameters if set to `true`.
    * @param {Number} [options.width=640] - The width of the stage on construction. This can be set at a later time.
    * @param {Number} [options.height=480] - The height of the stage on construction. This can be set at a later time.
-   * @param {String} [options.type=Two.Types.svg] - The type of renderer to setup drawing with. See {@link  Two.Types} for available options.
+   * @param {String} [options.type=Two.Types.svg] - The type of renderer to setup drawing with. See {@link Two.Types} for available options.
    * @param {Boolean} [options.autostart=false] - Set to `true` to add the instance to draw on `requestAnimationFrame`. This is a convenient substitute for {@link Two#play}.
    * @description The entrypoint for Two.js. Instantiate a `new Two` in order to setup a scene to render to. `Two` is also the publicly accessible namespace that all other sub-classes, functions, and utilities attach to.
    */
@@ -1077,7 +1077,7 @@
       },
 
       /**
-       * @name two.Utils.getScene
+       * @name Two.Utils.getScene
        * @param {Two.Shape} node - The currently available object in the scenegraph.
        * @returns {Two.Group} - The highest order {@link Two.Group} in the scenegraph.
        * @property {Function}
@@ -2480,7 +2480,7 @@
     /**
      * @name Two#play
      * @function
-     * @fires Two.Events.play event
+     * @fires play
      * @description Call to start an internal animation loop.
      * @nota-bene This function initiates a `requestAnimationFrame` loop.
      */
@@ -2495,7 +2495,7 @@
     /**
      * @name Two#pause
      * @function
-     * @fires Two.Events.pause event
+     * @fires pause
      * @description Call to stop the internal animation loop for a specific instance of Two.js.
      */
     pause: function() {
@@ -2507,7 +2507,7 @@
 
     /**
      * @name Two#update
-     * @fires Two.Events.update event
+     * @fires update
      * @description Update positions and calculations in one pass before rendering. Then render to the canvas.
      * @nota-bene This function is called automatically if using {@link Two#play} or the `autostart` parameter in construction.
      */
@@ -2538,7 +2538,7 @@
 
     /**
      * @name Two#render
-     * @fires Two.Events.render event
+     * @fires render
      * @description Render all drawable and visible objects of the scene.
      */
     render: function() {
@@ -2553,7 +2553,7 @@
     /**
      * @name Two#add
      * @function
-     * @param {(Two.Shape[]|...Two.Shape)}} [objects] - An array of Two.js objects. Alternatively can add objects as individual arguments.
+     * @param {(Two.Shape[]|...Two.Shape)} [objects] - An array of Two.js objects. Alternatively can add objects as individual arguments.
      * @description A shorthand method to add specific Two.js objects to the scene.
      */
     add: function(o) {
