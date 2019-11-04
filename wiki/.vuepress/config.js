@@ -9,8 +9,8 @@ module.exports = {
   themeConfig: {
     repo: 'jonobr1/two.js',
     repoLabel: 'Github',
-    docsDir: 'documentation',
-    docsBranch: 'dev',
+    docsDir: 'wiki',
+    docsBranch: 'jsdocs',
     editLinks: true,
     editLinkText: 'See a typo? Help us improve it.',
     smoothScroll: true,
