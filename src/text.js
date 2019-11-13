@@ -451,6 +451,10 @@
         clone[property] = this[property];
       }, this);
 
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
+
       if (parent) {
         parent.add(clone);
       }
@@ -472,6 +476,10 @@
         rotation: this.rotation,
         scale: this.scale
       };
+
+      if (this.matrix.manual) {
+        result.matrix = this.matrix.toObject();
+      }
 
       _.each(Two.Text.Properties, function(property) {
         result[property] = this[property];

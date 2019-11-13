@@ -472,7 +472,7 @@ SOFTWARE.
      * @name Two.PublishDate
      * @property {String} - The automatically generated publish date in the build process to verify version release candidates.
      */
-    PublishDate: '2019-11-03T20:45:03+01:00',
+    PublishDate: '2019-11-13T07:54:31-08:00',
 
     /**
      * @name Two.Identifier
@@ -4525,6 +4525,29 @@ SOFTWARE.
     },
 
     /**
+     * @name Two.Matrix#copy
+     * @function
+     * @description Copy the matrix of one to the current instance.
+     */
+    copy: function(m) {
+
+      this.elements[0] = m.elements[0];
+      this.elements[1] = m.elements[1];
+      this.elements[2] = m.elements[2];
+      this.elements[3] = m.elements[3];
+      this.elements[4] = m.elements[4];
+      this.elements[5] = m.elements[5];
+      this.elements[6] = m.elements[6];
+      this.elements[7] = m.elements[7];
+      this.elements[8] = m.elements[8];
+
+      this.manual = m.manual;
+
+      return this.trigger(Two.Events.change);
+
+    },
+
+    /**
      * @name Two.Matrix#identity
      * @function
      * @description Turn matrix to the identity, like resetting.
@@ -4901,27 +4924,25 @@ SOFTWARE.
     },
 
     /**
+     * @name Two.Matrix#toObject
+     * @function
+     * @description Create a JSON compatible object that represents information of the matrix.
+     */
+    toObject: function() {
+      return {
+        elements: this.toArray(true),
+        manual: !!this.manual
+      };
+    },
+
+    /**
      * @name Two.Matrix#clone
      * @function
      * @description Clone the current matrix.
      */
     clone: function() {
-      var a, b, c, d, e, f, g, h, i;
 
-      a = this.elements[0];
-      b = this.elements[1];
-      c = this.elements[2];
-      d = this.elements[3];
-      e = this.elements[4];
-      f = this.elements[5];
-      g = this.elements[6];
-      h = this.elements[7];
-      i = this.elements[8];
-
-      var matrix = new Two.Matrix(a, b, c, d, e, f, g, h, i);
-      matrix.manual = this.manual;
-
-      return matrix;
+      return new Two.Matrix().copy(this);
 
     }
 
@@ -8457,6 +8478,10 @@ SOFTWARE.
       clone.rotation = this.rotation;
       clone.scale = this.scale;
 
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
+
       if (parent) {
         parent.add(clone);
       }
@@ -9212,6 +9237,10 @@ SOFTWARE.
       clone.rotation = this.rotation;
       clone.scale = this.scale;
 
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
+
       if (parent) {
         parent.add(clone);
       }
@@ -9243,6 +9272,10 @@ SOFTWARE.
       result.translation = this.translation.toObject();
       result.rotation = this.rotation;
       result.scale = this.scale instanceof Two.Vector ? this.scale.toObject() : this.scale;
+
+      if (this.matrix.manual) {
+        result.matrix = this.matrix.toObject();
+      }
 
       return result;
 
@@ -10212,9 +10245,14 @@ SOFTWARE.
     clone: function(parent) {
 
       var clone = new Rectangle(0, 0, this.width, this.height);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -10430,6 +10468,10 @@ SOFTWARE.
       clone.rotation = this.rotation;
       clone.scale = this.scale;
 
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
+
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
       }, this);
@@ -10622,9 +10664,14 @@ SOFTWARE.
     clone: function(parent) {
 
       var clone = new Circle(0, 0, this.radius, this.vertices.length);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -10842,9 +10889,14 @@ SOFTWARE.
     clone: function(parent) {
 
       var clone = new Polygon(0, 0, this.radius, this.sides);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -11205,9 +11257,14 @@ SOFTWARE.
       var resolution = this.vertices.length;
 
       var clone = new ArcSegment(0, 0, ir, or, sa, ea, resolution);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -11440,9 +11497,14 @@ SOFTWARE.
       var sides = this.sides;
 
       var clone = new Star(0, 0, ir, or, sides);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -11767,9 +11829,14 @@ SOFTWARE.
       var radius = this.radius;
 
       var clone = new RoundedRectangle(0, 0, width, height, radius);
+
       clone.translation.copy(this.translation);
       clone.rotation = this.rotation;
       clone.scale = this.scale;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       _.each(Two.Path.Properties, function(k) {
         clone[k] = this[k];
@@ -12263,6 +12330,10 @@ SOFTWARE.
         clone[property] = this[property];
       }, this);
 
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
+
       if (parent) {
         parent.add(clone);
       }
@@ -12284,6 +12355,10 @@ SOFTWARE.
         rotation: this.rotation,
         scale: this.scale
       };
+
+      if (this.matrix.manual) {
+        result.matrix = this.matrix.toObject();
+      }
 
       _.each(Two.Text.Properties, function(property) {
         result[property] = this[property];
@@ -15315,29 +15390,33 @@ SOFTWARE.
       //  * be rethought and fixed.
       //  */
 
-      var group = new Group();
+      var clone = new Group();
       var children = _.map(this.children, function(child) {
         return child.clone();
       });
 
-      group.add(children);
+      clone.add(children);
 
-      group.opacity = this.opacity;
+      clone.opacity = this.opacity;
 
       if (this.mask) {
-        group.mask = this.mask;
+        clone.mask = this.mask;
       }
 
-      group.translation.copy(this.translation);
-      group.rotation = this.rotation;
-      group.scale = this.scale;
-      group.className = this.className;
+      clone.translation.copy(this.translation);
+      clone.rotation = this.rotation;
+      clone.scale = this.scale;
+      clone.className = this.className;
+
+      if (this.matrix.manual) {
+        clone.matrix.copy(this.matrix);
+      }
 
       if (parent) {
-        parent.add(group);
+        parent.add(clone);
       }
 
-      return group._update();
+      return clone._update();
 
     },
 
@@ -15358,6 +15437,10 @@ SOFTWARE.
         className: this.className,
         mask: (this.mask ? this.mask.toObject() : null)
       };
+
+      if (this.matrix.manual) {
+        result.matrix = this.matrix.toObject();
+      }
 
       _.each(this.children, function(child, i) {
         result.children[i] = child.toObject();
