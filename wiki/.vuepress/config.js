@@ -6,6 +6,9 @@ for (var i = 0; i < sourceFiles.length; i++) {
 }
 
 module.exports = {
+  head: [
+    ['link', { rel: 'icon', href: '/images/favicon.gif' }]
+  ],
   themeConfig: {
     repo: 'jonobr1/two.js',
     repoLabel: 'Github',
@@ -37,34 +40,6 @@ module.exports = {
     ],
     sidebar: {
       '/documentation/': sourceFiles
-      // '/documentation/': [
-      //   'two/',
-      //   'registry/',
-      //   'vector/',
-      //   'anchor/',
-      //   'matrix/',
-      //   'renderers/svg/',
-      //   'renderers/canvas/',
-      //   'renderers/webgl/',
-      //   'shape/',
-      //   'path/',
-      //   'shapes/line/',
-      //   'shapes/rectangle/',
-      //   'shapes/ellipse/',
-      //   'shapes/circle/',
-      //   'shapes/polygon/',
-      //   'shapes/arc-segment/',
-      //   'shapes/star/',
-      //   'shapes/rounded-rectangle/',
-      //   'text/',
-      //   'effects/gradient/',
-      //   'effects/linear-gradient/',
-      //   'effects/radial-gradient/',
-      //   'effects/texture/',
-      //   'effects/sprite/',
-      //   'effects/image-sequence/',
-      //   'group/'
-      // ]
     },
     markdown: {
       lineNumbers: true
