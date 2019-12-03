@@ -32,6 +32,9 @@ module.exports = {
       //   text: 'Projects', link: '/projects/'
       // },
       {
+        text: 'Change Log', link: '/change-log/'
+      },
+      {
         text: 'Documentation', link: '/documentation/two/'
       },
       // {
@@ -39,6 +42,7 @@ module.exports = {
       // }
     ],
     sidebar: {
+      '/change-log/': ['/change-log/'],
       '/documentation/': sourceFiles
     },
     markdown: {
