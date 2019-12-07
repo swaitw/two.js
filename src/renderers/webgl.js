@@ -1156,7 +1156,7 @@
     gl.enableVertexAttribArray(this.program.position);
     gl.bufferData(
       gl.ARRAY_BUFFER,
-      new Float32Array([
+      new Two.Array([
         0, 0,
         1, 0,
         0, 1,
