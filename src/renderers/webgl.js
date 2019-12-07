@@ -8,7 +8,6 @@
     transformation = new Two.Array(9),
     getRatio = Two.Utils.getRatio,
     getComputedMatrix = Two.Utils.getComputedMatrix,
-    toFixed = Two.Utils.toFixed,
     CanvasUtils = Two[Two.Types.canvas].Utils,
     _ = Two.Utils;
 
@@ -26,15 +25,6 @@
 
     matrix: new Two.Matrix(),
 
-    uv: new Two.Array([
-      0, 0,
-      1, 0,
-      0, 1,
-      0, 1,
-      1, 0,
-      1, 1
-    ]),
-
     group: {
 
       removeChild: function(child, gl) {
@@ -47,10 +37,6 @@
         // Deallocate texture to free up gl memory.
         gl.deleteTexture(child._renderer.texture);
         delete child._renderer.texture;
-      },
-
-      renderChild: function(child) {
-        webgl[child._renderer.type].render.call(child, this.gl, this.program);
       },
 
       render: function(gl, program) {
@@ -85,13 +71,8 @@
           }
 
           if (!(/renderer/i.test(parent._renderer.type))) {
-            if (parent._renderer.scale instanceof Two.Vector) {
-              this._renderer.scale.x *= parent._renderer.scale.x;
-              this._renderer.scale.y *= parent._renderer.scale.y;
-            } else {
-              this._renderer.scale.x *= parent._renderer.scale;
-              this._renderer.scale.y *= parent._renderer.scale;
-            }
+            this._renderer.scale.x *= parent._renderer.scale.x;
+            this._renderer.scale.y *= parent._renderer.scale.y;
           }
 
           if (flagParentMatrix) {
@@ -107,14 +88,11 @@
           gl.clear(gl.STENCIL_BUFFER_BIT);
           gl.enable(gl.STENCIL_TEST);
 
-          gl.colorMask(false, false, false, true);
-          gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
-
           gl.stencilFunc(gl.ALWAYS, 1, 0);
+          gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
 
           webgl[this._mask._renderer.type].render.call(this._mask, gl, program, this);
 
-          gl.colorMask(true, true, true, true);
           gl.stencilFunc(gl.EQUAL, 1, 0xff);
           gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
 
@@ -125,26 +103,20 @@
         this._renderer.opacity = this._opacity
           * (parent && parent._renderer ? parent._renderer.opacity : 1);
 
+        var i;
         if (this._flagSubtractions) {
-          for (var i = 0; i < this.subtractions.length; i++) {
+          for (i = 0; i < this.subtractions.length; i++) {
             webgl.group.removeChild(this.subtractions[i], gl);
           }
         }
 
-        for (var i = 0; i < this.children.length; i++) {
+        for (i = 0; i < this.children.length; i++) {
           var child = this.children[i];
           webgl[child._renderer.type].render.call(child, gl, program);
         }
 
-        this.children.forEach(webgl.group.renderChild, {
-          gl: gl,
-          program: program
-        });
-
         if (this._mask) {
-
           gl.disable(gl.STENCIL_TEST);
-
         }
 
         return this.flagReset();
@@ -178,13 +150,8 @@
         var length = commands.length;
         var last = length - 1;
 
-        if (scale instanceof Two.Vector) {
-          canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale.x), 1);
-          canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale.y), 1);
-        } else {
-          canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale), 1);
-          canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale), 1);
-        }
+        canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale.x), 1);
+        canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale.y), 1);
 
         var centroid = elem._renderer.rect.centroid;
         var cx = centroid.x;
@@ -231,7 +198,8 @@
 
         var d;
         ctx.save();
-        ctx.scale(scale, scale);
+        ctx.scale(scale.x, scale.y);
+
         ctx.translate(cx, cy);
 
         ctx.beginPath();
@@ -239,8 +207,8 @@
 
           var b = commands[i];
 
-          x = toFixed(b.x);
-          y = toFixed(b.y);
+          x = b.x;
+          y = b.y;
 
           switch (b.command) {
 
@@ -256,11 +224,11 @@
               var largeArcFlag = b.largeArcFlag;
               var sweepFlag = b.sweepFlag;
 
-              prev = closed ? mod(i - 1, length) : max(i - 1, 0);
+              prev = closed ? mod(i - 1, length) : Math.max(i - 1, 0);
               a = commands[prev];
 
-              var ax = toFixed(a.x);
-              var ay = toFixed(a.y);
+              var ax = a.x;
+              var ay = a.y;
 
               CanvasUtils.renderSvgArcCommand(ctx, ax, ay, rx, ry, largeArcFlag, sweepFlag, xAxisRotation, x, y);
               break;
@@ -276,19 +244,19 @@
               bl = (b.controls && b.controls.left) || Two.Vector.zero;
 
               if (a._relative) {
-                vx = toFixed((ar.x + a.x));
-                vy = toFixed((ar.y + a.y));
+                vx = ar.x + a.x;
+                vy = ar.y + a.y;
               } else {
-                vx = toFixed(ar.x);
-                vy = toFixed(ar.y);
+                vx = ar.x;
+                vy = ar.y;
               }
 
               if (b._relative) {
-                ux = toFixed((bl.x + b.x));
-                uy = toFixed((bl.y + b.y));
+                ux = bl.x + b.x;
+                uy = bl.y + b.y;
               } else {
-                ux = toFixed(bl.x);
-                uy = toFixed(bl.y);
+                ux = bl.x;
+                uy = bl.y;
               }
 
               ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
@@ -301,23 +269,23 @@
                 cl = (c.controls && c.controls.left) || Two.Vector.zero;
 
                 if (b._relative) {
-                  vx = toFixed((br.x + b.x));
-                  vy = toFixed((br.y + b.y));
+                  vx = br.x + b.x;
+                  vy = br.y + b.y;
                 } else {
-                  vx = toFixed(br.x);
-                  vy = toFixed(br.y);
+                  vx = br.x;
+                  vy = br.y;
                 }
 
                 if (c._relative) {
-                  ux = toFixed((cl.x + c.x));
-                  uy = toFixed((cl.y + c.y));
+                  ux = cl.x + c.x;
+                  uy = cl.y + c.y;
                 } else {
-                  ux = toFixed(cl.x);
-                  uy = toFixed(cl.y);
+                  ux = cl.x;
+                  uy = cl.y;
                 }
 
-                x = toFixed(c.x);
-                y = toFixed(c.y);
+                x = c.x;
+                y = c.y;
 
                 ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
 
@@ -345,7 +313,7 @@
         }
 
         if (!webgl.isHidden.test(fill)) {
-          isOffset = fill._renderer && fill._renderer.offset
+          isOffset = fill._renderer && fill._renderer.offset;
           if (isOffset) {
             ctx.save();
             ctx.translate(
@@ -507,16 +475,10 @@
             this._renderer.rect = {};
           }
 
-          if (!this._renderer.triangles) {
-            this._renderer.triangles = new Two.Array(12);
-          }
-
           this._renderer.opacity = this._opacity * parent._renderer.opacity;
 
           webgl.path.getBoundingClientRect(this._renderer.vertices, this._linewidth, this._renderer.rect);
-          webgl.getTriangles(this._renderer.rect, this._renderer.triangles);
 
-          webgl.updateBuffer.call(webgl, gl, this, program);
           webgl.updateTexture.call(webgl, gl, this);
 
         } else {
@@ -541,21 +503,12 @@
         }
 
         // Draw Texture
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._renderer.textureCoordsBuffer);
-
-        gl.vertexAttribPointer(program.textureCoords, 2, gl.FLOAT, false, 0, 0);
-
         gl.bindTexture(gl.TEXTURE_2D, this._renderer.texture);
 
         // Draw Rect
-
+        var rect = this._renderer.rect;
         gl.uniformMatrix3fv(program.matrix, false, this._renderer.matrix);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._renderer.buffer);
-
-        gl.vertexAttribPointer(program.position, 2, gl.FLOAT, false, 0, 0);
-
+        gl.uniform4f(program.rect, rect.left, rect.top, rect.right, rect.bottom);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
 
         return this.flagReset();
@@ -579,13 +532,8 @@
         var opacity = elem._renderer.opacity || elem._opacity;
         var dashes = elem.dashes;
 
-        if (scale instanceof Two.Vector) {
-          canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale.x), 1);
-          canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale.y), 1);
-        } else {
-          canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale), 1);
-          canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale), 1);
-        }
+        canvas.width = Math.max(Math.ceil(elem._renderer.rect.width * scale.x), 1);
+        canvas.height = Math.max(Math.ceil(elem._renderer.rect.height * scale.y), 1);
 
         var centroid = elem._renderer.rect.centroid;
         var cx = centroid.x;
@@ -634,30 +582,30 @@
         }
 
         ctx.save();
-        ctx.scale(scale, scale);
+        ctx.scale(scale.x, scale.y);
         ctx.translate(cx, cy);
 
         if (!webgl.isHidden.test(fill)) {
 
           if (fill._renderer && fill._renderer.offset) {
 
-            sx = toFixed(fill._renderer.scale.x);
-            sy = toFixed(fill._renderer.scale.y);
+            sx = fill._renderer.scale.x;
+            sy = fill._renderer.scale.y;
 
             ctx.save();
-            ctx.translate( - toFixed(fill._renderer.offset.x),
-              - toFixed(fill._renderer.offset.y));
+            ctx.translate( - fill._renderer.offset.x,
+              - fill._renderer.offset.y);
             ctx.scale(sx, sy);
 
             a = elem._size / fill._renderer.scale.y;
             b = elem._leading / fill._renderer.scale.y;
-            ctx.font = [elem._style, elem._weight, toFixed(a) + 'px/',
-              toFixed(b) + 'px', elem._family].join(' ');
+            ctx.font = [elem._style, elem._weight, a + 'px/',
+              b + 'px', elem._family].join(' ');
 
             c = fill._renderer.offset.x / fill._renderer.scale.x;
             d = fill._renderer.offset.y / fill._renderer.scale.y;
 
-            ctx.fillText(elem.value, toFixed(c), toFixed(d));
+            ctx.fillText(elem.value, c, d);
             ctx.restore();
 
           } else {
@@ -670,25 +618,25 @@
 
           if (stroke._renderer && stroke._renderer.offset) {
 
-            sx = toFixed(stroke._renderer.scale.x);
-            sy = toFixed(stroke._renderer.scale.y);
+            sx = stroke._renderer.scale.x;
+            sy = stroke._renderer.scale.y;
 
             ctx.save();
-            ctx.translate(- toFixed(stroke._renderer.offset.x),
-              - toFixed(stroke._renderer.offset.y));
+            ctx.translate(- stroke._renderer.offset.x,
+              - stroke._renderer.offset.y);
             ctx.scale(sx, sy);
 
             a = elem._size / stroke._renderer.scale.y;
             b = elem._leading / stroke._renderer.scale.y;
-            ctx.font = [elem._style, elem._weight, toFixed(a) + 'px/',
-              toFixed(b) + 'px', elem._family].join(' ');
+            ctx.font = [elem._style, elem._weight, a + 'px/',
+              b + 'px', elem._family].join(' ');
 
             c = stroke._renderer.offset.x / stroke._renderer.scale.x;
             d = stroke._renderer.offset.y / stroke._renderer.scale.y;
             e = linewidth / stroke._renderer.scale.x;
 
-            ctx.lineWidth = toFixed(e);
-            ctx.strokeText(elem.value, toFixed(c), toFixed(d));
+            ctx.lineWidth = e;
+            ctx.strokeText(elem.value, c, d);
             ctx.restore();
 
           } else {
@@ -825,16 +773,10 @@
             this._renderer.rect = {};
           }
 
-          if (!this._renderer.triangles) {
-            this._renderer.triangles = new Two.Array(12);
-          }
-
           this._renderer.opacity = this._opacity * parent._renderer.opacity;
 
           webgl.text.getBoundingClientRect(this, this._renderer.rect);
-          webgl.getTriangles(this._renderer.rect, this._renderer.triangles);
 
-          webgl.updateBuffer.call(webgl, gl, this, program);
           webgl.updateTexture.call(webgl, gl, this);
 
         } else {
@@ -859,22 +801,12 @@
         }
 
         // Draw Texture
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._renderer.textureCoordsBuffer);
-
-        gl.vertexAttribPointer(program.textureCoords, 2, gl.FLOAT, false, 0, 0);
-
         gl.bindTexture(gl.TEXTURE_2D, this._renderer.texture);
 
-
         // Draw Rect
-
+        var rect = this._renderer.rect;
         gl.uniformMatrix3fv(program.matrix, false, this._renderer.matrix);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, this._renderer.buffer);
-
-        gl.vertexAttribPointer(program.position, 2, gl.FLOAT, false, 0, 0);
-
+        gl.uniform4f(program.rect, rect.left, rect.top, rect.right, rect.bottom);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
 
         return this.flagReset();
@@ -1008,50 +940,14 @@
 
     },
 
-    getTriangles: function(rect, triangles) {
-
-      var top = rect.top,
-          left = rect.left,
-          right = rect.right,
-          bottom = rect.bottom;
-
-      // First Triangle
-
-      triangles[0] = left;
-      triangles[1] = top;
-
-      triangles[2] = right;
-      triangles[3] = top;
-
-      triangles[4] = left;
-      triangles[5] = bottom;
-
-      // Second Triangle
-
-      triangles[6] = left;
-      triangles[7] = bottom;
-
-      triangles[8] = right;
-      triangles[9] = top;
-
-      triangles[10] = right;
-      triangles[11] = bottom;
-
-    },
-
     updateTexture: function(gl, elem) {
 
       this[elem._renderer.type].updateCanvas.call(webgl, elem);
 
-      if (elem._renderer.texture) {
-        gl.deleteTexture(elem._renderer.texture);
+      if (!elem._renderer.texture) {
+        elem._renderer.texture = gl.createTexture();
       }
 
-      gl.bindBuffer(gl.ARRAY_BUFFER, elem._renderer.textureCoordsBuffer);
-
-      // TODO: Is this necessary every time or can we do once?
-      // TODO: Create a registry for textures
-      elem._renderer.texture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, elem._renderer.texture);
 
       // Set the parameters so we can render any size image.
@@ -1068,32 +964,6 @@
 
       // Upload the image into the texture.
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.canvas);
-
-    },
-
-    updateBuffer: function(gl, elem, program) {
-
-      if (_.isObject(elem._renderer.buffer)) {
-        gl.deleteBuffer(elem._renderer.buffer);
-      }
-
-      elem._renderer.buffer = gl.createBuffer();
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, elem._renderer.buffer);
-      gl.enableVertexAttribArray(program.position);
-
-      gl.bufferData(gl.ARRAY_BUFFER, elem._renderer.triangles, gl.STATIC_DRAW);
-
-      if (_.isObject(elem._renderer.textureCoordsBuffer)) {
-        gl.deleteBuffer(elem._renderer.textureCoordsBuffer);
-      }
-
-      elem._renderer.textureCoordsBuffer = gl.createBuffer();
-
-      gl.bindBuffer(gl.ARRAY_BUFFER, elem._renderer.textureCoordsBuffer);
-      gl.enableVertexAttribArray(program.textureCoords);
-
-      gl.bufferData(gl.ARRAY_BUFFER, this.uv, gl.STATIC_DRAW);
 
     },
 
@@ -1145,21 +1015,23 @@
       },
 
       vertex: [
+        'precision mediump float;',
         'attribute vec2 a_position;',
-        'attribute vec2 a_textureCoords;',
         '',
         'uniform mat3 u_matrix;',
         'uniform vec2 u_resolution;',
+        'uniform vec4 u_rect;',
         '',
         'varying vec2 v_textureCoords;',
         '',
         'void main() {',
-        '   vec2 projected = (u_matrix * vec3(a_position, 1.0)).xy;',
+        '   vec2 rectCoords = (a_position * (u_rect.zw - u_rect.xy)) + u_rect.xy;',
+        '   vec2 projected = (u_matrix * vec3(rectCoords, 1.0)).xy;',
         '   vec2 normal = projected / u_resolution;',
         '   vec2 clipspace = (normal * 2.0) - 1.0;',
         '',
         '   gl_Position = vec4(clipspace * vec2(1.0, -1.0), 0.0, 1.0);',
-        '   v_textureCoords = a_textureCoords;',
+        '   v_textureCoords = a_position;',
         '}'
       ].join('\n'),
 
@@ -1199,7 +1071,7 @@
    */
   var Renderer = Two[Two.Types.webgl] = function(params) {
 
-    var params, gl, vs, fs;
+    var gl, vs, fs;
 
     /**
      * @name Two.WebGLRenderer#domElement
@@ -1275,26 +1147,32 @@
     // look up where the vertex data needs to go.
     this.program.position = gl.getAttribLocation(this.program, 'a_position');
     this.program.matrix = gl.getUniformLocation(this.program, 'u_matrix');
-    this.program.textureCoords = gl.getAttribLocation(this.program, 'a_textureCoords');
+    this.program.rect = gl.getUniformLocation(this.program, 'u_rect');
 
-    // Copied from Three.js WebGLRenderer
-    gl.disable(gl.DEPTH_TEST);
+    // Bind the vertex buffer
+    var positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(this.program.position, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(this.program.position);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([
+        0, 0,
+        1, 0,
+        0, 1,
+        0, 1,
+        1, 0,
+        1, 1
+      ]),
+      gl.STATIC_DRAW);
 
     // Setup some initial statements of the gl context
     gl.enable(gl.BLEND);
 
-    // https://code.google.com/p/chromium/issues/detail?id=316393
-    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, gl.TRUE);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 
-    gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
-    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA,
-      gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-
-    // TODO: Fiddling with blend functions still required.
-    // gl.blendEquation(gl.FUNC_ADD);
-    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-
+    gl.blendEquation(gl.FUNC_ADD);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   };
 
   _.extend(Renderer, {
@@ -1362,7 +1240,7 @@
       var gl = this.ctx;
 
       if (!this.overdraw) {
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        gl.clear(gl.COLOR_BUFFER_BIT);
       }
 
       webgl.group.render.call(this.scene, gl, this.program);
