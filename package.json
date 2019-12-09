@@ -58,16 +58,15 @@
     "@vuepress/plugin-active-header-links": "^1.2.0",
     "@vuepress/plugin-medium-zoom": "^1.2.0",
     "@vuepress/plugin-nprogress": "^1.2.0",
-    "animation-frame": "^0.1.7",
-    "blueimp-canvas-to-blob": "^2.1.0",
     "jsdoc-api": "^5.0.4",
-    "eslint": "^6.7.2",
-    "moment": "^2.22.2",
-    "node-minify": "^2.0.3",
-    "qunitjs": "^2.4.0",
-    "resemblejs": "^1.1.1",
     "underscore": "^1.9.1",
-    "vuepress": "^1.2.0"
+    "vuepress": "^1.2.0",
+    "@node-minify/core": "^5.2.1",
+    "@node-minify/google-closure-compiler": "^5.2.1",
+    "@node-minify/no-compress": "^5.2.0",
+    "eslint": "^6.7.2",
+    "qunit": "^2.9.3",
+    "resemblejs": "^3.2.3"
   },
   "autoupdate": {
     "source": "git",

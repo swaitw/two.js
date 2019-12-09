@@ -1,10 +1,11 @@
 // https://npmjs.org/package/node-minify
 
 var path = require('path');
-var compressor = require('node-minify');
 var _ = require('underscore');
 var fs = require('fs');
-var moment = require('moment');
+var minify = require('@node-minify/core');
+var noCompress = require('@node-minify/no-compress');
+var gcc = require('@node-minify/google-closure-compiler');
 var sourceFiles = require('./source-files');
 
 var files = [
@@ -16,8 +17,8 @@ var files = [
 }));
 
 // Concatenated
-compressor.minify({
-  compressor: 'no-compress',
+minify({
+  compressor: noCompress,
   input: files,
   output: path.resolve(__dirname, '../build/two.js'),
   callback: function(e) {
@@ -30,15 +31,15 @@ compressor.minify({
       });
       var template = _.template(source);
       source = template({
-        publishDate: moment().format()
+        publishDate: (new Date()).toISOString()
       });
       fs.writeFileSync(path.resolve(__dirname, '../build/two.js'), source, {
         encoding: 'utf-8'
       });
 
       // Minified
-      compressor.minify({
-        compressor: 'gcc',
+      minify({
+        compressor: gcc,
         input: path.resolve(__dirname, '../build/two.js'),
         output: path.resolve(__dirname, '../build/two.min.js'),
         callback: function(e) {
@@ -50,8 +51,8 @@ compressor.minify({
         }
       });
 
-      compressor.minify({
-        compressor: 'no-compress',
+      minify({
+        compressor: noCompress,
         input: [
           path.resolve(__dirname, '../build/two.js'),
           path.resolve(__dirname, './exports.js')
