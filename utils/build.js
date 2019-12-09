@@ -5,7 +5,7 @@ var _ = require('underscore');
 var fs = require('fs');
 var minify = require('@node-minify/core');
 var noCompress = require('@node-minify/no-compress');
-var gcc = require('@node-minify/google-closure-compiler');
+var terser = require('@node-minify/terser');
 var sourceFiles = require('./source-files');
 
 var files = [
@@ -39,7 +39,7 @@ minify({
 
       // Minified
       minify({
-        compressor: gcc,
+        compressor: terser,
         input: path.resolve(__dirname, '../build/two.js'),
         output: path.resolve(__dirname, '../build/two.min.js'),
         callback: function(e) {

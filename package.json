@@ -62,8 +62,8 @@
     "underscore": "^1.9.1",
     "vuepress": "^1.2.0",
     "@node-minify/core": "^5.2.1",
-    "@node-minify/google-closure-compiler": "^5.2.1",
     "@node-minify/no-compress": "^5.2.0",
+    "@node-minify/terser": "^5.2.1",
     "eslint": "^6.7.2",
     "qunit": "^2.9.3",
     "resemblejs": "^3.2.3"
