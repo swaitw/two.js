@@ -8,6 +8,7 @@
     <link rel="shortcut icon" type="image/gif" href="../images/favicon.gif">
     <script src="../third-party/url.js"></script>
     <script src="../third-party/jquery.js"></script>
+    <script src="../third-party/underscore.js"></script>
     <script src="../third-party/two.js"></script>
     <style>
       body {
@@ -51,6 +52,7 @@
               fresh.total += d;
             });
 
+            var rect = fresh.getBoundingClientRect();
             clearT();
 
             $(window)
@@ -88,7 +90,6 @@
             }
 
             function mousemove(e) {
-              var rect = fresh.getBoundingClientRect();
               movingmouse = true;
               t = cmap(e.clientX, rect.left, rect.right, 0, 1);
               setEnding(fresh, t);

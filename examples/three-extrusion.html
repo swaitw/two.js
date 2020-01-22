@@ -35,7 +35,7 @@
         var shape = extractShape(jigsaw);
 
         var geometry = new THREE.ExtrudeGeometry(shape, {
-          amount: 0,
+          depth: 0,
           curveSegments: 64,
           bevelThickness: 2
         });
@@ -106,7 +106,7 @@
           var midpoint = new Two.Vector()
             .copy(b).subSelf(a).divideScalar(2).addSelf(a);
 
-          var angle = Two.Utils.angleBetween(a, b);
+          var angle = Two.Vector.angleBetween(a, b);
           var perp = angle + (Math.random() > 0.5 ? Math.PI : - Math.PI) / 2;
 
           var radius = size * 0.66;
@@ -116,8 +116,8 @@
             projection * Math.sin(perp) + midpoint.y
           );
 
-          var startAngle = Two.Utils.angleBetween(a, center);
-          var endAngle = Two.Utils.angleBetween(b, center);
+          var startAngle = Two.Vector.angleBetween(a, center);
+          var endAngle = Two.Vector.angleBetween(b, center);
 
           if (Math.random() > 0.5) {
             startAngle = mod(startAngle, Math.PI * 2);
@@ -180,13 +180,19 @@
 
         function generateShadow() {
 
-          var shadow = new THREE.Mesh(new THREE.ShapeGeometry(new THREE.Shape(_.map(_.range(32), function(i) {
+          var vertices = [];
+          for (var i = 0; i < 32; i++) {
             var pct = i / 32;
             var theta = Math.PI * 2 * pct;
             var x = Math.cos(theta);
             var y = Math.sin(theta);
-            return new THREE.Vector2(x, y);
-          }))), new THREE.MeshBasicMaterial({ color: 0xefefef, transparent: true, side: THREE.DoubleSide }));
+            vertices.push(new THREE.Vector2(x, y));
+          }
+
+          var shadow = new THREE.Mesh(
+            new THREE.ShapeGeometry(new THREE.Shape(vertices)),
+            new THREE.MeshBasicMaterial({ color: 0xefefef, transparent: true, side: THREE.DoubleSide })
+          );
 
           shadow.scale.set(geometry.boundingBox.width / 2, geometry.boundingBox.height / 2, 1 / size);
           shadow.rotation.x = Math.PI / 2;

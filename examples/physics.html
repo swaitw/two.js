@@ -76,9 +76,7 @@
 
         background.add(inner);
 
-        _.extend(two.renderer.domElement.style, {
-          background: 'url(' + generateGrid() + ') center center'
-        });
+        two.renderer.domElement.style.background = 'url(' + generateGrid() + ') center center';
 
         resize();
 
