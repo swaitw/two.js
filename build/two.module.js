@@ -316,7 +316,7 @@ SOFTWARE.
      * @name Two.PublishDate
      * @property {String} - The automatically generated publish date in the build process to verify version release candidates.
      */
-    PublishDate: '2020-01-25T14:11:29.478Z',
+    PublishDate: '2020-02-21T13:35:45.250Z',
 
     /**
      * @name Two.Identifier
@@ -842,29 +842,32 @@ SOFTWARE.
               // Might happen when transform string is empty or not valid.
               if (m === null) break;
 
-              // // Option 1: edit the underlying matrix and don't force an auto calc.
-              // var m = node.getCTM();
-              // elem._matrix.manual = true;
-              // elem._matrix.set(m.a, m.b, m.c, m.d, m.e, m.f);
+              // Option 1: edit the underlying matrix and don't force an auto calc.
+              var c = (elem._renderer.rect ? elem._renderer.rect.centroid.x: m.e);
+              var f = (elem._renderer.rect ? elem._renderer.rect.centroid.y: m.f);
 
-              // Option 2: Decompose and infer Two.js related properties.
-              var transforms = Two.Utils.decomposeMatrix(m);
+              elem._matrix.manual = true;
+              elem._matrix.set(m.a, m.c, c, m.b, m.d, f, 0, 0, 1);
 
-              elem.translation.set(transforms.translateX, transforms.translateY);
-              elem.rotation = Math.PI * (transforms.rotation / 180);
-              elem.scale = new Two.Vector(transforms.scaleX, transforms.scaleY);
-
-              var x = parseFloat((styles.x + '').replace('px'));
-              var y = parseFloat((styles.y + '').replace('px'));
-
-              // Override based on attributes.
-              if (x) {
-                elem.translation.x = x;
-              }
-
-              if (y) {
-                elem.translation.y = y;
-              }
+              // // Option 2: Decompose and infer Two.js related properties.
+              // var transforms = Two.Utils.decomposeMatrix(m);
+              //
+              // elem.translation.set(transforms.translateX, transforms.translateY);
+              // elem.rotation = Math.PI * (transforms.rotation / 180);
+              // // elem.rotation = - transforms.rotation * Math.PI / 2;
+              // elem.scale = new Two.Vector(transforms.scaleX, transforms.scaleY);
+              //
+              // var x = parseFloat((styles.x + '').replace('px'));
+              // var y = parseFloat((styles.y + '').replace('px'));
+              //
+              // // Override based on attributes.
+              // if (x) {
+              //   elem.translation.x = x;
+              // }
+              //
+              // if (y) {
+              //   elem.translation.y = y;
+              // }
 
               break;
             case 'viewBox':
@@ -1435,22 +1438,23 @@ SOFTWARE.
           path = new Two.Path(points, closed, undefined, true).noStroke();
           path.fill = 'black';
 
-          var rect = path.getBoundingClientRect(true);
+          path._renderer.rect = path.getBoundingClientRect(true);
 
           // Center objects to stay consistent
           // with the rest of the Two.js API.
-          rect.centroid = {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2
+          path._renderer.rect.centroid = {
+            x: path._renderer.rect.left + path._renderer.rect.width / 2,
+            y: path._renderer.rect.top + path._renderer.rect.height / 2
           };
 
           _.each(path.vertices, function(v) {
-            v.subSelf(rect.centroid);
+            v.subSelf(path._renderer.rect.centroid);
           });
 
           Two.Utils.applySvgAttributes.call(this, node, path, parentStyles);
 
-          path.translation.addSelf(rect.centroid);
+          path.translation.addSelf(path._renderer.rect.centroid);
+          delete path._renderer.rect;
 
           return path;
 
