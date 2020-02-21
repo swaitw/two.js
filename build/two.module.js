@@ -316,7 +316,7 @@ SOFTWARE.
      * @name Two.PublishDate
      * @property {String} - The automatically generated publish date in the build process to verify version release candidates.
      */
-    PublishDate: '2020-02-21T13:35:45.250Z',
+    PublishDate: '2020-02-21T13:41:56.613Z',
 
     /**
      * @name Two.Identifier
@@ -843,11 +843,13 @@ SOFTWARE.
               if (m === null) break;
 
               // Option 1: edit the underlying matrix and don't force an auto calc.
-              var c = (elem._renderer.rect ? elem._renderer.rect.centroid.x: m.e);
-              var f = (elem._renderer.rect ? elem._renderer.rect.centroid.y: m.f);
-
               elem._matrix.manual = true;
-              elem._matrix.set(m.a, m.c, c, m.b, m.d, f, 0, 0, 1);
+              elem._matrix.set(m.a, m.c, m.e, m.b, m.d, m.f, 0, 0, 1);
+
+              if (elem._renderer.rect) {
+                var centroid = elem._renderer.rect.centroid;
+                elem._matrix.translate(centroid.x, centroid.y);
+              }
 
               // // Option 2: Decompose and infer Two.js related properties.
               // var transforms = Two.Utils.decomposeMatrix(m);
