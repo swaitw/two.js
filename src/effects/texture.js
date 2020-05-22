@@ -139,21 +139,6 @@ _.extend(Texture, {
   },
 
   /**
-   * @name Two.Texture.loadHeadlessBuffer
-   * @property {Function} - Loads an image as a buffer in headless environments.
-   * @param {Two.Texture} texture - The {@link Two.Texture} to be loaded.
-   * @param {Function} loaded - The callback function to be triggered once the image is loaded.
-   * @nota-bene - This function uses node's `fs.readFileSync` to spoof the `<img />` loading process in the browser.
-   */
-  loadHeadlessBuffer: new Function('texture', 'loaded', [
-    'var fs = require("fs");',
-    'var buffer = fs.readFileSync(texture.src);',
-
-    'texture.image.src = buffer;',
-    'loaded();'
-  ].join('\n')),
-
-  /**
    * @name Two.Texture.getImage
    * @property {Function} - Convenience function to set {@link Two.Texture#image} properties with canonincal versions set in {@link Two.Texture.ImageRegistry}.
    * @param {String} src - The URL path of the image.
@@ -246,7 +231,13 @@ _.extend(Texture, {
 
       if (CanvasShim.isHeadless) {
 
-        Texture.loadHeadlessBuffer(texture, loaded);
+        eval([
+          'var fs = require("fs");',
+          'var buffer = fs.readFileSync(texture.src);',
+
+          'texture.image.src = buffer;',
+          'loaded();'
+        ].join('\n'));
 
       } else {
 
