@@ -1,16 +1,12 @@
-import Commands from '../utils/path-commands.js';
-import { decomposeMatrix, getComputedMatrix, mod, toFixed } from '../utils/math.js';
-import Events from '../events.js';
-import _ from '../utils/underscore.js';
+import { Commands } from '../utils/path-commands.js';
+import { decomposeMatrix, mod, toFixed } from '../utils/math.js';
+import { Events } from '../events.js';
+import { _ } from '../utils/underscore.js';
 
-import Group from '../group.js';
-import Vector from '../vector.js';
-import Matrix from '../matrix.js';
+import { Group } from '../group.js';
+import { Vector } from '../vector.js';
 
-var matrix = new Matrix();
-
-var svg = {
-
+const svg = {
   version: 1.1,
 
   ns: 'http://www.w3.org/2000/svg',
@@ -19,16 +15,23 @@ var svg = {
   alignments: {
     left: 'start',
     center: 'middle',
-    right: 'end'
+    right: 'end',
+  },
+
+  baselines: {
+    top: 'hanging',
+    middle: 'middle',
+    bottom: 'ideographic',
+    baseline: 'alphabetic',
   },
 
   // Create an svg namespaced element.
-  createElement: function(name, attrs) {
-    var tag = name;
-    var elem = document.createElementNS(svg.ns, tag);
+  createElement: function (name, attrs) {
+    const tag = name;
+    const elem = document.createElementNS(svg.ns, tag);
     if (tag === 'svg') {
       attrs = _.defaults(attrs || {}, {
-        version: svg.version
+        version: svg.version,
       });
     }
     if (attrs && Object.keys(attrs).length > 0) {
@@ -38,9 +41,9 @@ var svg = {
   },
 
   // Add attributes from an svg element.
-  setAttributes: function(elem, attrs) {
-    var keys = Object.keys(attrs);
-    for (var i = 0; i < keys.length; i++) {
+  setAttributes: function (elem, attrs) {
+    const keys = Object.keys(attrs);
+    for (let i = 0; i < keys.length; i++) {
       if (/href/.test(keys[i])) {
         elem.setAttributeNS(svg.xlink, keys[i], attrs[keys[i]]);
       } else {
@@ -51,8 +54,8 @@ var svg = {
   },
 
   // Remove attributes from an svg element.
-  removeAttributes: function(elem, attrs) {
-    for (var key in attrs) {
+  removeAttributes: function (elem, attrs) {
+    for (let key in attrs) {
       elem.removeAttribute(key);
     }
     return this;
@@ -62,70 +65,91 @@ var svg = {
   // element. It is imperative that the string collation is as fast as
   // possible, because this call will be happening multiple times a
   // second.
-  toString: function(points, closed) {
-
-    var l = points.length,
+  toString: function (points, closed) {
+    let l = points.length,
       last = l - 1,
       d, // The elusive last Commands.move point
       string = '';
 
-    for (var i = 0; i < l; i++) {
-      var b = points[i];
-      var command;
-      var prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
+    for (let i = 0; i < l; i++) {
+      const b = points[i];
 
-      var a = points[prev];
+      const prev = closed ? mod(i - 1, l) : Math.max(i - 1, 0);
+      const a = points[prev];
 
-      var vx, vy, ux, uy, ar, bl, br, c, cl;
-      var rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
+      let command, c;
+      let vx, vy, ux, uy, ar, bl, br, cl;
+      let rx, ry, xAxisRotation, largeArcFlag, sweepFlag;
 
       // Access x and y directly,
       // bypassing the getter
-      var x = toFixed(b.x);
-      var y = toFixed(b.y);
+      let x = toFixed(b.x);
+      let y = toFixed(b.y);
 
       switch (b.command) {
-
         case Commands.close:
           command = Commands.close;
           break;
 
         case Commands.arc:
-
           rx = b.rx;
           ry = b.ry;
           xAxisRotation = b.xAxisRotation;
           largeArcFlag = b.largeArcFlag;
           sweepFlag = b.sweepFlag;
 
-          command = Commands.arc + ' ' + rx + ' ' + ry + ' '
-            + xAxisRotation + ' ' + largeArcFlag + ' ' + sweepFlag + ' '
-            + x + ' ' + y;
+          command =
+            Commands.arc +
+            ' ' +
+            rx +
+            ' ' +
+            ry +
+            ' ' +
+            xAxisRotation +
+            ' ' +
+            largeArcFlag +
+            ' ' +
+            sweepFlag +
+            ' ' +
+            x +
+            ' ' +
+            y;
           break;
 
         case Commands.curve:
-
           ar = (a.controls && a.controls.right) || Vector.zero;
           bl = (b.controls && b.controls.left) || Vector.zero;
 
           if (a.relative) {
-            vx = toFixed((ar.x + a.x));
-            vy = toFixed((ar.y + a.y));
+            vx = toFixed(ar.x + a.x);
+            vy = toFixed(ar.y + a.y);
           } else {
             vx = toFixed(ar.x);
             vy = toFixed(ar.y);
           }
 
           if (b.relative) {
-            ux = toFixed((bl.x + b.x));
-            uy = toFixed((bl.y + b.y));
+            ux = toFixed(bl.x + b.x);
+            uy = toFixed(bl.y + b.y);
           } else {
             ux = toFixed(bl.x);
             uy = toFixed(bl.y);
           }
 
-          command = ((i === 0) ? Commands.move : Commands.curve) +
-            ' ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
+          command =
+            (i === 0 ? Commands.move : Commands.curve) +
+            ' ' +
+            vx +
+            ' ' +
+            vy +
+            ' ' +
+            ux +
+            ' ' +
+            uy +
+            ' ' +
+            x +
+            ' ' +
+            y;
           break;
 
         case Commands.move:
@@ -135,15 +159,12 @@ var svg = {
 
         default:
           command = b.command + ' ' + x + ' ' + y;
-
       }
 
       // Add a final point and close it off
 
       if (i >= last && closed) {
-
         if (b.command === Commands.curve) {
-
           // Make sure we close to the most previous Commands.move
           c = d;
 
@@ -151,16 +172,16 @@ var svg = {
           cl = (c.controls && c.controls.left) || c;
 
           if (b.relative) {
-            vx = toFixed((br.x + b.x));
-            vy = toFixed((br.y + b.y));
+            vx = toFixed(br.x + b.x);
+            vy = toFixed(br.y + b.y);
           } else {
             vx = toFixed(br.x);
             vy = toFixed(br.y);
           }
 
           if (c.relative) {
-            ux = toFixed((cl.x + c.x));
-            uy = toFixed((cl.y + c.y));
+            ux = toFixed(cl.x + c.x);
+            uy = toFixed(cl.y + c.y);
           } else {
             ux = toFixed(cl.x);
             uy = toFixed(cl.y);
@@ -171,90 +192,100 @@ var svg = {
 
           command +=
             ' C ' + vx + ' ' + vy + ' ' + ux + ' ' + uy + ' ' + x + ' ' + y;
-
         }
 
         if (b.command !== Commands.close) {
           command += ' Z';
         }
-
       }
 
       string += command + ' ';
-
     }
 
     return string;
-
   },
 
-  pointsToString: function(points, size) {
+  pointsToString: function (points, size) {
+    let string = '';
+    const r = size * 0.5;
 
-    var string = '';
-    var r = size * 0.5;
-
-    for (var i = 0; i < points.length; i++) {
-
-      var x = points[i].x;
-      var y = points[i].y - r;
+    for (let i = 0; i < points.length; i++) {
+      const x = points[i].x;
+      const y = points[i].y - r;
 
       string += Commands.move + ' ' + x + ' ' + y + ' ';
       string += 'a ' + r + ' ' + r + ' 0 1 0 0.001 0 Z';
-
     }
 
     return string;
-
   },
 
-  getClip: function(shape, domElement) {
-
-    var clip = shape._renderer.clip;
+  getClip: function (shape, domElement) {
+    let clip = shape._renderer.clip;
 
     if (!clip) {
-
       clip = shape._renderer.clip = svg.createElement('clipPath', {
-        'clip-rule': 'nonzero'
+        'clip-rule': 'nonzero',
       });
-      domElement.defs.appendChild(clip);
+    }
 
+    if (clip.parentNode === null) {
+      domElement.defs.appendChild(clip);
     }
 
     return clip;
+  },
 
+  getRendererType: function (type) {
+    return type in svg ? type : 'path';
+  },
+
+  defs: {
+    update: function (domElement) {
+      const { defs } = domElement;
+      if (defs._flagUpdate) {
+        const children = Array.prototype.slice.call(defs.children, 0);
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          const id = child.id;
+          const selector = `[fill="url(#${id})"],[stroke="url(#${id})"],[clip-path="url(#${id})"]`;
+          const exists = domElement.querySelector(selector);
+          if (!exists) {
+            defs.removeChild(child);
+          }
+        }
+        defs._flagUpdate = false;
+      }
+    },
   },
 
   group: {
-
     // TODO: Can speed up.
     // TODO: How does this effect a f
-    appendChild: function(object) {
-
-      var elem = object._renderer.elem;
+    appendChild: function (object) {
+      const elem = object._renderer.elem;
 
       if (!elem) {
         return;
       }
 
-      var tag = elem.nodeName;
+      const tag = elem.nodeName;
 
       if (!tag || /(radial|linear)gradient/i.test(tag) || object._clip) {
         return;
       }
 
       this.elem.appendChild(elem);
-
     },
 
-    removeChild: function(object) {
-
-      var elem = object._renderer.elem;
+    removeChild: function (object) {
+      const elem = object._renderer.elem;
 
       if (!elem || elem.parentNode != this.elem) {
         return;
       }
 
-      var tag = elem.nodeName;
+      const tag = elem.nodeName;
 
       if (!tag) {
         return;
@@ -266,24 +297,25 @@ var svg = {
       }
 
       this.elem.removeChild(elem);
-
     },
 
-    orderChild: function(object) {
+    orderChild: function (object) {
       this.elem.appendChild(object._renderer.elem);
     },
 
-    renderChild: function(child) {
-      svg[child._renderer.type].render.call(child, this);
+    renderChild: function (child) {
+      const prop = svg.getRendererType(child._renderer.type);
+      svg[prop].render.call(child, this);
     },
 
-    render: function(domElement) {
-
+    render: function (domElement) {
       // Shortcut for hidden objects.
       // Doesn't reset the flags, so changes are stored and
       // applied once the object is visible again
-      if ((!this._visible && !this._flagVisible)
-        || (this._opacity === 0 && !this._flagOpacity)) {
+      if (
+        (!this._visible && !this._flagVisible) ||
+        (this._opacity === 0 && !this._flagOpacity)
+      ) {
         return this;
       }
 
@@ -291,25 +323,29 @@ var svg = {
 
       if (!this._renderer.elem) {
         this._renderer.elem = svg.createElement('g', {
-          id: this.id
+          id: this.id,
         });
         domElement.appendChild(this._renderer.elem);
       }
 
       // _Update styles for the <g>
-      var flagMatrix = this._matrix.manual || this._flagMatrix;
-      var context = {
+      const flagMatrix = this._matrix.manual || this._flagMatrix;
+      const context = {
         domElement: domElement,
-        elem: this._renderer.elem
+        elem: this._renderer.elem,
       };
 
       if (flagMatrix) {
-        this._renderer.elem.setAttribute('transform', 'matrix(' + this._matrix.toString() + ')');
+        this._renderer.elem.setAttribute(
+          'transform',
+          'matrix(' + this._matrix.toString() + ')'
+        );
       }
 
-      for (var i = 0; i < this.children.length; i++) {
-        var child = this.children[i];
-        svg[child._renderer.type].render.call(child, domElement);
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        const prop = svg.getRendererType(child._renderer.type);
+        svg[prop].render.call(child, domElement);
       }
 
       if (this._flagId) {
@@ -321,7 +357,10 @@ var svg = {
       }
 
       if (this._flagVisible) {
-        this._renderer.elem.setAttribute('display', this._visible ? 'inline' : 'none');
+        this._renderer.elem.setAttribute(
+          'display',
+          this._visible ? 'inline' : 'none'
+        );
       }
 
       if (this._flagClassName) {
@@ -363,23 +402,27 @@ var svg = {
 
       if (this._flagMask) {
         if (this._mask) {
-          svg[this._mask._renderer.type].render.call(this._mask, domElement);
-          this._renderer.elem.setAttribute('clip-path', 'url(#' + this._mask.id + ')');
+          const prop = svg.getRendererType(this._mask._renderer.type);
+          svg[prop].render.call(this._mask, domElement);
+          this._renderer.elem.setAttribute(
+            'clip-path',
+            'url(#' + this._mask.id + ')'
+          );
         } else {
           this._renderer.elem.removeAttribute('clip-path');
         }
       }
 
+      if (this.dataset) {
+        Object.assign(this._renderer.elem.dataset, this.dataset);
+      }
+
       return this.flagReset();
-
-    }
-
+    },
   },
 
   path: {
-
-    render: function(domElement) {
-
+    render: function (domElement) {
       // Shortcut for hidden objects.
       // Doesn't reset the flags, so changes are stored and
       // applied once the object is visible again
@@ -390,9 +433,9 @@ var svg = {
       this._update();
 
       // Collect any attribute that needs to be changed here
-      var changed = {};
+      const changed = {};
 
-      var flagMatrix = this._matrix.manual || this._flagMatrix;
+      const flagMatrix = this._matrix.manual || this._flagMatrix;
 
       if (flagMatrix) {
         changed.transform = 'matrix(' + this._matrix.toString() + ')';
@@ -403,28 +446,50 @@ var svg = {
       }
 
       if (this._flagVertices) {
-        var vertices = svg.toString(this._renderer.vertices, this._closed);
+        const vertices = svg.toString(this._renderer.vertices, this._closed);
         changed.d = vertices;
       }
 
       if (this._fill && this._fill._renderer) {
+        this._renderer.hasFillEffect = true;
         this._fill._update();
-        svg[this._fill._renderer.type].render.call(this._fill, domElement, true);
+        const prop = svg.getRendererType(this._fill._renderer.type);
+        svg[prop].render.call(this._fill, domElement, true);
       }
 
       if (this._flagFill) {
-        changed.fill = this._fill && this._fill.id
-          ? 'url(#' + this._fill.id + ')' : this._fill;
+        changed.fill =
+          this._fill && this._fill.id
+            ? 'url(#' + this._fill.id + ')'
+            : this._fill;
+        if (
+          this._renderer.hasFillEffect &&
+          typeof this._fill.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasFillEffect;
+        }
       }
 
       if (this._stroke && this._stroke._renderer) {
+        this._renderer.hasStrokeEffect = true;
         this._stroke._update();
-        svg[this._stroke._renderer.type].render.call(this._stroke, domElement, true);
+        const prop = svg.getRendererType(this._stroke._renderer.type);
+        svg[prop].render.call(this._stroke, domElement, true);
       }
 
       if (this._flagStroke) {
-        changed.stroke = this._stroke && this._stroke.id
-          ? 'url(#' + this._stroke.id + ')' : this._stroke;
+        changed.stroke =
+          this._stroke && this._stroke.id
+            ? 'url(#' + this._stroke.id + ')'
+            : this._stroke;
+        if (
+          this._renderer.hasStrokeEffect &&
+          typeof this._stroke.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasStrokeEffect;
+        }
       }
 
       if (this._flagLinewidth) {
@@ -464,20 +529,18 @@ var svg = {
       // If there is no attached DOM element yet,
       // create it with all necessary attributes.
       if (!this._renderer.elem) {
-
         changed.id = this._id;
         this._renderer.elem = svg.createElement('path', changed);
         domElement.appendChild(this._renderer.elem);
 
-      // Otherwise apply all pending attributes
+        // Otherwise apply all pending attributes
       } else {
         svg.setAttributes(this._renderer.elem, changed);
       }
 
       if (this._flagClip) {
-
-        var clip = svg.getClip(this, domElement);
-        var elem = this._renderer.elem;
+        const clip = svg.getClip(this, domElement);
+        const elem = this._renderer.elem;
 
         if (this._clip) {
           elem.removeAttribute('id');
@@ -488,7 +551,6 @@ var svg = {
           elem.setAttribute('id', this.id);
           this.parent._renderer.elem.appendChild(elem); // TODO: should be insertBefore
         }
-
       }
 
       // Commented two-way functionality of clips / masks with groups and
@@ -497,23 +559,23 @@ var svg = {
 
       if (this._flagMask) {
         if (this._mask) {
-          svg[this._mask._renderer.type].render.call(this._mask, domElement);
-          this._renderer.elem.setAttribute('clip-path', 'url(#' + this._mask.id + ')');
+          const prop = svg.getRendererType(this._mask._renderer.type);
+          svg[prop].render.call(this._mask, domElement);
+          this._renderer.elem.setAttribute(
+            'clip-path',
+            'url(#' + this._mask.id + ')'
+          );
         } else {
           this._renderer.elem.removeAttribute('clip-path');
         }
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   points: {
-
-    render: function(domElement) {
-
+    render: function (domElement) {
       // Shortcut for hidden objects.
       // Doesn't reset the flags, so changes are stored and
       // applied once the object is visible again
@@ -524,9 +586,9 @@ var svg = {
       this._update();
 
       // Collect any attribute that needs to be changed here
-      var changed = {};
+      const changed = {};
 
-      var flagMatrix = this._matrix.manual || this._flagMatrix;
+      const flagMatrix = this._matrix.manual || this._flagMatrix;
 
       if (flagMatrix) {
         changed.transform = 'matrix(' + this._matrix.toString() + ')';
@@ -537,35 +599,56 @@ var svg = {
       }
 
       if (this._flagVertices || this._flagSize || this._flagSizeAttenuation) {
-        var size = this._size;
+        let size = this._size;
         if (!this._sizeAttenuation) {
-          getComputedMatrix(this, matrix);
-          var me = matrix.elements;
-          var m = decomposeMatrix(me[0], me[3], me[1], me[4], me[2], me[5]);
+          const me = this.worldMatrix.elements;
+          const m = decomposeMatrix(me[0], me[3], me[1], me[4], me[2], me[5]);
           size /= Math.max(m.scaleX, m.scaleY);
         }
-        var vertices = svg.pointsToString(this._renderer.collection, size);
+        const vertices = svg.pointsToString(this._renderer.collection, size);
         changed.d = vertices;
       }
 
       if (this._fill && this._fill._renderer) {
+        this._renderer.hasFillEffect = true;
         this._fill._update();
-        svg[this._fill._renderer.type].render.call(this._fill, domElement, true);
+        const prop = svg.getRendererType(this._fill._renderer.type);
+        svg[prop].render.call(this._fill, domElement, true);
       }
 
       if (this._flagFill) {
-        changed.fill = this._fill && this._fill.id
-          ? 'url(#' + this._fill.id + ')' : this._fill;
+        changed.fill =
+          this._fill && this._fill.id
+            ? 'url(#' + this._fill.id + ')'
+            : this._fill;
+        if (
+          this._renderer.hasFillEffect &&
+          typeof this._fill.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasFillEffect;
+        }
       }
 
       if (this._stroke && this._stroke._renderer) {
+        this._renderer.hasStrokeEffect = true;
         this._stroke._update();
-        svg[this._stroke._renderer.type].render.call(this._stroke, domElement, true);
+        const prop = svg.getRendererType(this._stroke._renderer.type);
+        svg[prop].render.call(this._stroke, domElement, true);
       }
 
       if (this._flagStroke) {
-        changed.stroke = this._stroke && this._stroke.id
-          ? 'url(#' + this._stroke.id + ')' : this._stroke;
+        changed.stroke =
+          this._stroke && this._stroke.id
+            ? 'url(#' + this._stroke.id + ')'
+            : this._stroke;
+        if (
+          this._renderer.hasStrokeEffect &&
+          typeof this._stroke.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasStrokeEffect;
+        }
       }
 
       if (this._flagLinewidth) {
@@ -593,31 +676,26 @@ var svg = {
       // If there is no attached DOM element yet,
       // create it with all necessary attributes.
       if (!this._renderer.elem) {
-
         changed.id = this._id;
         this._renderer.elem = svg.createElement('path', changed);
         domElement.appendChild(this._renderer.elem);
 
-      // Otherwise apply all pending attributes
+        // Otherwise apply all pending attributes
       } else {
         svg.setAttributes(this._renderer.elem, changed);
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   text: {
-
-    render: function(domElement) {
-
+    render: function (domElement) {
       this._update();
 
-      var changed = {};
+      const changed = {};
 
-      var flagMatrix = this._matrix.manual || this._flagMatrix;
+      const flagMatrix = this._matrix.manual || this._flagMatrix;
 
       if (flagMatrix) {
         changed.transform = 'matrix(' + this._matrix.toString() + ')';
@@ -637,10 +715,12 @@ var svg = {
         changed['line-height'] = this._leading;
       }
       if (this._flagAlignment) {
-        changed['text-anchor'] = svg.alignments[this._alignment] || this._alignment;
+        changed['text-anchor'] =
+          svg.alignments[this._alignment] || this._alignment;
       }
       if (this._flagBaseline) {
-        changed['alignment-baseline'] = changed['dominant-baseline'] = this._baseline;
+        changed['dominant-baseline'] =
+          svg.baselines[this._baseline] || this._baseline;
       }
       if (this._flagStyle) {
         changed['font-style'] = this._style;
@@ -651,21 +731,46 @@ var svg = {
       if (this._flagDecoration) {
         changed['text-decoration'] = this._decoration;
       }
+      if (this._flagDirection) {
+        changed['direction'] = this._direction;
+      }
       if (this._fill && this._fill._renderer) {
+        this._renderer.hasFillEffect = true;
         this._fill._update();
-        svg[this._fill._renderer.type].render.call(this._fill, domElement, true);
+        const prop = svg.getRendererType(this._fill._renderer.type);
+        svg[prop].render.call(this._fill, domElement, true);
       }
       if (this._flagFill) {
-        changed.fill = this._fill && this._fill.id
-          ? 'url(#' + this._fill.id + ')' : this._fill;
+        changed.fill =
+          this._fill && this._fill.id
+            ? 'url(#' + this._fill.id + ')'
+            : this._fill;
+        if (
+          this._renderer.hasFillEffect &&
+          typeof this._fill.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasFillEffect;
+        }
       }
       if (this._stroke && this._stroke._renderer) {
+        this._renderer.hasStrokeEffect = true;
         this._stroke._update();
-        svg[this._stroke._renderer.type].render.call(this._stroke, domElement, true);
+        const prop = svg.getRendererType(this._stroke._renderer.type);
+        svg[prop].render.call(this._stroke, domElement, true);
       }
       if (this._flagStroke) {
-        changed.stroke = this._stroke && this._stroke.id
-          ? 'url(#' + this._stroke.id + ')' : this._stroke;
+        changed.stroke =
+          this._stroke && this._stroke.id
+            ? 'url(#' + this._stroke.id + ')'
+            : this._stroke;
+        if (
+          this._renderer.hasStrokeEffect &&
+          typeof this._stroke.id === 'undefined'
+        ) {
+          domElement.defs._flagUpdate = true;
+          delete this._renderer.hasStrokeEffect;
+        }
       }
       if (this._flagLinewidth) {
         changed['stroke-width'] = this._linewidth;
@@ -685,22 +790,17 @@ var svg = {
       }
 
       if (!this._renderer.elem) {
-
         changed.id = this._id;
 
         this._renderer.elem = svg.createElement('text', changed);
-        domElement.defs.appendChild(this._renderer.elem);
-
+        domElement.appendChild(this._renderer.elem);
       } else {
-
         svg.setAttributes(this._renderer.elem, changed);
-
       }
 
       if (this._flagClip) {
-
-        var clip = svg.getClip(this, domElement);
-        var elem = this._renderer.elem;
+        const clip = svg.getClip(this, domElement);
+        const elem = this._renderer.elem;
 
         if (this._clip) {
           elem.removeAttribute('id');
@@ -711,7 +811,6 @@ var svg = {
           elem.setAttribute('id', this.id);
           this.parent._renderer.elem.appendChild(elem); // TODO: should be insertBefore
         }
-
       }
 
       // Commented two-way functionality of clips / masks with groups and
@@ -720,8 +819,12 @@ var svg = {
 
       if (this._flagMask) {
         if (this._mask) {
-          svg[this._mask._renderer.type].render.call(this._mask, domElement);
-          this._renderer.elem.setAttribute('clip-path', 'url(#' + this._mask.id + ')');
+          const prop = svg.getRendererType(this._mask._renderer.type);
+          svg[prop].render.call(this._mask, domElement);
+          this._renderer.elem.setAttribute(
+            'clip-path',
+            'url(#' + this._mask.id + ')'
+          );
         } else {
           this._renderer.elem.removeAttribute('clip-path');
         }
@@ -732,20 +835,16 @@ var svg = {
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   'linear-gradient': {
-
-    render: function(domElement, silent) {
-
+    render: function (domElement, silent) {
       if (!silent) {
         this._update();
       }
 
-      var changed = {};
+      const changed = {};
 
       if (this._flagId) {
         changed.id = this._id;
@@ -762,26 +861,28 @@ var svg = {
         changed.spreadMethod = this._spread;
       }
 
+      if (this._flagUnits) {
+        changed.gradientUnits = this._units;
+      }
+
       // If there is no attached DOM element yet,
       // create it with all necessary attributes.
       if (!this._renderer.elem) {
-
         changed.id = this._id;
-        changed.gradientUnits = 'userSpaceOnUse';
         this._renderer.elem = svg.createElement('linearGradient', changed);
-        domElement.defs.appendChild(this._renderer.elem);
 
-      // Otherwise apply all pending attributes
+        // Otherwise apply all pending attributes
       } else {
-
         svg.setAttributes(this._renderer.elem, changed);
+      }
 
+      if (this._renderer.elem.parentNode === null) {
+        domElement.defs.appendChild(this._renderer.elem);
       }
 
       if (this._flagStops) {
-
-        var lengthChanged = this._renderer.elem.childNodes.length
-          !== this.stops.length;
+        const lengthChanged =
+          this._renderer.elem.childNodes.length !== this.stops.length;
 
         if (lengthChanged) {
           while (this._renderer.elem.lastChild) {
@@ -789,10 +890,9 @@ var svg = {
           }
         }
 
-        for (var i = 0; i < this.stops.length; i++) {
-
-          var stop = this.stops[i];
-          var attrs = {};
+        for (let i = 0; i < this.stops.length; i++) {
+          const stop = this.stops[i];
+          const attrs = {};
 
           if (stop._flagOffset) {
             attrs.offset = 100 * stop._offset + '%';
@@ -814,31 +914,24 @@ var svg = {
             this._renderer.elem.appendChild(stop._renderer.elem);
           }
           stop.flagReset();
-
         }
-
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   'radial-gradient': {
-
-    render: function(domElement, silent) {
-
+    render: function (domElement, silent) {
       if (!silent) {
         this._update();
       }
 
-      var changed = {};
+      const changed = {};
 
       if (this._flagId) {
         changed.id = this._id;
       }
-
       if (this._flagCenter) {
         changed.cx = this.center._x;
         changed.cy = this.center._y;
@@ -847,35 +940,35 @@ var svg = {
         changed.fx = this.focal._x;
         changed.fy = this.focal._y;
       }
-
       if (this._flagRadius) {
         changed.r = this._radius;
       }
-
       if (this._flagSpread) {
         changed.spreadMethod = this._spread;
+      }
+
+      if (this._flagUnits) {
+        changed.gradientUnits = this._units;
       }
 
       // If there is no attached DOM element yet,
       // create it with all necessary attributes.
       if (!this._renderer.elem) {
-
         changed.id = this._id;
-        changed.gradientUnits = 'userSpaceOnUse';
         this._renderer.elem = svg.createElement('radialGradient', changed);
-        domElement.defs.appendChild(this._renderer.elem);
 
-      // Otherwise apply all pending attributes
+        // Otherwise apply all pending attributes
       } else {
-
         svg.setAttributes(this._renderer.elem, changed);
+      }
 
+      if (this._renderer.elem.parentNode === null) {
+        domElement.defs.appendChild(this._renderer.elem);
       }
 
       if (this._flagStops) {
-
-        var lengthChanged = this._renderer.elem.childNodes.length
-          !== this.stops.length;
+        const lengthChanged =
+          this._renderer.elem.childNodes.length !== this.stops.length;
 
         if (lengthChanged) {
           while (this._renderer.elem.lastChild) {
@@ -883,10 +976,9 @@ var svg = {
           }
         }
 
-        for (var i = 0; i < this.stops.length; i++) {
-
-          var stop = this.stops[i];
-          var attrs = {};
+        for (let i = 0; i < this.stops.length; i++) {
+          const stop = this.stops[i];
+          const attrs = {};
 
           if (stop._flagOffset) {
             attrs.offset = 100 * stop._offset + '%';
@@ -908,37 +1000,29 @@ var svg = {
             this._renderer.elem.appendChild(stop._renderer.elem);
           }
           stop.flagReset();
-
         }
-
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   texture: {
-
-    render: function(domElement, silent) {
-
+    render: function (domElement, silent) {
       if (!silent) {
         this._update();
       }
 
-      var changed = {};
-      var styles = { x: 0, y: 0 };
-      var image = this.image;
+      const changed = {};
+      const styles = { x: 0, y: 0 };
+      const image = this.image;
 
       if (this._flagId) {
         changed.id = this._id;
       }
 
       if (this._flagLoaded && this.loaded) {
-
         switch (image.nodeName.toLowerCase()) {
-
           case 'canvas':
             styles.href = styles['xlink:href'] = image.toDataURL('image/png');
             break;
@@ -946,18 +1030,14 @@ var svg = {
           case 'image':
             styles.href = styles['xlink:href'] = this.src;
             break;
-
         }
-
       }
 
       if (this._flagOffset || this._flagLoaded || this._flagScale) {
-
         changed.x = this._offset.x;
         changed.y = this._offset.y;
 
         if (image) {
-
           changed.x -= image.width / 2;
           changed.y -= image.height / 2;
 
@@ -971,23 +1051,20 @@ var svg = {
         }
 
         if (changed.x > 0) {
-          changed.x *= - 1;
+          changed.x *= -1;
         }
         if (changed.y > 0) {
-          changed.y *= - 1;
+          changed.y *= -1;
         }
-
       }
 
       if (this._flagScale || this._flagLoaded || this._flagRepeat) {
-
         changed.width = 0;
         changed.height = 0;
 
         if (image) {
-
-          styles.width = changed.width = image.width;
-          styles.height = changed.height = image.height;
+          changed.width = image.width;
+          changed.height = image.height;
 
           // TODO: Hack / Band-aid
           switch (this._repeat) {
@@ -1004,8 +1081,10 @@ var svg = {
             changed.width *= this._scale;
             changed.height *= this._scale;
           }
-        }
 
+          styles.width = changed.width;
+          styles.height = changed.height;
+        }
       }
 
       if (this._flagScale || this._flagLoaded) {
@@ -1017,29 +1096,29 @@ var svg = {
       }
 
       if (!this._renderer.elem) {
-
         changed.id = this._id;
         changed.patternUnits = 'userSpaceOnUse';
         this._renderer.elem = svg.createElement('pattern', changed);
-        domElement.defs.appendChild(this._renderer.elem);
-
       } else if (Object.keys(changed).length !== 0) {
-
         svg.setAttributes(this._renderer.elem, changed);
-
       }
 
-      if (this._renderer.elem && this._renderer.image && !this._renderer.appended) {
+      if (this._renderer.elem.parentNode === null) {
+        domElement.defs.appendChild(this._renderer.elem);
+      }
+
+      if (
+        this._renderer.elem &&
+        this._renderer.image &&
+        !this._renderer.appended
+      ) {
         this._renderer.elem.appendChild(this._renderer.image);
         this._renderer.appended = true;
       }
 
       return this.flagReset();
-
-    }
-
-  }
-
+    },
+  },
 };
 
 /**
@@ -1050,45 +1129,39 @@ var svg = {
  * @param {Element} [parameters.domElement] - The `<svg />` to draw to. If none given a new one will be constructed.
  * @description This class is used by {@link Two} when constructing with `type` of `Two.Types.svg` (the default type). It takes Two.js' scenegraph and renders it to a `<svg />`.
  */
-function Renderer(params) {
+export class Renderer extends Events {
+  constructor(params) {
+    super();
 
-  /**
-   * @name Two.SVGRenderer#domElement
-   * @property {Element} - The `<svg />` associated with the Two.js scene.
-   */
-  this.domElement = params.domElement || svg.createElement('svg');
+    /**
+     * @name Two.SVGRenderer#domElement
+     * @property {Element} - The `<svg />` associated with the Two.js scene.
+     */
+    this.domElement = params.domElement || svg.createElement('svg');
 
-  /**
-   * @name Two.SVGRenderer#scene
-   * @property {Two.Group} - The root group of the scenegraph.
-   */
-  this.scene = new Group();
-  this.scene.parent = this;
+    /**
+     * @name Two.SVGRenderer#scene
+     * @property {Two.Group} - The root group of the scenegraph.
+     */
+    this.scene = new Group();
+    this.scene.parent = this;
 
-  /**
-   * @name Two.SVGRenderer#defs
-   * @property {SvgDefintionsElement} - The `<defs />` to apply gradients, patterns, and bitmap imagery.
-   */
-  this.defs = svg.createElement('defs');
-  this.domElement.appendChild(this.defs);
-  this.domElement.defs = this.defs;
-  this.domElement.style.overflow = 'hidden';
-
-}
-
-_.extend(Renderer, {
+    /**
+     * @name Two.SVGRenderer#defs
+     * @property {SvgDefintionsElement} - The `<defs />` to apply gradients, patterns, and bitmap imagery.
+     */
+    this.defs = svg.createElement('defs');
+    this.defs._flagUpdate = false;
+    this.domElement.appendChild(this.defs);
+    this.domElement.defs = this.defs;
+    this.domElement.style.overflow = 'hidden';
+  }
 
   /**
    * @name Two.SVGRenderer.Utils
    * @property {Object} - A massive object filled with utility functions and properties to render Two.js objects to a `<svg />`.
    */
-  Utils: svg
-
-});
-
-_.extend(Renderer.prototype, Events, {
-
-  constructor: Renderer,
+  static Utils = svg;
 
   /**
    * @name Two.SVGRenderer#setSize
@@ -1098,33 +1171,27 @@ _.extend(Renderer.prototype, Events, {
    * @description Change the size of the renderer.
    * @nota-bene Triggers a `Two.Events.resize`.
    */
-  setSize: function(width, height) {
-
+  setSize(width, height) {
     this.width = width;
     this.height = height;
 
     svg.setAttributes(this.domElement, {
       width: width,
-      height: height
+      height: height,
     });
 
     return this.trigger(Events.Types.resize, width, height);
-
-  },
+  }
 
   /**
    * @name Two.SVGRenderer#render
    * @function
    * @description Render the current scene to the `<svg />`.
    */
-  render: function() {
-
+  render() {
     svg.group.render.call(this.scene, this.domElement);
+    svg.defs.update(this.domElement);
 
     return this;
-
   }
-
-});
-
-export default Renderer;
+}

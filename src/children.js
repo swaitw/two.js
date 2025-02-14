@@ -1,6 +1,5 @@
-import Events from './events.js';
-import _ from './utils/underscore.js';
-import Collection from './collection.js';
+import { Events } from './events.js';
+import { Collection } from './collection.js';
 
 /**
  * @class
@@ -8,35 +7,29 @@ import Collection from './collection.js';
  * @extends Two.Collection
  * @description A children collection which is accesible both by index and by object `id`.
  */
-function Children(children) {
-
-  Collection.apply(this, arguments);
-
-  Object.defineProperty(this, '_events', {
-    value : {},
-    enumerable: false
-  });
-
+export class Children extends Collection {
   /**
    * @name Two.Group.Children#ids
    * @property {Object} - Map of all elements in the list keyed by `id`s.
    */
-  this.ids = {};
+  // N.B: Technique to disable enumeration on object
+  #ids = {};
+  get ids() {
+    return this.#ids;
+  }
 
-  this.attach(
-    Array.isArray(children) ? children : Array.prototype.slice.call(arguments)
-  );
+  constructor(children) {
+    children = Array.isArray(children)
+      ? children
+      : Array.prototype.slice.call(arguments);
 
-  this.on(Events.Types.insert, this.attach);
-  this.on(Events.Types.remove, this.detach);
+    super(children);
 
-}
+    this.attach(children);
 
-Children.prototype = new Collection();
-
-_.extend(Children.prototype, {
-
-  constructor: Children,
+    this.on(Events.Types.insert, this.attach);
+    this.on(Events.Types.remove, this.detach);
+  }
 
   /**
    * @function
@@ -44,15 +37,15 @@ _.extend(Children.prototype, {
    * @param {Two.Shape[]} children - The objects which extend {@link Two.Shape} to be added.
    * @description Adds elements to the `ids` map.
    */
-  attach: function(children) {
-    for (var i = 0; i < children.length; i++) {
-      var child = children[i];
+  attach(children) {
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
       if (child && child.id) {
         this.ids[child.id] = child;
       }
     }
     return this;
-  },
+  }
 
   /**
    * @function
@@ -60,13 +53,10 @@ _.extend(Children.prototype, {
    * @param {Two.Shape[]} children - The objects which extend {@link Two.Shape} to be removed.
    * @description Removes elements to the `ids` map.
    */
-  detach: function(children) {
-    for (var i = 0; i < children.length; i++) {
+  detach(children) {
+    for (let i = 0; i < children.length; i++) {
       delete this.ids[children[i].id];
     }
     return this;
   }
-
-});
-
-export default Children;
+}

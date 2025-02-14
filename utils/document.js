@@ -4,6 +4,8 @@ var path = require('path');
 var compiler = require('jsdoc-api');
 var sourceFiles = require('./source-files');
 
+var pkg = JSON.parse(fs.readFileSync(
+  path.resolve(__dirname, '../package.json')));
 var directory = [];
 
 var template = _.template(
@@ -12,6 +14,18 @@ var template = _.template(
     { encoding: 'utf8' }
   )
 );
+
+pkg.template = function(str) {
+  if (typeof str === 'string') {
+    var regex = /\$\w*/g;
+    var match = str.match(regex);
+    if (match && match.length > 0) {
+      var prop = match[0].replace('$', '');
+      str = str.replace(regex, pkg[prop]);
+    }
+  }
+  return str;
+};
 
 preprocess();
 
@@ -129,7 +143,8 @@ function process() {
 
     fs.writeFileSync(outputFile, template({
       root: getRoot(citations, true),
-      citations: citations
+      citations: citations,
+      package: pkg
     }));
 
     console.log('Generated', outputFile);
@@ -168,7 +183,7 @@ function getRoot(citations, shouldSplice) {
     var citation = list[i];
     if (/class/i.test(citation.kind)) {
       var index = _.indexOf(citations, citation);
-      if (!!shouldSplice) {
+      if (shouldSplice) {
         citations.splice(index, 1);
       }
       return citation;
@@ -224,6 +239,10 @@ function expandLink(object, property) {
 
         var dir = getDirectoryMatch(longname);
         var hash = fragments.length > 2 ? fragments.slice(2).join('-') : '';
+        if (dir === null && fragments.length === 2) {
+          dir = '/docs/two/';
+          hash = fragments[1];
+        }
         var href = [
           '[',
           fragments.join('.'),
@@ -259,7 +278,7 @@ function getDirectoryMatch(str) {
       index = i;
     }
   }
-  if (i < 0) {
+  if (index < 0) {
     return null;
   }
   return directory[index].dir;

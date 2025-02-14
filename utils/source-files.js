@@ -10,6 +10,7 @@ var sourceFiles = [
   'src/renderers/svg.js',
   'src/renderers/canvas.js',
   'src/renderers/webgl.js',
+  'src/element.js',
   'src/shape.js',
   'src/path.js',
   'src/shapes/line.js',
@@ -18,7 +19,6 @@ var sourceFiles = [
   'src/shapes/circle.js',
   'src/shapes/points.js',
   'src/shapes/polygon.js',
-  'src/shapes/arc-segment.js',
   'src/shapes/star.js',
   'src/shapes/rounded-rectangle.js',
   'src/text.js',
@@ -30,13 +30,15 @@ var sourceFiles = [
   'src/effects/sprite.js',
   'src/effects/image-sequence.js',
   'src/group.js',
-  'extras/jsm/zui.js'
+  'extras/jsm/arc.js',
+  'extras/jsm/zui.js',
+  'src/shapes/arc-segment.js',
 ];
 
 if (typeof module != 'undefined' && module.exports) {
   module.exports = sourceFiles;
 } else if (typeof define === 'function' && define.amd) {
-  define('source-files', [], function() {
+  define('source-files', [], function () {
     return sourceFiles;
   });
 }

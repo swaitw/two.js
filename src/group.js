@@ -1,14 +1,25 @@
-import Events from './events.js';
-import { getComputedMatrix } from './utils/math.js';
-import _ from './utils/underscore.js';
+import { Events } from './events.js';
+import { _ } from './utils/underscore.js';
+import { getEffectFromObject } from './utils/shape.js';
 
-import Vector from './vector.js';
-import Shape from './shape.js';
-import Children from './children.js';
+import { Shape } from './shape.js';
+import { Children } from './children.js';
+import { Path } from './path.js';
+import { ArcSegment } from './shapes/arc-segment.js';
+import { Circle } from './shapes/circle.js';
+import { Ellipse } from './shapes/ellipse.js';
+import { Points } from './shapes/points.js';
+import { Polygon } from './shapes/polygon.js';
+import { Rectangle } from './shapes/rectangle.js';
+import { RoundedRectangle } from './shapes/rounded-rectangle.js';
+import { Star } from './shapes/star.js';
+import { Text } from './text.js';
+import { Element } from './element.js';
 
 // Constants
 
-var min = Math.min, max = Math.max;
+const min = Math.min,
+  max = Math.max;
 
 /**
  * @name Two.Group
@@ -18,320 +29,27 @@ var min = Math.min, max = Math.max;
  * @description This is the primary class for grouping objects that are then drawn in Two.js. In Illustrator this is a group, in After Effects it would be a Null Object. Whichever the case, the `Two.Group` contains a transformation matrix and commands to style its children, but it by itself doesn't render to the screen.
  * @nota-bene The {@link Two#scene} is an instance of `Two.Group`.
  */
-function Group(children) {
-
-  Shape.call(this);
-
-  this._renderer.type = 'group';
-
-  /**
-   * @name Two.Group#additions
-   * @property {Two.Shape[]}
-   * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
-   */
-  this.additions = [];
-
-  /**
-   * @name Two.Group#subtractions
-   * @property {Two.Shape[]}
-   * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
-   */
-  this.subtractions = [];
-
-  /**
-   * @name Two.Group#children
-   * @property {Two.Group.Children}
-   * @description A list of all the children in the scenegraph.
-   * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
-   */
-  this.children = Array.isArray(children) ? children : Array.prototype.slice.call(arguments);
-
-}
-
-_.extend(Group, {
-
-  Children: Children,
-
-  /**
-   * @name Two.Group.InsertChildren
-   * @function
-   * @param {Two.Shape[]} children - The objects to be inserted.
-   * @description Cached method to let renderers know children have been added to a {@link Two.Group}.
-   */
-  InsertChildren: function(children) {
-    for (var i = 0; i < children.length; i++) {
-      replaceParent.call(this, children[i], this);
-    }
-  },
-
-  /**
-   * @name Two.Group.RemoveChildren
-   * @function
-   * @param {Two.Shape[]} children - The objects to be removed.
-   * @description Cached method to let renderers know children have been removed from a {@link Two.Group}.
-   */
-  RemoveChildren: function(children) {
-    for (var i = 0; i < children.length; i++) {
-      replaceParent.call(this, children[i]);
-    }
-  },
-
-  /**
-   * @name Two.Group.OrderChildren
-   * @function
-   * @description Cached method to let renderers know order has been updated on a {@link Two.Group}.
-   */
-  OrderChildren: function(children) {
-    this._flagOrder = true;
-  },
-
-  /**
-   * @name Two.Group.Properties
-   * @property {String[]} - A list of properties that are on every {@link Two.Group}.
-   */
-  Properties: [
-    'fill',
-    'stroke',
-    'linewidth',
-    'cap',
-    'join',
-    'miter',
-
-    'closed',
-    'curved',
-    'automatic'
-  ],
-
-  /**
-   * @name Two.Group.MakeObservable
-   * @function
-   * @param {Object} object - The object to make observable.
-   * @description Convenience function to apply observable qualities of a {@link Two.Group} to any object. Handy if you'd like to extend the {@link Two.Group} class on a custom class.
-   */
-  MakeObservable: function(object) {
-
-    var properties = Group.Properties;
-
-    Object.defineProperty(object, 'visible', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._visible;
-      },
-
-      set: function(v) {
-        this._flagVisible = this._visible !== v || this._flagVisible;
-        this._visible = v;
-      }
-
-    });
-
-    Object.defineProperty(object, 'opacity', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._opacity;
-      },
-
-      set: function(v) {
-        this._flagOpacity = this._opacity !== v || this._flagOpacity;
-        this._opacity = v;
-      }
-
-    });
-
-    Object.defineProperty(object, 'beginning', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._beginning;
-      },
-
-      set: function(v) {
-        this._flagBeginning = this._beginning !== v || this._flagBeginning;
-        this._beginning = v;
-      }
-
-    });
-
-    Object.defineProperty(object, 'ending', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._ending;
-      },
-
-      set: function(v) {
-        this._flagEnding = this._ending !== v || this._flagEnding;
-        this._ending = v;
-      }
-
-    });
-
-    Object.defineProperty(object, 'length', {
-
-      enumerable: true,
-
-      get: function() {
-        if (this._flagLength || this._length <= 0) {
-          this._length = 0;
-          if (!this.children) {
-            return this._length;
-          }
-          for (var i = 0; i < this.children.length; i++) {
-            var child = this.children[i];
-            this._length += child.length;
-          }
-        }
-        return this._length;
-      }
-
-    });
-
-    Shape.MakeObservable(object);
-    Group.MakeGetterSetters(object, properties);
-
-    Object.defineProperty(object, 'children', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._children;
-      },
-
-      set: function(children) {
-
-        var insertChildren = Group.InsertChildren.bind(this);
-        var removeChildren = Group.RemoveChildren.bind(this);
-        var orderChildren = Group.OrderChildren.bind(this);
-
-        if (this._children) {
-          this._children.unbind();
-          if (this._children.length > 0) {
-            removeChildren(this._children);
-          }
-        }
-
-        this._children = new Children(children);
-        this._children.bind(Events.Types.insert, insertChildren);
-        this._children.bind(Events.Types.remove, removeChildren);
-        this._children.bind(Events.Types.order, orderChildren);
-
-        if (children.length > 0) {
-          insertChildren(children);
-        }
-
-      }
-
-    });
-
-    Object.defineProperty(object, 'mask', {
-
-      enumerable: true,
-
-      get: function() {
-        return this._mask;
-      },
-
-      set: function(v) {
-        if (this._mask) {
-          this._mask.clip = false;
-        }
-        this._mask = v;
-        this._flagMask = true;
-        if (v && !v.clip) {
-          v.clip = true;
-        }
-      }
-
-    });
-
-  },
-
-  /**
-   * @name Two.Group.MakeGetterSetters
-   * @function
-   * @param {Two.Group} group - The group to apply getters and setters.
-   * @param {Object} properties - A key / value object containing properties to inherit.
-   * @description Convenience method to apply getter / setter logic on an array of properties. Used in {@link Two.Group.MakeObservable}.
-   */
-  MakeGetterSetters: function(group, properties) {
-
-    if (!Array.isArray(properties)) {
-      properties = [properties];
-    }
-
-    _.each(properties, function(k) {
-      Group.MakeGetterSetter(group, k);
-    });
-
-  },
-
-  /**
-   * @name Two.Group.MakeGetterSetter
-   * @function
-   * @param {Two.Group} group - The group to apply getters and setters.
-   * @param {String} key - The key which will become a property on the group.
-   * @description Convenience method to apply getter / setter logic specific to how `Two.Group`s trickle down styles to their children. Used in {@link Two.Group.MakeObservable}.
-   */
-  MakeGetterSetter: function(group, key) {
-
-    var secret = '_' + key;
-
-    Object.defineProperty(group, key, {
-
-      enumerable: true,
-
-      get: function() {
-        return this[secret];
-      },
-
-      set: function(v) {
-        this[secret] = v;
-        // Trickle down styles
-        for (var i = 0; i < this.children.length; i++) {
-          var child = this.children[i];
-          child[key] = v;
-        }
-      }
-
-    });
-
-  }
-
-});
-
-_.extend(Group.prototype, Shape.prototype, {
-
-  constructor: Group,
-
-  // Flags
-  // http://en.wikipedia.org/wiki/Flag
-
+export class Group extends Shape {
   /**
    * @name Two.Group#_flagAdditions
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#additions} needs updating.
    */
-  _flagAdditions: false,
+  _flagAdditions = false;
 
   /**
    * @name Two.Group#_flagSubtractions
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#subtractions} needs updating.
    */
-  _flagSubtractions: false,
+  _flagSubtractions = false;
 
   /**
    * @name Two.Group#_flagOrder
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#order} needs updating.
    */
-  _flagOrder: false,
+  _flagOrder = false;
 
   /**
    * @name Two.Group#_flagVisible
@@ -344,35 +62,35 @@ _.extend(Group.prototype, Shape.prototype, {
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#opacity} needs updating.
    */
-  _flagOpacity: true,
+  _flagOpacity = true;
 
   /**
    * @name Two.Group#_flagBeginning
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#beginning} needs updating.
    */
-  _flagBeginning: false,
+  _flagBeginning = false;
 
   /**
    * @name Two.Group#_flagEnding
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#ending} needs updating.
    */
-  _flagEnding: false,
+  _flagEnding = false;
 
   /**
    * @name Two.Group#_flagLength
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#length} needs updating.
    */
-  _flagLength: false,
+  _flagLength = false;
 
   /**
    * @name Two.Group#_flagMask
    * @private
    * @property {Boolean} - Determines whether the {@link Two.Group#mask} needs updating.
    */
-  _flagMask: false,
+  _flagMask = false;
 
   // Underlying Properties
 
@@ -381,73 +99,73 @@ _.extend(Group.prototype, Shape.prototype, {
    * @property {(String|Two.Gradient|Two.Texture)} - The value of what all child shapes should be filled in with.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
    */
-  _fill: '#fff',
+  _fill = '#fff';
 
   /**
    * @name Two.Group#stroke
    * @property {(String|Two.Gradient|Two.Texture)} - The value of what all child shapes should be outlined in with.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/CSS/color_value} for more information on CSS's colors as `String`.
    */
-  _stroke: '#000',
+  _stroke = '#000';
 
   /**
    * @name Two.Group#linewidth
    * @property {Number} - The thickness in pixels of the stroke for all child shapes.
    */
-  _linewidth: 1.0,
+  _linewidth = 1.0;
 
   /**
    * @name Two.Group#opacity
    * @property {Number} - The opaqueness of all child shapes.
    * @nota-bene Becomes multiplied by the individual child's opacity property.
    */
-  _opacity: 1.0,
+  _opacity = 1.0;
 
   /**
    * @name Two.Group#visible
    * @property {Boolean} - Display the path or not.
    * @nota-bene For {@link Two.CanvasRenderer} and {@link Two.WebGLRenderer} when set to false all updating is disabled improving performance dramatically with many objects in the scene.
    */
-  _visible: true,
+  _visible = true;
 
   /**
    * @name Two.Group#cap
    * @property {String}
    * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty}
    */
-  _cap: 'round',
+  _cap = 'round';
 
   /**
    * @name Two.Group#join
    * @property {String}
    * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty}
    */
-  _join: 'round',
+  _join = 'round';
 
   /**
    * @name Two.Group#miter
    * @property {String}
    * @see {@link https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty}
    */
-  _miter: 4,
+  _miter = 4;
 
   /**
    * @name Two.Group#closed
    * @property {Boolean} - Determines whether a final line is drawn between the final point in the `vertices` array and the first point of all child shapes.
    */
-  _closed: true,
+  _closed = true;
 
   /**
    * @name Two.Group#curved
    * @property {Boolean} - When the child's path is `automatic = true` this boolean determines whether the lines between the points are curved or not.
    */
-  _curved: false,
+  _curved = false;
 
   /**
    * @name Two.Group#automatic
    * @property {Boolean} - Determines whether or not Two.js should calculate curves, lines, and commands automatically for you or to let the developer manipulate them for themselves.
    */
-  _automatic: true,
+  _automatic = true;
 
   /**
    * @name Two.Group#beginning
@@ -455,7 +173,7 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description {@link Two.Group#beginning} is a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
    * @nota-bene This is great for animating in and out stroked paths in conjunction with {@link Two.Group#ending}.
    */
-  _beginning: 0,
+  _beginning = 0;
 
   /**
    * @name Two.Group#ending
@@ -463,19 +181,177 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description {@link Two.Group#ending} is a percentage value that represents at what percentage into all child shapes should the renderer start drawing.
    * @nota-bene This is great for animating in and out stroked paths in conjunction with {@link Two.Group#beginning}.
    */
-  _ending: 1.0,
+  _ending = 1.0;
 
   /**
    * @name Two.Group#length
    * @property {Number} - The sum of distances between all child lengths.
    */
-  _length: 0,
+  _length = 0;
 
   /**
    * @name Two.Group#mask
    * @property {Two.Shape} - The Two.js object to clip from a group's rendering.
    */
-  _mask: null,
+  _mask = null;
+
+  constructor(children) {
+    super();
+
+    for (let prop in proto) {
+      Object.defineProperty(this, prop, proto[prop]);
+    }
+
+    //
+
+    this._renderer.type = 'group';
+
+    /**
+     * @name Two.Group#additions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be appended to the renderer's scenegraph.
+     */
+    this.additions = [];
+
+    /**
+     * @name Two.Group#subtractions
+     * @property {Two.Shape[]}
+     * @description An automatically updated list of children that need to be removed from the renderer's scenegraph.
+     */
+    this.subtractions = [];
+
+    /**
+     * @name Two.Group#children
+     * @property {Two.Group.Children}
+     * @description A list of all the children in the scenegraph.
+     * @nota-bene Ther order of this list indicates the order each element is rendered to the screen.
+     */
+    this.children = Array.isArray(children)
+      ? children
+      : Array.prototype.slice.call(arguments);
+  }
+
+  static Children = Children;
+
+  /**
+   * @name Two.Group.InsertChildren
+   * @function
+   * @param {Two.Shape[]} children - The objects to be inserted.
+   * @description Cached method to let renderers know children have been added to a {@link Two.Group}.
+   */
+  static InsertChildren(children) {
+    for (let i = 0; i < children.length; i++) {
+      replaceParent.call(this, children[i], this);
+    }
+  }
+
+  /**
+   * @name Two.Group.RemoveChildren
+   * @function
+   * @param {Two.Shape[]} children - The objects to be removed.
+   * @description Cached method to let renderers know children have been removed from a {@link Two.Group}.
+   */
+  static RemoveChildren(children) {
+    for (let i = 0; i < children.length; i++) {
+      replaceParent.call(this, children[i]);
+    }
+  }
+
+  /**
+   * @name Two.Group.OrderChildren
+   * @function
+   * @description Cached method to let renderers know order has been updated on a {@link Two.Group}.
+   */
+  static OrderChildren(children) {
+    this._flagOrder = true;
+  }
+
+  /**
+   * @name Two.Group.Properties
+   * @property {String[]} - A list of properties that are on every {@link Two.Group}.
+   */
+  static Properties = [
+    'fill',
+    'stroke',
+    'linewidth',
+    'cap',
+    'join',
+    'miter',
+
+    'closed',
+    'curved',
+    'automatic',
+  ];
+
+  static fromObject(obj) {
+    const group = new Group();
+
+    for (let i = 0; i < Group.Properties.length; i++) {
+      const k = Group.Properties[i];
+      if (k in obj) {
+        if (/(fill|stroke)/i.test(k)) {
+          group[k] =
+            typeof obj[k] === 'string' ? obj[k] : getEffectFromObject(obj[k]);
+        } else {
+          group[k] = obj[k];
+        }
+      }
+    }
+
+    if ('mask' in obj) {
+      group.mask = getShapeFromObject(obj.mask);
+    }
+    if ('id' in obj) {
+      group.id = obj.id;
+    }
+
+    group.children = obj.children.map(getShapeFromObject);
+
+    return group;
+
+    function getShapeFromObject(child) {
+      // All of the types of children Two.Group supports
+      if (child && child.renderer) {
+        switch (child.renderer.type) {
+          case 'arc-segment':
+            return ArcSegment.fromObject(child);
+          case 'circle':
+            return Circle.fromObject(child);
+          case 'ellipse':
+            return Ellipse.fromObject(child);
+          case 'points':
+            return Points.fromObject(child);
+          case 'polygon':
+            return Polygon.fromObject(child);
+          case 'rectangle':
+            return Rectangle.fromObject(child);
+          case 'rounded-rectangle':
+            return RoundedRectangle.fromObject(child);
+          case 'star':
+            return Star.fromObject(child);
+          case 'path':
+            return Path.fromObject(child);
+          case 'text':
+            return Text.fromObject(child);
+          case 'group':
+            return Group.fromObject(child);
+          case 'shape':
+            return Shape.fromObject(child);
+          case 'element':
+            return Element.fromObject(child);
+        }
+      }
+      // Commonly null for empty set
+      // properties like fill and stroke
+      return child;
+    }
+  }
+
+  copy(group) {
+    super.copy.call(this, group);
+    console.warn('Two.Group.copy is not supported yet.');
+    return this;
+  }
 
   /**
    * @name Two.Group#clone
@@ -484,16 +360,15 @@ _.extend(Group.prototype, Shape.prototype, {
    * @returns {Two.Group}
    * @description Create a new instance of {@link Two.Group} with the same properties of the current group.
    */
-  clone: function(parent) {
-
+  clone(parent) {
     // /**
     //  * TODO: Group has a gotcha in that it's at the moment required to be bound to
     //  * an instance of two in order to add elements correctly. This needs to
     //  * be rethought and fixed.
     //  */
 
-    var clone = new Group();
-    var children = this.children.map(function(child) {
+    const clone = new Group();
+    const children = this.children.map(function (child) {
       return child.clone();
     });
 
@@ -519,8 +394,7 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     return clone._update();
-
-  },
+  }
 
   /**
    * @name Two.Group#toObject
@@ -528,41 +402,36 @@ _.extend(Group.prototype, Shape.prototype, {
    * @returns {Object}
    * @description Return a JSON compatible plain object that represents the group.
    */
-  toObject: function() {
+  toObject() {
+    const result = super.toObject.call(this);
 
-    var result = {
-      children: [],
-      translation: this.translation.toObject(),
-      rotation: this.rotation,
-      scale: this.scale instanceof Vector ? this.scale.toObject() : this.scale,
-      opacity: this.opacity,
-      className: this.className,
-      mask: (this.mask ? this.mask.toObject() : null)
-    };
+    result.renderer.type = 'group';
+    result.children = [];
+    result.opacity = this.opacity;
+    result.className = this.className;
+    result.mask = this.mask ? this.mask.toObject() : null;
 
-    if (this.matrix.manual) {
-      result.matrix = this.matrix.toObject();
-    }
-
-    _.each(this.children, function(child, i) {
-      result.children[i] = child.toObject();
-    }, this);
+    _.each(
+      this.children,
+      (child, i) => {
+        result.children[i] = child.toObject();
+      },
+      this
+    );
 
     return result;
-
-  },
+  }
 
   /**
    * @name Two.Group#corner
    * @function
    * @description Orient the children of the group to the upper left-hand corner of that group.
    */
-  corner: function() {
+  corner() {
+    const rect = this.getBoundingClientRect(true);
 
-    var rect = this.getBoundingClientRect(true);
-
-    for (var i = 0; i < this.children.length; i++) {
-      var child = this.children[i];
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
       child.translation.x -= rect.left;
       child.translation.y -= rect.top;
     }
@@ -573,22 +442,20 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     return this;
-
-  },
+  }
 
   /**
    * @name Two.Group#center
    * @function
    * @description Orient the children of the group to the center of that group.
    */
-  center: function() {
+  center() {
+    const rect = this.getBoundingClientRect(true);
+    const cx = rect.left + rect.width / 2 - this.translation.x;
+    const cy = rect.top + rect.height / 2 - this.translation.y;
 
-    var rect = this.getBoundingClientRect(true);
-    var cx = rect.left + rect.width / 2 - this.translation.x;
-    var cy = rect.top + rect.height / 2 - this.translation.y;
-
-    for (var i = 0; i < this.children.length; i++) {
-      var child = this.children[i];
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
       if (child.isShape) {
         child.translation.x -= cx;
         child.translation.y -= cy;
@@ -601,8 +468,7 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     return this;
-
-  },
+  }
 
   /**
    * @name Two.Group#getById
@@ -610,13 +476,13 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description Recursively search for id. Returns the first element found.
    * @returns {Two.Shape} - Or `null` if nothing is found.
    */
-  getById: function (id) {
-    var found = null;
+  getById(id) {
+    let found = null;
     function search(node) {
       if (node.id === id) {
         return node;
       } else if (node.children) {
-        for (var i = 0; i < node.children.length; i++) {
+        for (let i = 0; i < node.children.length; i++) {
           found = search(node.children[i]);
           if (found) {
             return found;
@@ -626,7 +492,7 @@ _.extend(Group.prototype, Shape.prototype, {
       return null;
     }
     return search(this);
-  },
+  }
 
   /**
    * @name Two.Group#getByClassName
@@ -634,22 +500,22 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description Recursively search for classes. Returns an array of matching elements.
    * @returns {Two.Shape[]} - Or empty array if nothing is found.
    */
-  getByClassName: function(className) {
-    var found = [];
+  getByClassName(className) {
+    const found = [];
     function search(node) {
       if (Array.prototype.indexOf.call(node.classList, className) >= 0) {
         found.push(node);
       }
       if (node.children) {
-        for (var i = 0; i < node.children.length; i++) {
-          var child = node.children[i];
+        for (let i = 0; i < node.children.length; i++) {
+          const child = node.children[i];
           search(child);
         }
       }
       return found;
     }
     return search(this);
-  },
+  }
 
   /**
    * @name Two.Group#getByType
@@ -657,31 +523,30 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description Recursively search for children of a specific type, e.g. {@link Two.Path}. Pass a reference to this type as the param. Returns an array of matching elements.
    * @returns {Two.Shape[]} - Empty array if nothing is found.
    */
-  getByType: function(type) {
-    var found = [];
+  getByType(type) {
+    const found = [];
     function search(node) {
       if (node instanceof type) {
         found.push(node);
       }
       if (node.children) {
-        for (var i = 0; i < node.children.length; i++) {
-          var child = node.children[i];
+        for (let i = 0; i < node.children.length; i++) {
+          const child = node.children[i];
           search(child);
         }
       }
       return found;
     }
     return search(this);
-  },
+  }
 
   /**
    * @name Two.Group#add
    * @function
-   * @param {Two.Shape[]} objects - An array of objects to be added. Can be also be supplied as individual arguments.
+   * @param {Two.Shape[]|...Two.Shape} objects - An array of objects to be added. Can also be supplied as individual arguments.
    * @description Add objects to the group.
    */
-  add: function(objects) {
-
+  add(objects) {
     // Allow to pass multiple objects either as array or as multiple arguments
     // If it's an array also create copy of it in case we're getting passed
     // a childrens array directly.
@@ -692,12 +557,12 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     // Add the objects
-    for (var i = 0; i < objects.length; i++) {
-      var child = objects[i];
+    for (let i = 0; i < objects.length; i++) {
+      const child = objects[i];
       if (!(child && child.id)) {
         continue;
       }
-      var index = Array.prototype.indexOf.call(this.children, child);
+      const index = Array.prototype.indexOf.call(this.children, child);
       if (index >= 0) {
         this.children.splice(index, 1);
       }
@@ -705,18 +570,16 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     return this;
-
-  },
+  }
 
   /**
-   * @name Two.Group#add
+   * @name Two.Group#remove
    * @function
-   * @param {Two.Shape[]} objects - An array of objects to be removed. Can be also removed as individual arguments.
+   * @param {Two.Shape[]|...Two.Shape} [objects=self] - An array of objects to be removed. Can be also removed as individual arguments. If no arguments are passed, then it removes itself from its parent.
    * @description Remove objects from the group.
    */
-  remove: function(objects) {
-
-    var l = arguments.length,
+  remove(objects) {
+    const l = arguments.length,
       grandparent = this.parent;
 
     // Allow to call remove without arguments
@@ -736,20 +599,19 @@ _.extend(Group.prototype, Shape.prototype, {
     }
 
     // Remove the objects
-    for (var i = 0; i < objects.length; i++) {
-      var object = objects[i];
+    for (let i = 0; i < objects.length; i++) {
+      const object = objects[i];
       if (!object || !this.children.ids[object.id]) {
         continue;
       }
-      var index = this.children.indexOf(object);
+      const index = this.children.indexOf(object);
       if (index >= 0) {
         this.children.splice(index, 1);
       }
     }
 
     return this;
-
-  },
+  }
 
   /**
    * @name Two.Group#getBoundingClientRect
@@ -758,23 +620,24 @@ _.extend(Group.prototype, Shape.prototype, {
    * @returns {Object} - Returns object with top, left, right, bottom, width, height attributes.
    * @description Return an object with top, left, right, bottom, width, and height parameters of the group.
    */
-  getBoundingClientRect: function(shallow) {
-    var rect, matrix, a, b, c, d, tc, lc, rc, bc;
+  getBoundingClientRect(shallow) {
+    let rect, matrix, tc, lc, rc, bc;
 
     // TODO: Update this to not __always__ update. Just when it needs to.
     this._update(true);
 
     // Variables need to be defined here, because of nested nature of groups.
-    var left = Infinity, right = -Infinity,
-        top = Infinity, bottom = -Infinity;
+    let left = Infinity,
+      right = -Infinity,
+      top = Infinity,
+      bottom = -Infinity;
 
-    var regex = /texture|gradient/i;
+    const regex = /texture|gradient/i;
 
-    matrix = shallow ? this._matrix : getComputedMatrix(this);
+    matrix = shallow ? this.matrix : this.worldMatrix;
 
-    for (var i = 0; i < this.children.length; i++) {
-
-      var child = this.children[i];
+    for (let i = 0; i < this.children.length; i++) {
+      const child = this.children[i];
 
       if (!child.visible || regex.test(child._renderer.type)) {
         continue;
@@ -782,34 +645,43 @@ _.extend(Group.prototype, Shape.prototype, {
 
       rect = child.getBoundingClientRect(shallow);
 
-      tc = typeof rect.top !== 'number' || _.isNaN(rect.top) || !isFinite(rect.top);
-      lc = typeof rect.left !== 'number' || _.isNaN(rect.left) || !isFinite(rect.left);
-      rc = typeof rect.right !== 'number' || _.isNaN(rect.right) || !isFinite(rect.right);
-      bc = typeof rect.bottom !== 'number' || _.isNaN(rect.bottom) || !isFinite(rect.bottom);
+      tc =
+        typeof rect.top !== 'number' ||
+        _.isNaN(rect.top) ||
+        !isFinite(rect.top);
+      lc =
+        typeof rect.left !== 'number' ||
+        _.isNaN(rect.left) ||
+        !isFinite(rect.left);
+      rc =
+        typeof rect.right !== 'number' ||
+        _.isNaN(rect.right) ||
+        !isFinite(rect.right);
+      bc =
+        typeof rect.bottom !== 'number' ||
+        _.isNaN(rect.bottom) ||
+        !isFinite(rect.bottom);
 
       if (tc || lc || rc || bc) {
         continue;
       }
 
-      top = min(rect.top, top);
-      left = min(rect.left, left);
-      right = max(rect.right, right);
-      bottom = max(rect.bottom, bottom);
+      if (shallow) {
+        const [ax, ay] = matrix.multiply(rect.left, rect.top);
+        const [bx, by] = matrix.multiply(rect.right, rect.top);
+        const [cx, cy] = matrix.multiply(rect.left, rect.bottom);
+        const [dx, dy] = matrix.multiply(rect.right, rect.bottom);
 
-    }
-
-    if (shallow) {
-
-      a = matrix.multiply(left, top, 1);
-      b = matrix.multiply(left, bottom, 1);
-      c = matrix.multiply(right, top, 1);
-      d = matrix.multiply(right, bottom, 1);
-
-      top = min(a.y, b.y, c.y, d.y);
-      left = min(a.x, b.x, c.x, d.x);
-      right = max(a.x, b.x, c.x, d.x);
-      bottom = max(a.y, b.y, c.y, d.y);
-
+        top = min(ay, by, cy, dy, top);
+        left = min(ax, bx, cx, dx, left);
+        right = max(ax, bx, cx, dx, right);
+        bottom = max(ay, by, cy, dy, bottom);
+      } else {
+        top = min(rect.top, top);
+        left = min(rect.left, left);
+        right = max(rect.right, right);
+        bottom = max(rect.bottom, bottom);
+      }
     }
 
     return {
@@ -818,47 +690,46 @@ _.extend(Group.prototype, Shape.prototype, {
       right: right,
       bottom: bottom,
       width: right - left,
-      height: bottom - top
+      height: bottom - top,
     };
-
-  },
+  }
 
   /**
    * @name Two.Group#noFill
    * @function
    * @description Apply `noFill` method to all child shapes.
    */
-  noFill: function() {
-    this.children.forEach(function(child) {
+  noFill() {
+    this.children.forEach(function (child) {
       child.noFill();
     });
     return this;
-  },
+  }
 
   /**
    * @name Two.Group#noStroke
    * @function
    * @description Apply `noStroke` method to all child shapes.
    */
-  noStroke: function() {
-    this.children.forEach(function(child) {
+  noStroke() {
+    this.children.forEach(function (child) {
       child.noStroke();
     });
     return this;
-  },
+  }
 
   /**
    * @name Two.Group#subdivide
    * @function
    * @description Apply `subdivide` method to all child shapes.
    */
-  subdivide: function() {
-    var args = arguments;
-    this.children.forEach(function(child) {
+  subdivide() {
+    const args = arguments;
+    this.children.forEach(function (child) {
       child.subdivide.apply(child, args);
     });
     return this;
-  },
+  }
 
   /**
    * @name Two.Group#_update
@@ -868,22 +739,19 @@ _.extend(Group.prototype, Shape.prototype, {
    * @description This is called before rendering happens by the renderer. This applies all changes necessary so that rendering is up-to-date but not updated more than it needs to be.
    * @nota-bene Try not to call this method more than once a frame.
    */
-  _update: function() {
-
-    var i, l, child;
+  _update() {
+    let i, l, child;
 
     if (this._flagBeginning || this._flagEnding) {
+      const beginning = Math.min(this._beginning, this._ending);
+      const ending = Math.max(this._beginning, this._ending);
+      const length = this.length;
+      let sum = 0;
 
-      var beginning = Math.min(this._beginning, this._ending);
-      var ending = Math.max(this._beginning, this._ending);
-      var length = this.length;
-      var sum = 0;
-
-      var bd = beginning * length;
-      var ed = ending * length;
+      const bd = beginning * length;
+      const ed = ending * length;
 
       for (i = 0; i < this.children.length; i++) {
-
         child = this.children[i];
         l = child.length;
 
@@ -905,14 +773,11 @@ _.extend(Group.prototype, Shape.prototype, {
         }
 
         sum += l;
-
       }
-
     }
 
-    return Shape.prototype._update.apply(this, arguments);
-
-  },
+    return super._update.apply(this, arguments);
+  }
 
   /**
    * @name Two.Group#flagReset
@@ -920,8 +785,7 @@ _.extend(Group.prototype, Shape.prototype, {
    * @private
    * @description Called internally to reset all flags. Ensures that only properties that change are updated before being sent to the renderer.
    */
-  flagReset: function() {
-
+  flagReset() {
     if (this._flagAdditions) {
       this.additions.length = 0;
       this._flagAdditions = false;
@@ -932,18 +796,234 @@ _.extend(Group.prototype, Shape.prototype, {
       this._flagSubtractions = false;
     }
 
-    this._flagOrder = this._flagMask = this._flagOpacity =
-      this._flagBeginning = this._flagEnding = false;
+    this._flagOrder =
+      this._flagMask =
+      this._flagOpacity =
+      this._flagBeginning =
+      this._flagEnding =
+        false;
 
-    Shape.prototype.flagReset.call(this);
+    super.flagReset.call(this);
 
     return this;
-
   }
+}
 
-});
+const proto = {
+  visible: {
+    enumerable: true,
+    get: function () {
+      return this._visible;
+    },
+    set: function (v) {
+      this._flagVisible = this._visible !== v || this._flagVisible;
+      this._visible = v;
+    },
+  },
+  opacity: {
+    enumerable: true,
+    get: function () {
+      return this._opacity;
+    },
+    set: function (v) {
+      this._flagOpacity = this._opacity !== v || this._flagOpacity;
+      this._opacity = v;
+    },
+  },
+  beginning: {
+    enumerable: true,
+    get: function () {
+      return this._beginning;
+    },
+    set: function (v) {
+      this._flagBeginning = this._beginning !== v || this._flagBeginning;
+      this._beginning = v;
+    },
+  },
+  ending: {
+    enumerable: true,
+    get: function () {
+      return this._ending;
+    },
+    set: function (v) {
+      this._flagEnding = this._ending !== v || this._flagEnding;
+      this._ending = v;
+    },
+  },
+  length: {
+    enumerable: true,
+    get: function () {
+      if (this._flagLength || this._length <= 0) {
+        this._length = 0;
+        if (!this.children) {
+          return this._length;
+        }
+        for (let i = 0; i < this.children.length; i++) {
+          const child = this.children[i];
+          this._length += child.length;
+        }
+      }
+      return this._length;
+    },
+  },
+  fill: {
+    enumerable: true,
+    get: function () {
+      return this._fill;
+    },
+    set: function (v) {
+      this._fill = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.fill = v;
+      }
+    },
+  },
+  stroke: {
+    enumerable: true,
+    get: function () {
+      return this._stroke;
+    },
+    set: function (v) {
+      this._stroke = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.stroke = v;
+      }
+    },
+  },
+  linewidth: {
+    enumerable: true,
+    get: function () {
+      return this._linewidth;
+    },
+    set: function (v) {
+      this._linewidth = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.linewidth = v;
+      }
+    },
+  },
+  join: {
+    enumerable: true,
+    get: function () {
+      return this._join;
+    },
+    set: function (v) {
+      this._join = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.join = v;
+      }
+    },
+  },
+  miter: {
+    enumerable: true,
+    get: function () {
+      return this._miter;
+    },
+    set: function (v) {
+      this._miter = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.miter = v;
+      }
+    },
+  },
+  cap: {
+    enumerable: true,
+    get: function () {
+      return this._cap;
+    },
+    set: function (v) {
+      this._cap = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.cap = v;
+      }
+    },
+  },
+  closed: {
+    enumerable: true,
+    get: function () {
+      return this._closed;
+    },
+    set: function (v) {
+      this._closed = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.closed = v;
+      }
+    },
+  },
+  curved: {
+    enumerable: true,
+    get: function () {
+      return this._curved;
+    },
+    set: function (v) {
+      this._curved = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.curved = v;
+      }
+    },
+  },
+  automatic: {
+    enumerable: true,
+    get: function () {
+      return this._automatic;
+    },
+    set: function (v) {
+      this._automatic = v;
+      for (let i = 0; i < this.children.length; i++) {
+        const child = this.children[i];
+        child.automatic = v;
+      }
+    },
+  },
+  children: {
+    enumerable: true,
+    get: function () {
+      return this._children;
+    },
+    set: function (children) {
+      const insertChildren = Group.InsertChildren.bind(this);
+      const removeChildren = Group.RemoveChildren.bind(this);
+      const orderChildren = Group.OrderChildren.bind(this);
 
-Group.MakeObservable(Group.prototype);
+      if (this._children) {
+        this._children.unbind();
+        if (this._children.length > 0) {
+          removeChildren(this._children);
+        }
+      }
+
+      this._children = new Children(children);
+      this._children.bind(Events.Types.insert, insertChildren);
+      this._children.bind(Events.Types.remove, removeChildren);
+      this._children.bind(Events.Types.order, orderChildren);
+
+      if (children.length > 0) {
+        insertChildren(children);
+      }
+    },
+  },
+  mask: {
+    enumerable: true,
+    get: function () {
+      return this._mask;
+    },
+    set: function (v) {
+      this._mask = v;
+      this._flagMask = true;
+      if (_.isObject(v) && !v.clip) {
+        v.clip = true;
+      }
+    },
+  },
+};
 
 // /**
 //  * Helper function used to sync parent-child relationship within the
@@ -954,9 +1034,8 @@ Group.MakeObservable(Group.prototype);
 //  * Calling with one arguments will simply remove the parenting
 //  */
 function replaceParent(child, newParent) {
-
-  var parent = child.parent;
-  var index;
+  const parent = child.parent;
+  let index;
 
   if (parent === newParent) {
     add();
@@ -964,12 +1043,10 @@ function replaceParent(child, newParent) {
   }
 
   if (parent && parent.children.ids[child.id]) {
-
     index = Array.prototype.indexOf.call(parent.children, child);
     parent.children.splice(index, 1);
 
     splice();
-
   }
 
   if (newParent) {
@@ -989,7 +1066,6 @@ function replaceParent(child, newParent) {
   delete child.parent;
 
   function add() {
-
     if (newParent.subtractions.length > 0) {
       index = Array.prototype.indexOf.call(newParent.subtractions, child);
 
@@ -1009,11 +1085,9 @@ function replaceParent(child, newParent) {
     child.parent = newParent;
     newParent.additions.push(child);
     newParent._flagAdditions = true;
-
   }
 
   function splice() {
-
     index = Array.prototype.indexOf.call(parent.additions, child);
 
     if (index >= 0) {
@@ -1026,9 +1100,5 @@ function replaceParent(child, newParent) {
       parent.subtractions.push(child);
       parent._flagSubtractions = true;
     }
-
   }
-
 }
-
-export default Group;

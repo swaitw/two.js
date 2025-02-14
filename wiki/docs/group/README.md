@@ -22,6 +22,8 @@ This is the primary class for grouping objects that are then drawn in Two.js. In
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -71,8 +73,8 @@ Cached method to let renderers know children have been added to a [Two.Group](/d
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L55">
-    group.js:55
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L236">
+    group.js:236
   </a>
 
 </div>
@@ -123,8 +125,8 @@ Cached method to let renderers know children have been removed from a [Two.Group
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L67">
-    group.js:67
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L248">
+    group.js:248
   </a>
 
 </div>
@@ -168,8 +170,8 @@ Cached method to let renderers know order has been updated on a [Two.Group](/doc
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L79">
-    group.js:79
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L260">
+    group.js:260
   </a>
 
 </div>
@@ -198,8 +200,10 @@ Cached method to let renderers know order has been updated on a [Two.Group](/doc
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.Group](/docs/group/).
 
+
 </div>
 
 
@@ -213,334 +217,13 @@ A list of properties that are on every [Two.Group](/docs/group/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L88">
-    group.js:88
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L269">
+    group.js:269
   </a>
 
 </div>
 
 
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## MakeObservable
-
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.Group.</span><span class="shortname">MakeObservable</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="params">
-
-| Argument | Description |
-| ---- | ----------- |
-|  object  | The object to make observable. |
-</div>
-
-
-
-
-<div class="description">
-
-Convenience function to apply observable qualities of a [Two.Group](/docs/group/) to any object. Handy if you'd like to extend the [Two.Group](/docs/group/) class on a custom class.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L105">
-    group.js:105
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## MakeGetterSetters
-
-<h2 class="longname" aria-hidden="true"><a href="#MakeGetterSetters"><span class="prefix">Two.Group.</span><span class="shortname">MakeGetterSetters</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="params">
-
-| Argument | Description |
-| ---- | ----------- |
-|  group  | The group to apply getters and setters. |
-|  properties  | A key / value object containing properties to inherit. |
-</div>
-
-
-
-
-<div class="description">
-
-Convenience method to apply getter / setter logic on an array of properties. Used in [Two.Group.MakeObservable](/docs/group/#makeobservable).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L255">
-    group.js:255
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## MakeGetterSetter
-
-<h2 class="longname" aria-hidden="true"><a href="#MakeGetterSetter"><span class="prefix">Two.Group.</span><span class="shortname">MakeGetterSetter</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="params">
-
-| Argument | Description |
-| ---- | ----------- |
-|  group  | The group to apply getters and setters. |
-|  key  | The key which will become a property on the group. |
-</div>
-
-
-
-
-<div class="description">
-
-Convenience method to apply getter / setter logic specific to how `Two.Group`s trickle down styles to their children. Used in [Two.Group.MakeObservable](/docs/group/#makeobservable).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L274">
-    group.js:274
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## additions
-
-<h2 class="longname" aria-hidden="true"><a href="#additions"><span class="prefix">Two.Group.</span><span class="shortname">additions</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-
-
-</div>
-
-
-
-
-
-
-<div class="description">
-
-An automatically updated list of children that need to be appended to the renderer's scenegraph.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L27">
-    group.js:27
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## subtractions
-
-<h2 class="longname" aria-hidden="true"><a href="#subtractions"><span class="prefix">Two.Group.</span><span class="shortname">subtractions</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-
-
-</div>
-
-
-
-
-
-
-<div class="description">
-
-An automatically updated list of children that need to be removed from the renderer's scenegraph.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L34">
-    group.js:34
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## children
-
-<h2 class="longname" aria-hidden="true"><a href="#children"><span class="prefix">Two.Group.</span><span class="shortname">children</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-
-
-</div>
-
-
-
-
-
-
-<div class="description">
-
-A list of all the children in the scenegraph.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L41">
-    group.js:41
-  </a>
-
-</div>
-
-
-
-<div class="tags">
-
-
-::: tip nota-bene
-Ther order of this list indicates the order each element is rendered to the screen.
-:::
-
-
-</div>
 
 
 </div>
@@ -564,7 +247,9 @@ Ther order of this list indicates the order each element is rendered to the scre
 
 <div class="properties">
 
+
 The value of what all child shapes should be filled in with.
+
 
 </div>
 
@@ -585,8 +270,8 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L379">
-    group.js:379
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L97">
+    group.js:97
   </a>
 
 </div>
@@ -615,7 +300,9 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="properties">
 
+
 The value of what all child shapes should be outlined in with.
+
 
 </div>
 
@@ -636,8 +323,8 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L386">
-    group.js:386
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L104">
+    group.js:104
   </a>
 
 </div>
@@ -666,7 +353,9 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="properties">
 
+
 The thickness in pixels of the stroke for all child shapes.
+
 
 </div>
 
@@ -681,8 +370,8 @@ The thickness in pixels of the stroke for all child shapes.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L393">
-    group.js:393
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L111">
+    group.js:111
   </a>
 
 </div>
@@ -711,7 +400,9 @@ The thickness in pixels of the stroke for all child shapes.
 
 <div class="properties">
 
+
 The opaqueness of all child shapes.
+
 
 </div>
 
@@ -726,8 +417,8 @@ The opaqueness of all child shapes.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L399">
-    group.js:399
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L117">
+    group.js:117
   </a>
 
 </div>
@@ -766,7 +457,9 @@ Becomes multiplied by the individual child's opacity property.
 
 <div class="properties">
 
+
 Display the path or not.
+
 
 </div>
 
@@ -781,8 +474,8 @@ Display the path or not.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L406">
-    group.js:406
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L124">
+    group.js:124
   </a>
 
 </div>
@@ -823,6 +516,8 @@ For [Two.CanvasRenderer](/docs/renderers/canvas/) and [Two.WebGLRenderer](/docs/
 
 
 
+
+
 </div>
 
 
@@ -842,8 +537,8 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty](https://w
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L413">
-    group.js:413
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L131">
+    group.js:131
   </a>
 
 </div>
@@ -874,6 +569,8 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeLinecapProperty](https://w
 
 
 
+
+
 </div>
 
 
@@ -893,8 +590,8 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty](https://
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L420">
-    group.js:420
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L138">
+    group.js:138
   </a>
 
 </div>
@@ -925,6 +622,8 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeLinejoinProperty](https://
 
 
 
+
+
 </div>
 
 
@@ -944,8 +643,8 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty](https:
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L427">
-    group.js:427
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L145">
+    group.js:145
   </a>
 
 </div>
@@ -974,7 +673,9 @@ See: [https://www.w3.org/TR/SVG11/painting.html#StrokeMiterlimitProperty](https:
 
 <div class="properties">
 
+
 Determines whether a final line is drawn between the final point in the `vertices` array and the first point of all child shapes.
+
 
 </div>
 
@@ -989,8 +690,8 @@ Determines whether a final line is drawn between the final point in the `vertice
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L434">
-    group.js:434
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L152">
+    group.js:152
   </a>
 
 </div>
@@ -1019,7 +720,9 @@ Determines whether a final line is drawn between the final point in the `vertice
 
 <div class="properties">
 
+
 When the child's path is `automatic = true` this boolean determines whether the lines between the points are curved or not.
+
 
 </div>
 
@@ -1034,8 +737,8 @@ When the child's path is `automatic = true` this boolean determines whether the 
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L440">
-    group.js:440
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L158">
+    group.js:158
   </a>
 
 </div>
@@ -1064,7 +767,9 @@ When the child's path is `automatic = true` this boolean determines whether the 
 
 <div class="properties">
 
+
 Determines whether or not Two.js should calculate curves, lines, and commands automatically for you or to let the developer manipulate them for themselves.
+
 
 </div>
 
@@ -1079,8 +784,8 @@ Determines whether or not Two.js should calculate curves, lines, and commands au
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L446">
-    group.js:446
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L164">
+    group.js:164
   </a>
 
 </div>
@@ -1109,7 +814,9 @@ Determines whether or not Two.js should calculate curves, lines, and commands au
 
 <div class="properties">
 
+
 Number between zero and one to state the beginning of where the path is rendered.
+
 
 </div>
 
@@ -1130,8 +837,8 @@ Number between zero and one to state the beginning of where the path is rendered
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L452">
-    group.js:452
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L170">
+    group.js:170
   </a>
 
 </div>
@@ -1170,7 +877,9 @@ This is great for animating in and out stroked paths in conjunction with [Two.Gr
 
 <div class="properties">
 
+
 Number between zero and one to state the ending of where the path is rendered.
+
 
 </div>
 
@@ -1191,8 +900,8 @@ Number between zero and one to state the ending of where the path is rendered.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L460">
-    group.js:460
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L178">
+    group.js:178
   </a>
 
 </div>
@@ -1231,7 +940,9 @@ This is great for animating in and out stroked paths in conjunction with [Two.Gr
 
 <div class="properties">
 
+
 The sum of distances between all child lengths.
+
 
 </div>
 
@@ -1246,8 +957,8 @@ The sum of distances between all child lengths.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L468">
-    group.js:468
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L186">
+    group.js:186
   </a>
 
 </div>
@@ -1276,7 +987,9 @@ The sum of distances between all child lengths.
 
 <div class="properties">
 
+
 The Two.js object to clip from a group's rendering.
+
 
 </div>
 
@@ -1291,13 +1004,182 @@ The Two.js object to clip from a group's rendering.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L474">
-    group.js:474
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L192">
+    group.js:192
   </a>
 
 </div>
 
 
+
+
+</div>
+
+
+
+<div class="instance member ">
+
+## additions
+
+<h2 class="longname" aria-hidden="true"><a href="#additions"><span class="prefix">Two.Group.</span><span class="shortname">additions</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+<div class="properties">
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="description">
+
+An automatically updated list of children that need to be appended to the renderer's scenegraph.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L209">
+    group.js:209
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance member ">
+
+## subtractions
+
+<h2 class="longname" aria-hidden="true"><a href="#subtractions"><span class="prefix">Two.Group.</span><span class="shortname">subtractions</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+<div class="properties">
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="description">
+
+An automatically updated list of children that need to be removed from the renderer's scenegraph.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L216">
+    group.js:216
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance member ">
+
+## children
+
+<h2 class="longname" aria-hidden="true"><a href="#children"><span class="prefix">Two.Group.</span><span class="shortname">children</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+<div class="properties">
+
+
+
+
+
+</div>
+
+
+
+
+
+
+<div class="description">
+
+A list of all the children in the scenegraph.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L223">
+    group.js:223
+  </a>
+
+</div>
+
+
+
+<div class="tags">
+
+
+::: tip nota-bene
+Ther order of this list indicates the order each element is rendered to the screen.
+:::
+
+
+</div>
 
 
 </div>
@@ -1351,8 +1233,8 @@ Create a new instance of [Two.Group](/docs/group/) with the same properties of t
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L480">
-    group.js:480
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L356">
+    group.js:356
   </a>
 
 </div>
@@ -1404,8 +1286,8 @@ Return a JSON compatible plain object that represents the group.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L525">
-    group.js:525
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L399">
+    group.js:399
   </a>
 
 </div>
@@ -1449,8 +1331,8 @@ Orient the children of the group to the upper left-hand corner of that group.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L555">
-    group.js:555
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L425">
+    group.js:425
   </a>
 
 </div>
@@ -1494,8 +1376,8 @@ Orient the children of the group to the center of that group.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L579">
-    group.js:579
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L447">
+    group.js:447
   </a>
 
 </div>
@@ -1549,8 +1431,8 @@ Recursively search for id. Returns the first element found.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L607">
-    group.js:607
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L473">
+    group.js:473
   </a>
 
 </div>
@@ -1604,8 +1486,8 @@ Recursively search for classes. Returns an array of matching elements.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L631">
-    group.js:631
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L497">
+    group.js:497
   </a>
 
 </div>
@@ -1659,8 +1541,8 @@ Recursively search for children of a specific type, e.g. [Two.Path](/docs/path/)
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L654">
-    group.js:654
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L520">
+    group.js:520
   </a>
 
 </div>
@@ -1693,7 +1575,7 @@ Recursively search for children of a specific type, e.g. [Two.Path](/docs/path/)
 
 | Argument | Description |
 | ---- | ----------- |
-|  objects  | An array of objects to be added. Can be also be supplied as individual arguments. |
+|  objects  | An array of objects to be added. Can also be supplied as individual arguments. |
 </div>
 
 
@@ -1711,8 +1593,8 @@ Add objects to the group.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L677">
-    group.js:677
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L543">
+    group.js:543
   </a>
 
 </div>
@@ -1726,9 +1608,9 @@ Add objects to the group.
 
 <div class="instance function ">
 
-## add
+## remove
 
-<h2 class="longname" aria-hidden="true"><a href="#add"><span class="prefix">Two.Group.</span><span class="shortname">add</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#remove"><span class="prefix">Two.Group.</span><span class="shortname">remove</span></a></h2>
 
 
 
@@ -1745,7 +1627,7 @@ Add objects to the group.
 
 | Argument | Description |
 | ---- | ----------- |
-|  objects  | An array of objects to be removed. Can be also removed as individual arguments. |
+|  objects  | An array of objects to be removed. Can be also removed as individual arguments. If no arguments are passed, then it removes itself from its parent. |
 </div>
 
 
@@ -1763,8 +1645,8 @@ Remove objects from the group.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L711">
-    group.js:711
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L575">
+    group.js:575
   </a>
 
 </div>
@@ -1825,8 +1707,8 @@ Return an object with top, left, right, bottom, width, and height parameters of 
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L754">
-    group.js:754
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L616">
+    group.js:616
   </a>
 
 </div>
@@ -1870,8 +1752,8 @@ Apply `noFill` method to all child shapes.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L826">
-    group.js:826
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L697">
+    group.js:697
   </a>
 
 </div>
@@ -1915,8 +1797,8 @@ Apply `noStroke` method to all child shapes.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L838">
-    group.js:838
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L709">
+    group.js:709
   </a>
 
 </div>
@@ -1960,8 +1842,8 @@ Apply `subdivide` method to all child shapes.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L850">
-    group.js:850
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/group.js#L721">
+    group.js:721
   </a>
 
 </div>

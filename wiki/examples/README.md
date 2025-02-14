@@ -8,6 +8,8 @@ lang: en-US
 
 Various examples of how to use different features of Two.js with associated tags for convenient filtering through the global search bar up at the top. If you've made something with Two.js you'd like to share, then please [submit](https://github.com/jonobr1/two.js/issues/new?assignees=&labels=output&template=output.md&title=%5BOutput%5D) it.
 
+<carbon-ads />
+
 ### Official Examples
 
 <div class="examples-wrapper">
@@ -73,6 +75,12 @@ Various examples of how to use different features of Two.js with associated tags
   tags="import, animated, non-interactive, vertices, circle" />
 
 <example-card
+  title="Particle Sandbox"
+  href="https://codesandbox.io/s/twojs-particle-sandbox-wsxcx"
+  src="https://codesandbox.io/api/v1/sandboxes/wsxcx/screenshot.png"
+  tags="import, react, sandbox, vertices, position, rotation, scale, canvas, webgl, svg, test, renderers, memory" />
+
+<example-card
   title="Rendering Types"
   href="https://codepen.io/jonobr1/pen/NWvJZPp"
   src="https://shots.codepen.io/jonobr1/pen/NWvJZPp-512.jpg"
@@ -89,6 +97,12 @@ Various examples of how to use different features of Two.js with associated tags
   href="https://codepen.io/jonobr1/pen/gOxNejb"
   src="https://shots.codepen.io/jonobr1/pen/gOxNejb-512.jpg"
   tags="import, vector, mouse, ui, vertices, points, layers, group" />
+
+<example-card
+  title="Watch Face"
+  href="https://codepen.io/jonobr1/pen/MWEzMGv"
+  src="https://shots.codepen.io/jonobr1/pen/MWEzMGv-512.jpg"
+  tags="line, dashes, group, cap, rotation, text, non-interactive" />
 
 <example-card
   title="With Tween.js"
@@ -109,6 +123,42 @@ Various examples of how to use different features of Two.js with associated tags
 ### Community Examples
 
 <div class="examples-wrapper">
+
+<example-card
+  title="Folded Corner"
+  href="https://codepen.io/jonobr1/pen/yLwMOmj"
+  src="https://assets.codepen.io/171564/internal/screenshots/pens/yLwMOmj.custom.png?version=1706554035"
+  tags="animated, interactive, geometry, mouse" />
+
+<example-card
+  title="Video Texture"
+  href="https://codepen.io/jonobr1/pen/PoazvEv"
+  src="https://assets.codepen.io/171564/internal/screenshots/pens/PoazvEv.custom.png"
+  tags="animated, video, texture" />
+
+<example-card
+  title="Animated Spritesheet"
+  href="https://codepen.io/jonobr1/pen/ZEowwQR"
+  src="https://archive.jono.fyi/forums/codepen/ken-stance.png"
+  tags="sprite, animated, image, bitmap" />
+
+<example-card
+  title="Luniland"
+  href="https://luniland.halabe.com/"
+  src="https://user-images.githubusercontent.com/44894/151491608-bdfd3cf4-2a44-4ea7-b983-b2d9d9a033cd.png"
+  tags="game, interactive, animated, gsap, physics, space" />
+
+<example-card
+  title="Two.js as Three.js Texture"
+  href="https://codepen.io/jonobr1/pen/RwjPVZg"
+  src="https://assets.codepen.io/171564/internal/screenshots/pens/RwjPVZg.custom.png"
+  tags="animated, 3d, non-interactive, text, canvas" />
+
+<example-card
+  title="Download Scene as SVG"
+  href="https://codepen.io/jonobr1/pen/ZEXeojy"
+  src="https://shots.codepen.io/jonobr1/pen/ZEXeojy-512.jpg"
+  tags="interactive, button, export" />
 
 <example-card
   title="Animated Flag"
@@ -134,9 +184,27 @@ Various examples of how to use different features of Two.js with associated tags
   tags="react" />
 
 <example-card
+  title="Basic GSAP Animation Setup"
+  href="https://codepen.io/jonobr1/pen/YzYZgvq"
+  src="https://assets.codepen.io/171564/internal/screenshots/pens/YzYZgvq.custom.png"
+  tags="gsap, interactive, animated, rotation, interpret" />
+
+<example-card
   title="Dashes"
   href="https://jsfiddle.net/jonobr1/x1gc2d0L/"
   tags="circle, animated, non-interactive, simple" />
+
+<example-card
+  title="Fake Camera"
+  href="https://codepen.io/jonobr1/pen/wvmYXXr"
+  src="https://assets.codepen.io/171564/internal/screenshots/pens/wvmYXXr.custom.png?version=1664319669"
+  tags="animated, group, position, non-interactive" />
+
+<example-card
+  title="GM: Animated Sticker"
+  href="https://codepen.io/jonobr1/pen/QWqdVLb"
+  src="https://shots.codepen.io/jonobr1/pen/QWqdVLb-512.jpg"
+  tags="svg, interpret, getComputedMatrix, gradient, non-interactive, animated" />
 
 <example-card
   title="Haiku Generator"
@@ -198,9 +266,9 @@ Various examples of how to use different features of Two.js with associated tags
 
 <example-card
   title="Sprite Sheet: Circle"
-  href="https://static.observableusercontent.com/thumbnail/d803971cbf312f3042824d68a6b1612fad4ac031bba1a50238503881f3729999.jpg"
+  href="https://observablehq.com/@jonobr1/two-js-circle-sprite-sheet"
   src="https://static.observableusercontent.com/thumbnail/d803971cbf312f3042824d68a6b1612fad4ac031bba1a50238503881f3729999.jpg"
-  tags="static, non-interactive, canvas, grid" />
+  tags="static, non-interactive, canvas, grid, sprite" />
 
 <example-card
   title="Starfield"
@@ -250,3 +318,14 @@ Various examples of how to use different features of Two.js with associated tags
   tags="physics, mouse, drag, text" />
 
 </div>
+
+
+<br />
+
+#### Even More References
+
+There are many more examples that exist out on the internet. Some starting points are:
+
+- [Two.js Collection on Codepen](https://codepen.io/collection/DRdLJk)
+- [A Beginner's Guide to Drawing 2D Graphics With Two.js](https://code.tutsplus.com/tutorials/a-beginners-guide-to-drawing-2d-graphics-using-twojs--cms-31681)
+- [Drawing and Animating with Two.js and Illustrator](https://modernweb.com/drawing-and-animating-with-two-js-and-illustrator/)

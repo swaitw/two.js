@@ -14,7 +14,7 @@ Extends: [Two.Events](/docs/events/)
 </div>
 
 
-This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Types.svg` (the default type). It takes Two.js' scenegraph and renders it to a `<svg />`.
+This class is used by [Two]() when constructing with `type` of `Two.Types.svg` (the default type). It takes Two.js' scenegraph and renders it to a `<svg />`.
 
 
 <div class="meta">
@@ -22,13 +22,15 @@ This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Ty
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
 
 | Argument | Description |
 | ---- | ----------- |
-|  parameters  | This object is inherited when constructing a new instance of [Two](/docs/two/). |
+|  parameters  | This object is inherited when constructing a new instance of [Two](). |
 |  parameters.domElement  | The `<svg />` to draw to. If none given a new one will be constructed. |
 
 
@@ -50,7 +52,9 @@ This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Ty
 
 <div class="properties">
 
+
 A massive object filled with utility functions and properties to render Two.js objects to a `<svg />`.
+
 
 </div>
 
@@ -65,8 +69,8 @@ A massive object filled with utility functions and properties to render Two.js o
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1081">
-    svg.js:1081
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1160">
+    svg.js:1160
   </a>
 
 </div>
@@ -95,7 +99,9 @@ A massive object filled with utility functions and properties to render Two.js o
 
 <div class="properties">
 
+
 The `<svg />` associated with the Two.js scene.
+
 
 </div>
 
@@ -110,8 +116,8 @@ The `<svg />` associated with the Two.js scene.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1055">
-    svg.js:1055
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1136">
+    svg.js:1136
   </a>
 
 </div>
@@ -140,7 +146,9 @@ The `<svg />` associated with the Two.js scene.
 
 <div class="properties">
 
+
 The root group of the scenegraph.
+
 
 </div>
 
@@ -155,8 +163,8 @@ The root group of the scenegraph.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1061">
-    svg.js:1061
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1142">
+    svg.js:1142
   </a>
 
 </div>
@@ -185,7 +193,9 @@ The root group of the scenegraph.
 
 <div class="properties">
 
+
 The `<defs />` to apply gradients, patterns, and bitmap imagery.
+
 
 </div>
 
@@ -200,8 +210,8 @@ The `<defs />` to apply gradients, patterns, and bitmap imagery.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1068">
-    svg.js:1068
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1149">
+    svg.js:1149
   </a>
 
 </div>
@@ -253,8 +263,8 @@ Change the size of the renderer.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1093">
-    svg.js:1093
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1166">
+    svg.js:1166
   </a>
 
 </div>
@@ -308,8 +318,8 @@ Render the current scene to the `<svg />`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1115">
-    svg.js:1115
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/svg.js#L1186">
+    svg.js:1186
   </a>
 
 </div>

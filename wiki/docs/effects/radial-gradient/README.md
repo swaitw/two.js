@@ -22,6 +22,8 @@ Extends: [Two.Gradient](/docs/effects/gradient/)
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -69,8 +71,8 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L68">
-    radial-gradient.js:68
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L87">
+    radial-gradient.js:87
   </a>
 
 </div>
@@ -99,7 +101,9 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.RadialGradient](/docs/effects/radial-gradient/).
+
 
 </div>
 
@@ -114,8 +118,8 @@ A list of properties that are on every [Two.RadialGradient](/docs/effects/radial
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L74">
-    radial-gradient.js:74
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L93">
+    radial-gradient.js:93
   </a>
 
 </div>
@@ -129,12 +133,20 @@ A list of properties that are on every [Two.RadialGradient](/docs/effects/radial
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.RadialGradient.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.RadialGradient.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.RadialGradient
+
+
+
+</div>
 
 
 
@@ -148,7 +160,7 @@ A list of properties that are on every [Two.RadialGradient](/docs/effects/radial
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.RadialGradient](/docs/effects/radial-gradient/) to create a new instance |
 </div>
 
 
@@ -156,7 +168,7 @@ A list of properties that are on every [Two.RadialGradient](/docs/effects/radial
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.RadialGradient](/docs/effects/radial-gradient/) to any object. Handy if you'd like to extend the [Two.RadialGradient](/docs/effects/radial-gradient/) class on a custom class.
+Create a new [Two.RadialGradient](/docs/effects/radial-gradient/) from an object notation of a [Two.RadialGradient](/docs/effects/radial-gradient/).
 
 </div>
 
@@ -166,13 +178,23 @@ Convenience function to apply observable qualities of a [Two.RadialGradient](/do
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L82">
-    radial-gradient.js:82
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L99">
+    radial-gradient.js:99
   </a>
 
 </div>
 
 
+
+<div class="tags">
+
+
+::: tip nota-bene
+Works in conjunction with [Two.RadialGradient.toObject](/docs/effects/radial-gradient/#toobject)
+:::
+
+
+</div>
 
 
 </div>
@@ -196,7 +218,9 @@ Convenience function to apply observable qualities of a [Two.RadialGradient](/do
 
 <div class="properties">
 
+
 The x and y value for where the origin of the radial gradient is.
+
 
 </div>
 
@@ -211,8 +235,8 @@ The x and y value for where the origin of the radial gradient is.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L27">
-    radial-gradient.js:27
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L55">
+    radial-gradient.js:55
   </a>
 
 </div>
@@ -241,7 +265,9 @@ The x and y value for where the origin of the radial gradient is.
 
 <div class="properties">
 
+
 The x and y value for where the focal point of the radial gradient is.
+
 
 </div>
 
@@ -256,8 +282,8 @@ The x and y value for where the focal point of the radial gradient is.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L38">
-    radial-gradient.js:38
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L63">
+    radial-gradient.js:63
   </a>
 
 </div>
@@ -273,6 +299,58 @@ This effects the spray or spread of the radial gradient.
 
 
 </div>
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.RadialGradient.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  gradient  | The reference [Two.RadialGradient](/docs/effects/radial-gradient/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.RadialGradient](/docs/effects/radial-gradient/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L117">
+    radial-gradient.js:117
+  </a>
+
+</div>
+
+
 
 
 </div>
@@ -326,8 +404,8 @@ Create a new instance of [Two.RadialGradient](/docs/effects/radial-gradient/) wi
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L121">
-    radial-gradient.js:121
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L143">
+    radial-gradient.js:143
   </a>
 
 </div>
@@ -379,8 +457,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L149">
-    radial-gradient.js:149
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/radial-gradient.js#L179">
+    radial-gradient.js:179
   </a>
 
 </div>

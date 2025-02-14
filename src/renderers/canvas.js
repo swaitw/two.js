@@ -1,20 +1,17 @@
-import Commands from '../utils/path-commands.js';
-import { decomposeMatrix, getComputedMatrix, mod, TWO_PI } from '../utils/math.js';
+import { Commands } from '../utils/path-commands.js';
+import { decomposeMatrix, mod, TWO_PI } from '../utils/math.js';
 import { Curve } from '../utils/curves.js';
-import Events from '../events.js';
-import getRatio from '../utils/get-ratio.js';
-import _ from '../utils/underscore.js';
+import { Events } from '../events.js';
+import { getRatio } from '../utils/device-pixel-ratio.js';
+import { _ } from '../utils/underscore.js';
 
-import Group from '../group.js';
-import Vector from '../vector.js';
-import Matrix from '../matrix.js';
-import Constants from '../constants.js';
-
-var matrix =  new Matrix();
+import { Group } from '../group.js';
+import { Vector } from '../vector.js';
+import { Constants } from '../constants.js';
 
 // Constants
-var emptyArray = [];
-var max = Math.max,
+const emptyArray = [];
+const max = Math.max,
   min = Math.min,
   abs = Math.abs,
   sin = Math.sin,
@@ -22,58 +19,50 @@ var max = Math.max,
   acos = Math.acos,
   sqrt = Math.sqrt;
 
-// Returns true if this is a non-transforming matrix
-var isDefaultMatrix = function (m) {
-  return (m[0] == 1 && m[3] == 0 && m[1] == 0 && m[4] == 1 && m[2] == 0 && m[5] == 0);
-};
-
-var canvas = {
-
+const canvas = {
   isHidden: /(undefined|none|transparent)/i,
 
   alignments: {
     left: 'start',
     middle: 'center',
-    right: 'end'
+    right: 'end',
   },
 
-  shim: function(elem, name) {
-    elem.tagName = elem.nodeName = name || 'canvas';
-    elem.nodeType = 1;
-    elem.getAttribute = function(prop) {
-      return this[prop];
-    };
-    elem.setAttribute = function(prop, val) {
-      this[prop] = val;
-      return this;
-    };
-    return elem;
+  baselines: {
+    top: 'top',
+    middle: 'middle',
+    bottom: 'bottom',
+    baseline: 'alphabetic',
+  },
+
+  getRendererType: function (type) {
+    return type in canvas ? type : 'path';
   },
 
   group: {
-
-    renderChild: function(child) {
-      canvas[child._renderer.type].render.call(child, this.ctx, true, this.clip);
+    renderChild: function (child) {
+      const prop = canvas.getRendererType(child._renderer.type);
+      canvas[prop].render.call(child, this.ctx, true, this.clip);
     },
 
-    render: function(ctx) {
-
+    render: function (ctx) {
       if (!this._visible) {
         return this;
       }
 
       this._update();
 
-      var matrix = this._matrix.elements;
-      var parent = this.parent;
-      this._renderer.opacity = this._opacity
-        * (parent && parent._renderer ? parent._renderer.opacity : 1);
+      const matrix = this._matrix.elements;
+      const parent = this.parent;
+      this._renderer.opacity =
+        this._opacity *
+        (parent && parent._renderer ? parent._renderer.opacity : 1);
 
-      var mask = this._mask;
-      // var clip = this._clip;
+      const mask = this._mask;
+      // const clip = this._clip;
 
-      var defaultMatrix = isDefaultMatrix(matrix);
-      var shouldIsolate = !defaultMatrix || !!mask;
+      const defaultMatrix = isDefaultMatrix(matrix);
+      const shouldIsolate = !defaultMatrix || !!mask;
 
       if (!this._renderer.context) {
         this._renderer.context = {};
@@ -85,19 +74,27 @@ var canvas = {
       if (shouldIsolate) {
         ctx.save();
         if (!defaultMatrix) {
-          ctx.transform(matrix[0], matrix[3], matrix[1],
-            matrix[4], matrix[2], matrix[5]);
+          ctx.transform(
+            matrix[0],
+            matrix[3],
+            matrix[1],
+            matrix[4],
+            matrix[2],
+            matrix[5]
+          );
         }
       }
 
       if (mask) {
-        canvas[mask._renderer.type].render.call(mask, ctx, true);
+        const prop = canvas.getRendererType(mask._renderer.type);
+        canvas[prop].render.call(mask, ctx, true);
       }
 
       if (this._opacity > 0 && this._scale !== 0) {
-        for (var i = 0; i < this.children.length; i++) {
-          var child = this.children[i];
-          canvas[child._renderer.type].render.call(child, ctx);
+        for (let i = 0; i < this.children.length; i++) {
+          const child = this.children[i];
+          const prop = canvas.getRendererType(child._renderer.type);
+          canvas[prop].render.call(child, ctx);
         }
       }
 
@@ -114,21 +111,50 @@ var canvas = {
       // }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   path: {
+    render: function (ctx, forced, parentClipped) {
+      let matrix,
+        stroke,
+        linewidth,
+        fill,
+        opacity,
+        visible,
+        cap,
+        join,
+        miter,
+        closed,
+        commands,
+        length,
+        last,
+        prev,
+        a,
+        b,
+        c,
+        d,
+        ux,
+        uy,
+        vx,
+        vy,
+        ar,
+        bl,
+        br,
+        cl,
+        x,
+        y,
+        mask,
+        clip,
+        defaultMatrix,
+        isOffset,
+        dashes,
+        po;
 
-    render: function(ctx, forced, parentClipped) {
-
-      var matrix, stroke, linewidth, fill, opacity, visible, cap, join, miter,
-          closed, commands, length, last, prev, a, b, c, d, ux, uy, vx, vy,
-          ar, bl, br, cl, x, y, mask, clip, defaultMatrix, isOffset, dashes, po;
-
-      po = (this.parent && this.parent._renderer)
-        ? this.parent._renderer.opacity : 1;
+      po =
+        this.parent && this.parent._renderer
+          ? this.parent._renderer.opacity
+          : 1;
       mask = this._mask;
       clip = this._clip;
       opacity = this._opacity * (po || 1);
@@ -157,14 +183,22 @@ var canvas = {
       // Transform
       if (!defaultMatrix) {
         ctx.save();
-        ctx.transform(matrix[0], matrix[3], matrix[1], matrix[4], matrix[2], matrix[5]);
+        ctx.transform(
+          matrix[0],
+          matrix[3],
+          matrix[1],
+          matrix[4],
+          matrix[2],
+          matrix[5]
+        );
       }
 
       // Commented two-way functionality of clips / masks with groups and
       // polygons. Uncomment when this bug is fixed:
       // https://code.google.com/p/chromium/issues/detail?id=370951
       if (mask) {
-        canvas[mask._renderer.type].render.call(mask, ctx, true);
+        const prop = canvas.getRendererType(mask._renderer.type);
+        canvas[prop].render.call(mask, ctx, true);
       }
 
       // Styles
@@ -172,7 +206,8 @@ var canvas = {
         if (typeof fill === 'string') {
           ctx.fillStyle = fill;
         } else {
-          canvas[fill._renderer.type].render.call(fill, ctx);
+          const prop = canvas.getRendererType(fill._renderer.type);
+          canvas[prop].render.call(fill, ctx, this);
           ctx.fillStyle = fill._renderer.effect;
         }
       }
@@ -180,7 +215,8 @@ var canvas = {
         if (typeof stroke === 'string') {
           ctx.strokeStyle = stroke;
         } else {
-          canvas[stroke._renderer.type].render.call(stroke, ctx);
+          const prop = canvas.getRendererType(stroke._renderer.type);
+          canvas[prop].render.call(stroke, ctx, this);
           ctx.strokeStyle = stroke._renderer.effect;
         }
         if (linewidth) {
@@ -207,38 +243,47 @@ var canvas = {
 
       ctx.beginPath();
 
-      for (var i = 0; i < length; i++) {
+      let rx, ry, xAxisRotation, largeArcFlag, sweepFlag, ax, ay;
 
+      for (let i = 0; i < length; i++) {
         b = commands[i];
 
         x = b.x;
         y = b.y;
 
         switch (b.command) {
-
           case Commands.close:
             ctx.closePath();
             break;
 
           case Commands.arc:
-
-            var rx = b.rx;
-            var ry = b.ry;
-            var xAxisRotation = b.xAxisRotation;
-            var largeArcFlag = b.largeArcFlag;
-            var sweepFlag = b.sweepFlag;
+            rx = b.rx;
+            ry = b.ry;
+            xAxisRotation = b.xAxisRotation;
+            largeArcFlag = b.largeArcFlag;
+            sweepFlag = b.sweepFlag;
 
             prev = closed ? mod(i - 1, length) : max(i - 1, 0);
             a = commands[prev];
 
-            var ax = a.x;
-            var ay = a.y;
+            ax = a.x;
+            ay = a.y;
 
-            canvas.renderSvgArcCommand(ctx, ax, ay, rx, ry, largeArcFlag, sweepFlag, xAxisRotation, x, y);
+            canvas.renderSvgArcCommand(
+              ctx,
+              ax,
+              ay,
+              rx,
+              ry,
+              largeArcFlag,
+              sweepFlag,
+              xAxisRotation,
+              x,
+              y
+            );
             break;
 
           case Commands.curve:
-
             prev = closed ? mod(i - 1, length) : Math.max(i - 1, 0);
 
             a = commands[prev];
@@ -247,16 +292,16 @@ var canvas = {
             bl = (b.controls && b.controls.left) || Vector.zero;
 
             if (a._relative) {
-              vx = (ar.x + a.x);
-              vy = (ar.y + a.y);
+              vx = ar.x + a.x;
+              vy = ar.y + a.y;
             } else {
               vx = ar.x;
               vy = ar.y;
             }
 
             if (b._relative) {
-              ux = (bl.x + b.x);
-              uy = (bl.y + b.y);
+              ux = bl.x + b.x;
+              uy = bl.y + b.y;
             } else {
               ux = bl.x;
               uy = bl.y;
@@ -265,23 +310,22 @@ var canvas = {
             ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
 
             if (i >= last && closed) {
-
               c = d;
 
               br = (b.controls && b.controls.right) || Vector.zero;
               cl = (c.controls && c.controls.left) || Vector.zero;
 
               if (b._relative) {
-                vx = (br.x + b.x);
-                vy = (br.y + b.y);
+                vx = br.x + b.x;
+                vy = br.y + b.y;
               } else {
                 vx = br.x;
                 vy = br.y;
               }
 
               if (c._relative) {
-                ux = (cl.x + c.x);
-                uy = (cl.y + c.y);
+                ux = cl.x + c.x;
+                uy = cl.y + c.y;
               } else {
                 ux = cl.x;
                 uy = cl.y;
@@ -291,7 +335,6 @@ var canvas = {
               y = c.y;
 
               ctx.bezierCurveTo(vx, vy, ux, uy, x, y);
-
             }
 
             break;
@@ -304,7 +347,6 @@ var canvas = {
             d = b;
             ctx.moveTo(x, y);
             break;
-
         }
       }
 
@@ -319,8 +361,7 @@ var canvas = {
           isOffset = fill._renderer && fill._renderer.offset;
           if (isOffset) {
             ctx.save();
-            ctx.translate(
-              - fill._renderer.offset.x, - fill._renderer.offset.y);
+            ctx.translate(-fill._renderer.offset.x, -fill._renderer.offset.y);
             ctx.scale(fill._renderer.scale.x, fill._renderer.scale.y);
           }
           ctx.fill();
@@ -333,7 +374,9 @@ var canvas = {
           if (isOffset) {
             ctx.save();
             ctx.translate(
-              - stroke._renderer.offset.x, - stroke._renderer.offset.y);
+              -stroke._renderer.offset.x,
+              -stroke._renderer.offset.y
+            );
             ctx.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
             ctx.lineWidth = linewidth / stroke._renderer.scale.x;
           }
@@ -357,20 +400,32 @@ var canvas = {
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   points: {
+    render: function (ctx, forced, parentClipped) {
+      let me,
+        stroke,
+        linewidth,
+        fill,
+        opacity,
+        visible,
+        size,
+        commands,
+        length,
+        b,
+        x,
+        y,
+        defaultMatrix,
+        isOffset,
+        dashes,
+        po;
 
-    render: function(ctx, forced, parentClipped) {
-
-      var me, stroke, linewidth, fill, opacity, visible, size, commands,
-          length, b, x, y, defaultMatrix, isOffset, dashes, po;
-
-      po = (this.parent && this.parent._renderer)
-        ? this.parent._renderer.opacity : 1;
+      po =
+        this.parent && this.parent._renderer
+          ? this.parent._renderer.opacity
+          : 1;
       opacity = this._opacity * (po || 1);
       visible = this._visible;
 
@@ -401,7 +456,8 @@ var canvas = {
         if (typeof fill === 'string') {
           ctx.fillStyle = fill;
         } else {
-          canvas[fill._renderer.type].render.call(fill, ctx);
+          const prop = canvas.getRendererType(fill._renderer.type);
+          canvas[prop].render.call(fill, ctx, this);
           ctx.fillStyle = fill._renderer.effect;
         }
       }
@@ -409,7 +465,8 @@ var canvas = {
         if (typeof stroke === 'string') {
           ctx.strokeStyle = stroke;
         } else {
-          canvas[stroke._renderer.type].render.call(stroke, ctx);
+          const prop = canvas.getRendererType(stroke._renderer.type);
+          canvas[prop].render.call(stroke, ctx, this);
           ctx.strokeStyle = stroke._renderer.effect;
         }
         if (linewidth) {
@@ -427,17 +484,16 @@ var canvas = {
 
       ctx.beginPath();
 
-      var radius = size * 0.5, m;
+      let radius = size * 0.5,
+        m;
 
       if (!this._sizeAttenuation) {
-        getComputedMatrix(this, matrix);
-        m = matrix.elements;
+        m = this.worldMatrix.elements;
         m = decomposeMatrix(m[0], m[3], m[1], m[4], m[2], m[5]);
         radius /= Math.max(m.scaleX, m.scaleY);
       }
 
-      for (var i = 0; i < length; i++) {
-
+      for (let i = 0; i < length; i++) {
         b = commands[i];
 
         x = b.x;
@@ -445,7 +501,6 @@ var canvas = {
 
         ctx.moveTo(x + radius, y);
         ctx.arc(x, y, radius, 0, TWO_PI);
-
       }
 
       if (!parentClipped) {
@@ -453,8 +508,7 @@ var canvas = {
           isOffset = fill._renderer && fill._renderer.offset;
           if (isOffset) {
             ctx.save();
-            ctx.translate(
-              - fill._renderer.offset.x, - fill._renderer.offset.y);
+            ctx.translate(-fill._renderer.offset.x, -fill._renderer.offset.y);
             ctx.scale(fill._renderer.scale.x, fill._renderer.scale.y);
           }
           ctx.fill();
@@ -467,7 +521,9 @@ var canvas = {
           if (isOffset) {
             ctx.save();
             ctx.translate(
-              - stroke._renderer.offset.x, - stroke._renderer.offset.y);
+              -stroke._renderer.offset.x,
+              -stroke._renderer.offset.y
+            );
             ctx.scale(stroke._renderer.scale.x, stroke._renderer.scale.y);
             ctx.lineWidth = linewidth / stroke._renderer.scale.x;
           }
@@ -489,21 +545,19 @@ var canvas = {
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   text: {
-
-    render: function(ctx, forced, parentClipped) {
-
-      var po = (this.parent && this.parent._renderer)
-        ? this.parent._renderer.opacity : 1;
-      var opacity = this._opacity * po;
-      var visible = this._visible;
-      var mask = this._mask;
-      var clip = this._clip;
+    render: function (ctx, forced, parentClipped) {
+      const po =
+        this.parent && this.parent._renderer
+          ? this.parent._renderer.opacity
+          : 1;
+      const opacity = this._opacity * po;
+      const visible = this._visible;
+      const mask = this._mask;
+      const clip = this._clip;
 
       if (!forced && (!visible || clip || opacity === 0)) {
         return this;
@@ -511,47 +565,65 @@ var canvas = {
 
       this._update();
 
-      var matrix = this._matrix.elements;
-      var stroke = this._stroke;
-      var linewidth = this._linewidth;
-      var fill = this._fill;
-      var decoration = this._decoration;
-      var defaultMatrix = isDefaultMatrix(matrix);
-      var isOffset = fill._renderer && fill._renderer.offset
-        && stroke._renderer && stroke._renderer.offset;
-      var dashes = this.dashes;
-      var alignment = canvas.alignments[this._alignment] || this._alignment;
-      var baseline = this._baseline;
+      const matrix = this._matrix.elements;
+      const stroke = this._stroke;
+      const linewidth = this._linewidth;
+      const fill = this._fill;
+      const decoration = this._decoration;
+      const direction = this._direction;
+      const defaultMatrix = isDefaultMatrix(matrix);
+      const isOffset =
+        fill._renderer &&
+        fill._renderer.offset &&
+        stroke._renderer &&
+        stroke._renderer.offset;
+      const dashes = this.dashes;
+      const alignment = canvas.alignments[this._alignment] || this._alignment;
+      const baseline = canvas.baselines[this._baseline] || this._baseline;
 
-      var a, b, c, d, e, sx, sy, x1, y1, x2, y2;
+      let a, b, c, d, e, sx, sy, x1, y1, x2, y2;
 
       // Transform
       if (!defaultMatrix) {
         ctx.save();
-        ctx.transform(matrix[0], matrix[3], matrix[1], matrix[4], matrix[2], matrix[5]);
+        ctx.transform(
+          matrix[0],
+          matrix[3],
+          matrix[1],
+          matrix[4],
+          matrix[2],
+          matrix[5]
+        );
       }
 
       // Commented two-way functionality of clips / masks with groups and
       // polygons. Uncomment when this bug is fixed:
       // https://code.google.com/p/chromium/issues/detail?id=370951
       if (mask) {
-        canvas[mask._renderer.type].render.call(mask, ctx, true);
+        const prop = canvas.getRendererType(mask._renderer.type);
+        canvas[prop].render.call(mask, ctx, true);
       }
 
       if (!isOffset) {
-        ctx.font = [this._style, this._weight, this._size + 'px/' +
-          this._leading + 'px', this._family].join(' ');
+        ctx.font = [
+          this._style,
+          this._weight,
+          this._size + 'px/' + this._leading + 'px',
+          this._family,
+        ].join(' ');
       }
 
       ctx.textAlign = alignment;
       ctx.textBaseline = baseline;
+      ctx.direction = direction;
 
       // Styles
       if (fill) {
         if (typeof fill === 'string') {
           ctx.fillStyle = fill;
         } else {
-          canvas[fill._renderer.type].render.call(fill, ctx);
+          const prop = canvas.getRendererType(fill._renderer.type);
+          canvas[prop].render.call(fill, ctx, this);
           ctx.fillStyle = fill._renderer.effect;
         }
       }
@@ -559,7 +631,8 @@ var canvas = {
         if (typeof stroke === 'string') {
           ctx.strokeStyle = stroke;
         } else {
-          canvas[stroke._renderer.type].render.call(stroke, ctx);
+          const prop = canvas.getRendererType(stroke._renderer.type);
+          canvas[prop].render.call(stroke, ctx, this);
           ctx.strokeStyle = stroke._renderer.effect;
         }
         if (linewidth) {
@@ -575,52 +648,56 @@ var canvas = {
       }
 
       if (!clip && !parentClipped) {
-
         if (!canvas.isHidden.test(fill)) {
-
           if (fill._renderer && fill._renderer.offset) {
-
             sx = fill._renderer.scale.x;
             sy = fill._renderer.scale.y;
 
             ctx.save();
-            ctx.translate( - fill._renderer.offset.x,
-              - fill._renderer.offset.y);
+            ctx.translate(-fill._renderer.offset.x, -fill._renderer.offset.y);
             ctx.scale(sx, sy);
 
             a = this._size / fill._renderer.scale.y;
             b = this._leading / fill._renderer.scale.y;
-            ctx.font = [this._style, this._weight, a + 'px/',
-              b + 'px', this._family].join(' ');
+            ctx.font = [
+              this._style,
+              this._weight,
+              a + 'px/',
+              b + 'px',
+              this._family,
+            ].join(' ');
 
             c = fill._renderer.offset.x / fill._renderer.scale.x;
             d = fill._renderer.offset.y / fill._renderer.scale.y;
 
             ctx.fillText(this.value, c, d);
             ctx.restore();
-
           } else {
             ctx.fillText(this.value, 0, 0);
           }
-
         }
 
         if (!canvas.isHidden.test(stroke)) {
-
           if (stroke._renderer && stroke._renderer.offset) {
-
             sx = stroke._renderer.scale.x;
             sy = stroke._renderer.scale.y;
 
             ctx.save();
-            ctx.translate(- stroke._renderer.offset.x,
-              - stroke._renderer.offset.y);
+            ctx.translate(
+              -stroke._renderer.offset.x,
+              -stroke._renderer.offset.y
+            );
             ctx.scale(sx, sy);
 
             a = this._size / stroke._renderer.scale.y;
             b = this._leading / stroke._renderer.scale.y;
-            ctx.font = [this._style, this._weight, a + 'px/',
-              b + 'px', this._family].join(' ');
+            ctx.font = [
+              this._style,
+              this._weight,
+              a + 'px/',
+              b + 'px',
+              this._family,
+            ].join(' ');
 
             c = stroke._renderer.offset.x / stroke._renderer.scale.x;
             d = stroke._renderer.offset.y / stroke._renderer.scale.y;
@@ -629,7 +706,6 @@ var canvas = {
             ctx.lineWidth = e;
             ctx.strokeText(this.value, c, d);
             ctx.restore();
-
           } else {
             ctx.strokeText(this.value, 0, 0);
           }
@@ -638,14 +714,13 @@ var canvas = {
 
       // Handle text-decoration
       if (/(underline|strikethrough)/i.test(decoration)) {
-
-        var metrics = ctx.measureText(this.value);
-        var scalar = 1;
+        const metrics = ctx.measureText(this.value);
+        let scalar = 1;
 
         switch (decoration) {
           case 'underline':
-            y1 = metrics.actualBoundingBoxAscent;
-            y2 = metrics.actualBoundingBoxAscent;
+            y1 = metrics.actualBoundingBoxDescent;
+            y2 = metrics.actualBoundingBoxDescent;
             break;
           case 'strikethrough':
             y1 = 0;
@@ -674,11 +749,11 @@ var canvas = {
             break;
           case 'right':
           case 'end':
-            x1 = - metrics.width;
+            x1 = -metrics.width;
             x2 = 0;
             break;
           default:
-            x1 = - metrics.width / 2;
+            x1 = -metrics.width / 2;
             x2 = metrics.width / 2;
         }
 
@@ -689,7 +764,6 @@ var canvas = {
         ctx.moveTo(x1, y1);
         ctx.lineTo(x2, y2);
         ctx.stroke();
-
       }
 
       if (!defaultMatrix) {
@@ -706,87 +780,128 @@ var canvas = {
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   'linear-gradient': {
-
-    render: function(ctx) {
+    render: function (ctx, parent) {
+      if (!parent) {
+        return;
+      }
 
       this._update();
 
-      if (!this._renderer.effect || this._flagEndPoints || this._flagStops) {
+      if (
+        !this._renderer.effect ||
+        this._flagEndPoints ||
+        this._flagStops ||
+        this._flagUnits
+      ) {
+        let rect;
+        let lx = this.left._x;
+        let ly = this.left._y;
+        let rx = this.right._x;
+        let ry = this.right._y;
 
-        this._renderer.effect = ctx.createLinearGradient(
-          this.left._x, this.left._y,
-          this.right._x, this.right._y
-        );
-
-        for (var i = 0; i < this.stops.length; i++) {
-          var stop = this.stops[i];
-          this._renderer.effect.addColorStop(stop._offset, stop._color);
+        if (/objectBoundingBox/i.test(this._units)) {
+          // Convert objectBoundingBox units to userSpaceOnUse units
+          rect = parent.getBoundingClientRect(true);
+          lx = (lx - 0.5) * rect.width;
+          ly = (ly - 0.5) * rect.height;
+          rx = (rx - 0.5) * rect.width;
+          ry = (ry - 0.5) * rect.height;
         }
 
+        this._renderer.effect = ctx.createLinearGradient(lx, ly, rx, ry);
+
+        for (let i = 0; i < this.stops.length; i++) {
+          const stop = this.stops[i];
+          this._renderer.effect.addColorStop(stop._offset, stop._color);
+        }
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   'radial-gradient': {
-
-    render: function(ctx) {
+    render: function (ctx, parent) {
+      if (!parent) {
+        return;
+      }
 
       this._update();
 
-      if (!this._renderer.effect || this._flagCenter || this._flagFocal
-          || this._flagRadius || this._flagStops) {
+      if (
+        !this._renderer.effect ||
+        this._flagCenter ||
+        this._flagFocal ||
+        this._flagRadius ||
+        this._flagStops ||
+        this._flagUnits
+      ) {
+        let rect;
+        let cx = this.center._x;
+        let cy = this.center._y;
+        let fx = this.focal._x;
+        let fy = this.focal._y;
+        let radius = this._radius;
 
-        this._renderer.effect = ctx.createRadialGradient(
-          this.center._x, this.center._y, 0,
-          this.focal._x, this.focal._y, this._radius
-        );
-
-        for (var i = 0; i < this.stops.length; i++) {
-          var stop = this.stops[i];
-          this._renderer.effect.addColorStop(stop._offset, stop._color);
+        if (/objectBoundingBox/i.test(this._units)) {
+          // Convert objectBoundingBox units to userSpaceOnUse units
+          rect = parent.getBoundingClientRect(true);
+          cx = (cx - 0.5) * rect.width * 0.5;
+          cy = (cy - 0.5) * rect.height * 0.5;
+          fx = (fx - 0.5) * rect.width * 0.5;
+          fy = (fy - 0.5) * rect.height * 0.5;
+          radius *= Math.min(rect.width, rect.height);
         }
 
+        this._renderer.effect = ctx.createRadialGradient(
+          cx,
+          cy,
+          0,
+          fx,
+          fy,
+          radius
+        );
+
+        for (let i = 0; i < this.stops.length; i++) {
+          const stop = this.stops[i];
+          this._renderer.effect.addColorStop(stop._offset, stop._color);
+        }
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
   texture: {
-
-    render: function(ctx) {
-
+    render: function (ctx) {
       this._update();
 
-      var image = this.image;
+      const image = this.image;
 
-      if (!this._renderer.effect || ((this._flagLoaded || this._flagImage || this._flagVideo || this._flagRepeat) && this.loaded)) {
+      if (
+        !this._renderer.effect ||
+        ((this._flagLoaded ||
+          this._flagImage ||
+          this._flagVideo ||
+          this._flagRepeat) &&
+          this.loaded)
+      ) {
         this._renderer.effect = ctx.createPattern(this.image, this._repeat);
       }
 
       if (this._flagOffset || this._flagLoaded || this._flagScale) {
-
         if (!(this._renderer.offset instanceof Vector)) {
           this._renderer.offset = new Vector();
         }
 
-        this._renderer.offset.x = - this._offset.x;
-        this._renderer.offset.y = - this._offset.y;
+        this._renderer.offset.x = -this._offset.x;
+        this._renderer.offset.y = -this._offset.y;
 
         if (image) {
-
           this._renderer.offset.x += image.width / 2;
           this._renderer.offset.y += image.height / 2;
 
@@ -798,11 +913,9 @@ var canvas = {
             this._renderer.offset.y *= this._scale;
           }
         }
-
       }
 
       if (this._flagScale || this._flagLoaded) {
-
         if (!(this._renderer.scale instanceof Vector)) {
           this._renderer.scale = new Vector();
         }
@@ -812,76 +925,95 @@ var canvas = {
         } else {
           this._renderer.scale.set(this._scale, this._scale);
         }
-
       }
 
       return this.flagReset();
-
-    }
-
+    },
   },
 
-  renderSvgArcCommand: function(ctx, ax, ay, rx, ry, largeArcFlag, sweepFlag, xAxisRotation, x, y) {
-
-    xAxisRotation = xAxisRotation * Math.PI / 180;
+  renderSvgArcCommand: function (
+    ctx,
+    ax,
+    ay,
+    rx,
+    ry,
+    largeArcFlag,
+    sweepFlag,
+    xAxisRotation,
+    x,
+    y
+  ) {
+    xAxisRotation = (xAxisRotation * Math.PI) / 180;
 
     // Ensure radii are positive
     rx = abs(rx);
     ry = abs(ry);
 
     // Compute (x1′, y1′)
-    var dx2 = (ax - x) / 2.0;
-    var dy2 = (ay - y) / 2.0;
-    var x1p = cos(xAxisRotation) * dx2 + sin(xAxisRotation) * dy2;
-    var y1p = - sin(xAxisRotation) * dx2 + cos(xAxisRotation) * dy2;
+    const dx2 = (ax - x) / 2.0;
+    const dy2 = (ay - y) / 2.0;
+    const x1p = cos(xAxisRotation) * dx2 + sin(xAxisRotation) * dy2;
+    const y1p = -sin(xAxisRotation) * dx2 + cos(xAxisRotation) * dy2;
 
     // Compute (cx′, cy′)
-    var rxs = rx * rx;
-    var rys = ry * ry;
-    var x1ps = x1p * x1p;
-    var y1ps = y1p * y1p;
+    const x1ps = x1p * x1p;
+    const y1ps = y1p * y1p;
+    let rxs = rx * rx;
+    let rys = ry * ry;
 
     // Ensure radii are large enough
-    var cr = x1ps / rxs + y1ps / rys;
+    const cr = x1ps / rxs + y1ps / rys;
 
     if (cr > 1) {
-
       // scale up rx,ry equally so cr == 1
-      var s = sqrt(cr);
+      const s = sqrt(cr);
       rx = s * rx;
       ry = s * ry;
       rxs = rx * rx;
       rys = ry * ry;
-
     }
 
-    var dq = (rxs * y1ps + rys * x1ps);
-    var pq = (rxs * rys - dq) / dq;
-    var q = sqrt(max(0, pq));
-    if (largeArcFlag === sweepFlag) q = - q;
-    var cxp = q * rx * y1p / ry;
-    var cyp = - q * ry * x1p / rx;
+    const dq = rxs * y1ps + rys * x1ps;
+    const pq = (rxs * rys - dq) / dq;
+    let q = sqrt(max(0, pq));
+
+    if (largeArcFlag === sweepFlag) q = -q;
+
+    const cxp = (q * rx * y1p) / ry;
+    const cyp = (-q * ry * x1p) / rx;
 
     // Step 3: Compute (cx, cy) from (cx′, cy′)
-    var cx = cos(xAxisRotation) * cxp
-      - sin(xAxisRotation) * cyp + (ax + x) / 2;
-    var cy = sin(xAxisRotation) * cxp
-      + cos(xAxisRotation) * cyp + (ay + y) / 2;
+    const cx =
+      cos(xAxisRotation) * cxp - sin(xAxisRotation) * cyp + (ax + x) / 2;
+    const cy =
+      sin(xAxisRotation) * cxp + cos(xAxisRotation) * cyp + (ay + y) / 2;
 
     // Step 4: Compute θ1 and Δθ
-    var startAngle = svgAngle(1, 0, (x1p - cxp) / rx, (y1p - cyp) / ry);
-    var delta = svgAngle((x1p - cxp) / rx, (y1p - cyp) / ry,
-      (- x1p - cxp) / rx, (- y1p - cyp) / ry) % TWO_PI;
+    const startAngle = svgAngle(1, 0, (x1p - cxp) / rx, (y1p - cyp) / ry);
+    const delta =
+      svgAngle(
+        (x1p - cxp) / rx,
+        (y1p - cyp) / ry,
+        (-x1p - cxp) / rx,
+        (-y1p - cyp) / ry
+      ) % TWO_PI;
 
-    var endAngle = startAngle + delta;
+    const endAngle = startAngle + delta;
 
-    var clockwise = sweepFlag === 0;
+    const clockwise = sweepFlag === 0;
 
-    renderArcEstimate(ctx, cx, cy, rx, ry, startAngle, endAngle,
-      clockwise, xAxisRotation);
-
-  }
-
+    renderArcEstimate(
+      ctx,
+      cx,
+      cy,
+      rx,
+      ry,
+      startAngle,
+      endAngle,
+      clockwise,
+      xAxisRotation
+    );
+  },
 };
 
 /**
@@ -894,56 +1026,49 @@ var canvas = {
  * @param {Boolean} [parameters.smoothing=true] - Determines whether the canvas should antialias drawing. Set it to `false` when working with pixel art. `false` can lead to better performance, since it would use a cheaper interpolation algorithm.
  * @description This class is used by {@link Two} when constructing with `type` of `Two.Types.canvas`. It takes Two.js' scenegraph and renders it to a `<canvas />`.
  */
-function Renderer(params) {
+export class Renderer extends Events {
+  constructor(params) {
+    super();
 
-  // It might not make a big difference on GPU backed canvases.
-  var smoothing = (params.smoothing !== false);
+    // It might not make a big difference on GPU backed canvases.
+    const smoothing = params.smoothing !== false;
 
-  /**
-   * @name Two.CanvasRenderer#domElement
-   * @property {Element} - The `<canvas />` associated with the Two.js scene.
-   */
-  this.domElement = params.domElement || document.createElement('canvas');
+    /**
+     * @name Two.CanvasRenderer#domElement
+     * @property {Element} - The `<canvas />` associated with the Two.js scene.
+     */
+    this.domElement = params.domElement || document.createElement('canvas');
 
-  /**
-   * @name Two.CanvasRenderer#ctx
-   * @property {Canvas2DContext} - Associated two dimensional context to render on the `<canvas />`.
-   */
-  this.ctx = this.domElement.getContext('2d');
+    /**
+     * @name Two.CanvasRenderer#ctx
+     * @property {Canvas2DContext} - Associated two dimensional context to render on the `<canvas />`.
+     */
+    this.ctx = this.domElement.getContext('2d');
 
-  /**
-   * @name Two.CanvasRenderer#overdraw
-   * @property {Boolean} - Determines whether the canvas clears the background each draw call.
-   * @default true
-   */
-  this.overdraw = params.overdraw || false;
+    /**
+     * @name Two.CanvasRenderer#overdraw
+     * @property {Boolean} - Determines whether the canvas clears the background each draw call.
+     * @default true
+     */
+    this.overdraw = params.overdraw || false;
 
-  if (typeof this.ctx.imageSmoothingEnabled !== 'undefined') {
-    this.ctx.imageSmoothingEnabled = smoothing;
+    if (typeof this.ctx.imageSmoothingEnabled !== 'undefined') {
+      this.ctx.imageSmoothingEnabled = smoothing;
+    }
+
+    /**
+     * @name Two.CanvasRenderer#scene
+     * @property {Two.Group} - The root group of the scenegraph.
+     */
+    this.scene = new Group();
+    this.scene.parent = this;
   }
-
-  /**
-   * @name Two.CanvasRenderer#scene
-   * @property {Two.Group} - The root group of the scenegraph.
-   */
-  this.scene = new Group();
-  this.scene.parent = this;
-}
-
-
-_.extend(Renderer, {
 
   /**
    * @name Two.CanvasRenderer.Utils
    * @property {Object} - A massive object filled with utility functions and properties to render Two.js objects to a `<canvas />`.
    */
-  Utils: canvas
-
-});
-
-_.extend(Renderer.prototype, Events, {
-
-  constructor: Renderer,
+  static Utils = canvas;
 
   /**
    * @name Two.CanvasRenderer#setSize
@@ -954,8 +1079,7 @@ _.extend(Renderer.prototype, Events, {
    * @param {Number} [ratio] - The new pixel ratio (pixel density) of the renderer. Defaults to calculate the pixel density of the user's screen.
    * @description Change the size of the renderer.
    */
-  setSize: function(width, height, ratio) {
-
+  setSize(width, height, ratio) {
     this.width = width;
     this.height = height;
 
@@ -967,22 +1091,20 @@ _.extend(Renderer.prototype, Events, {
     if (this.domElement.style) {
       _.extend(this.domElement.style, {
         width: width + 'px',
-        height: height + 'px'
+        height: height + 'px',
       });
     }
 
     return this.trigger(Events.Types.resize, width, height, ratio);
-
-  },
+  }
 
   /**
    * @name Two.CanvasRenderer#render
    * @function
    * @description Render the current scene to the `<canvas />`.
    */
-  render: function() {
-
-    var isOne = this.ratio === 1;
+  render() {
+    const isOne = this.ratio === 1;
 
     if (!isOne) {
       this.ctx.save();
@@ -1000,88 +1122,81 @@ _.extend(Renderer.prototype, Events, {
     }
 
     return this;
-
   }
+}
 
-});
-
-function renderArcEstimate(ctx, ox, oy, rx, ry, startAngle, endAngle, clockwise, xAxisRotation) {
-
-  var epsilon = Curve.Tolerance.epsilon;
-  var deltaAngle = endAngle - startAngle;
-  var samePoints = Math.abs(deltaAngle) < epsilon;
+function renderArcEstimate(
+  ctx,
+  ox,
+  oy,
+  rx,
+  ry,
+  startAngle,
+  endAngle,
+  clockwise,
+  xAxisRotation
+) {
+  const delta = endAngle - startAngle;
+  const epsilon = Curve.Tolerance.epsilon;
+  const samePoints = Math.abs(delta) < epsilon;
 
   // ensures that deltaAngle is 0 .. 2 PI
-  deltaAngle = mod(deltaAngle, TWO_PI);
+  let deltaAngle = mod(delta, TWO_PI);
 
   if (deltaAngle < epsilon) {
-
     if (samePoints) {
-
       deltaAngle = 0;
-
     } else {
-
       deltaAngle = TWO_PI;
-
     }
-
   }
 
-  if (clockwise === true && ! samePoints) {
-
+  if (clockwise === true && !samePoints) {
     if (deltaAngle === TWO_PI) {
-
-      deltaAngle = - TWO_PI;
-
+      deltaAngle = -TWO_PI;
     } else {
-
       deltaAngle = deltaAngle - TWO_PI;
-
     }
-
   }
 
-  for (var i = 0; i < Constants.Resolution; i++) {
+  for (let i = 0; i < Constants.Resolution; i++) {
+    const t = i / (Constants.Resolution - 1);
 
-    var t = i / (Constants.Resolution - 1);
-
-    var angle = startAngle + t * deltaAngle;
-    var x = ox + rx * Math.cos(angle);
-    var y = oy + ry * Math.sin(angle);
+    const angle = startAngle + t * deltaAngle;
+    let x = ox + rx * Math.cos(angle);
+    let y = oy + ry * Math.sin(angle);
 
     if (xAxisRotation !== 0) {
+      const cos = Math.cos(xAxisRotation);
+      const sin = Math.sin(xAxisRotation);
 
-      var cos = Math.cos(xAxisRotation);
-      var sin = Math.sin(xAxisRotation);
-
-      var tx = x - ox;
-      var ty = y - oy;
+      const tx = x - ox;
+      const ty = y - oy;
 
       // Rotate the point about the center of the ellipse.
       x = tx * cos - ty * sin + ox;
       y = tx * sin + ty * cos + oy;
-
     }
 
     ctx.lineTo(x, y);
-
   }
-
 }
 
 function svgAngle(ux, uy, vx, vy) {
-
-  var dot = ux * vx + uy * vy;
-  var len = sqrt(ux * ux + uy * uy) *  sqrt(vx * vx + vy * vy);
+  const dot = ux * vx + uy * vy;
+  const len = sqrt(ux * ux + uy * uy) * sqrt(vx * vx + vy * vy);
   // floating point precision, slightly over values appear
-  var ang = acos(max(-1, min(1, dot / len)));
-  if ((ux * vy - uy * vx) < 0) {
-    ang = - ang;
+  let ang = acos(max(-1, min(1, dot / len)));
+  if (ux * vy - uy * vx < 0) {
+    ang = -ang;
   }
 
   return ang;
-
 }
 
-export default Renderer;
+// Returns true if this is a non-transforming matrix
+function isDefaultMatrix(m) {
+  return (
+    m[0] == 1 && m[3] == 0 && m[1] == 0 && m[4] == 1 && m[2] == 0 && m[5] == 0
+  );
+}

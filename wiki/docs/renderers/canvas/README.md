@@ -14,7 +14,7 @@ Extends: [Two.Events](/docs/events/)
 </div>
 
 
-This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Types.canvas`. It takes Two.js' scenegraph and renders it to a `<canvas />`.
+This class is used by [Two]() when constructing with `type` of `Two.Types.canvas`. It takes Two.js' scenegraph and renders it to a `<canvas />`.
 
 
 <div class="meta">
@@ -22,13 +22,15 @@ This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Ty
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
 
 | Argument | Description |
 | ---- | ----------- |
-|  parameters  | This object is inherited when constructing a new instance of [Two](/docs/two/). |
+|  parameters  | This object is inherited when constructing a new instance of [Two](). |
 |  parameters.domElement  | The `<canvas />` to draw to. If none given a new one will be constructed. |
 |  parameters.overdraw  | Determines whether the canvas should clear the background or not. Defaults to `true`. |
 |  parameters.smoothing  | Determines whether the canvas should antialias drawing. Set it to `false` when working with pixel art. `false` can lead to better performance, since it would use a cheaper interpolation algorithm. |
@@ -52,7 +54,9 @@ This class is used by [Two](/docs/two/) when constructing with `type` of `Two.Ty
 
 <div class="properties">
 
+
 A massive object filled with utility functions and properties to render Two.js objects to a `<canvas />`.
+
 
 </div>
 
@@ -67,8 +71,8 @@ A massive object filled with utility functions and properties to render Two.js o
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L936">
-    canvas.js:936
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1067">
+    canvas.js:1067
   </a>
 
 </div>
@@ -97,7 +101,9 @@ A massive object filled with utility functions and properties to render Two.js o
 
 <div class="properties">
 
+
 The `<canvas />` associated with the Two.js scene.
+
 
 </div>
 
@@ -112,8 +118,8 @@ The `<canvas />` associated with the Two.js scene.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L902">
-    canvas.js:902
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1036">
+    canvas.js:1036
   </a>
 
 </div>
@@ -142,7 +148,9 @@ The `<canvas />` associated with the Two.js scene.
 
 <div class="properties">
 
+
 Associated two dimensional context to render on the `<canvas />`.
+
 
 </div>
 
@@ -157,8 +165,8 @@ Associated two dimensional context to render on the `<canvas />`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L908">
-    canvas.js:908
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1042">
+    canvas.js:1042
   </a>
 
 </div>
@@ -187,7 +195,9 @@ Associated two dimensional context to render on the `<canvas />`.
 
 <div class="properties">
 
+
 Determines whether the canvas clears the background each draw call.
+
 
 </div>
 
@@ -202,8 +212,8 @@ Determines whether the canvas clears the background each draw call.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L914">
-    canvas.js:914
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1048">
+    canvas.js:1048
   </a>
 
 </div>
@@ -232,7 +242,9 @@ Determines whether the canvas clears the background each draw call.
 
 <div class="properties">
 
+
 The root group of the scenegraph.
+
 
 </div>
 
@@ -247,8 +259,8 @@ The root group of the scenegraph.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L925">
-    canvas.js:925
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1059">
+    canvas.js:1059
   </a>
 
 </div>
@@ -309,8 +321,8 @@ Change the size of the renderer.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L948">
-    canvas.js:948
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1073">
+    canvas.js:1073
   </a>
 
 </div>
@@ -354,8 +366,8 @@ Render the current scene to the `<canvas />`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L978">
-    canvas.js:978
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/renderers/canvas.js#L1101">
+    canvas.js:1101
   </a>
 
 </div>

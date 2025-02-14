@@ -22,6 +22,8 @@ Extends: [Two.Path](/docs/path/)
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -53,7 +55,9 @@ Extends: [Two.Path](/docs/path/)
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.Ellipse](/docs/shapes/ellipse/).
+
 
 </div>
 
@@ -68,8 +72,8 @@ A list of properties that are on every [Two.Ellipse](/docs/shapes/ellipse/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L60">
-    ellipse.js:60
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L93">
+    ellipse.js:93
   </a>
 
 </div>
@@ -83,12 +87,20 @@ A list of properties that are on every [Two.Ellipse](/docs/shapes/ellipse/).
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.Ellipse.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.Ellipse.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.Ellipse
+
+
+
+</div>
 
 
 
@@ -102,7 +114,7 @@ A list of properties that are on every [Two.Ellipse](/docs/shapes/ellipse/).
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.Ellipse](/docs/shapes/ellipse/) to create a new instance |
 </div>
 
 
@@ -110,7 +122,7 @@ A list of properties that are on every [Two.Ellipse](/docs/shapes/ellipse/).
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.Ellipse](/docs/shapes/ellipse/) to any object. Handy if you'd like to extend the [Two.Ellipse](/docs/shapes/ellipse/) class on a custom class.
+Create a new [Two.Ellipse](/docs/shapes/ellipse/) from an object notation of a [Two.Ellipse](/docs/shapes/ellipse/).
 
 </div>
 
@@ -120,13 +132,23 @@ Convenience function to apply observable qualities of a [Two.Ellipse](/docs/shap
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L66">
-    ellipse.js:66
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L99">
+    ellipse.js:99
   </a>
 
 </div>
 
 
+
+<div class="tags">
+
+
+::: tip nota-bene
+Works in conjunction with [Two.Ellipse.toObject](/docs/shapes/ellipse/#toobject)
+:::
+
+
+</div>
 
 
 </div>
@@ -150,7 +172,9 @@ Convenience function to apply observable qualities of a [Two.Ellipse](/docs/shap
 
 <div class="properties">
 
+
 The width of the ellipse.
+
 
 </div>
 
@@ -165,8 +189,8 @@ The width of the ellipse.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L37">
-    ellipse.js:37
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L67">
+    ellipse.js:67
   </a>
 
 </div>
@@ -195,7 +219,9 @@ The width of the ellipse.
 
 <div class="properties">
 
+
 The height of the ellipse.
+
 
 </div>
 
@@ -210,8 +236,60 @@ The height of the ellipse.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L45">
-    ellipse.js:45
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L75">
+    ellipse.js:75
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.Ellipse.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  ellipse  | The reference [Two.Ellipse](/docs/shapes/ellipse/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.Ellipse](/docs/shapes/ellipse/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L117">
+    ellipse.js:117
   </a>
 
 </div>
@@ -234,7 +312,7 @@ The height of the ellipse.
 
 <div class="returns">
 
-__Returns__: Two.Polygon
+__Returns__: Two.Ellipse
 
 
 
@@ -260,7 +338,7 @@ __Returns__: Two.Polygon
 
 <div class="description">
 
-Create a new instance of [Two.Polygon](/docs/shapes/polygon/) with the same properties of the current path.
+Create a new instance of [Two.Ellipse](/docs/shapes/ellipse/) with the same properties of the current path.
 
 </div>
 
@@ -270,8 +348,8 @@ Create a new instance of [Two.Polygon](/docs/shapes/polygon/) with the same prop
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L176">
-    ellipse.js:176
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L196">
+    ellipse.js:196
   </a>
 
 </div>
@@ -323,8 +401,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L212">
-    ellipse.js:212
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/ellipse.js#L231">
+    ellipse.js:231
   </a>
 
 </div>

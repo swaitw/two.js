@@ -1,137 +1,163 @@
-import _ from '../utils/underscore.js';
-import Events from '../events.js';
+import { _ } from '../utils/underscore.js';
+import { Element } from '../element.js';
 
 /**
  * @name Two.Stop
  * @class
+ * @extends Two.Element
  * @param {Number} [offset] - The offset percentage of the stop represented as a zero-to-one value. Default value flip flops from zero-to-one as new stops are created.
  * @param {String} [color] - The color of the stop. Default value flip flops from white to black as new stops are created.
  * @param {Number} [opacity] - The opacity value. Default value is 1, cannot be lower than 0.
  * @nota-bene Used specifically in conjunction with {@link Two.Gradient}s to control color graduation.
  */
-function Stop(offset, color, opacity) {
+export class Stop extends Element {
+  /**
+   * @name Two.Stop#_flagOffset
+   * @private
+   * @property {Boolean} - Determines whether the {@link Two.Stop#offset} needs updating.
+   */
+  _flagOffset = true;
 
   /**
-   * @name Two.Stop#renderer
-   * @property {Object}
-   * @description Object access to store relevant renderer specific variables. Warning: manipulating this object can create unintended consequences.
-   * @nota-bene With the {@link Two.SvgRenderer} you can access the underlying SVG element created via `shape.renderer.elem`.
+   * @name Two.Stop#_flagOpacity
+   * @private
+   * @property {Boolean} - Determines whether the {@link Two.Stop#opacity} needs updating.
    */
-  this.renderer = {};
-  this._renderer.type = 'stop';
+  _flagOpacity = true;
 
   /**
-   * @name Two.Stop#offset
-   * @property {Number} - The offset percentage of the stop represented as a zero-to-one value.
+   * @name Two.Stop#_flagColor
+   * @private
+   * @property {Boolean} - Determines whether the {@link Two.Stop#color} needs updating.
    */
-  this.offset = typeof offset === 'number' ? offset
-    : Stop.Index <= 0 ? 0 : 1;
+  _flagColor = true;
 
   /**
-   * @name Two.Stop#opacity
-   * @property {Number} - The alpha percentage of the stop represented as a zero-to-one value.
+   * @name Two.Stop#_offset
+   * @private
+   * @see {@link Two.Stop#offset}
    */
-  this.opacity = typeof opacity === 'number' ? opacity : 1;
+  _offset = 0;
 
   /**
-   * @name Two.Stop#color
-   * @property {String} - The color of the stop.
+   * @name Two.Stop#_opacity
+   * @private
+   * @see {@link Two.Stop#opacity}
    */
-  this.color = (typeof color === 'string') ? color
-    : Stop.Index <= 0 ? '#fff' : '#000';
+  _opacity = 1;
 
-  Stop.Index = (Stop.Index + 1) % 2;
+  /**
+   * @name Two.Stop#_color
+   * @private
+   * @see {@link Two.Stop#color}
+   */
+  _color = '#fff';
 
-}
+  constructor(offset, color, opacity) {
+    super();
 
-_.extend(Stop, {
+    for (let prop in proto) {
+      Object.defineProperty(this, prop, proto[prop]);
+    }
+
+    this._renderer.type = 'stop';
+
+    /**
+     * @name Two.Stop#offset
+     * @property {Number} - The offset percentage of the stop represented as a zero-to-one value.
+     */
+    this.offset = typeof offset === 'number' ? offset : Stop.Index <= 0 ? 0 : 1;
+
+    /**
+     * @name Two.Stop#opacity
+     * @property {Number} - The alpha percentage of the stop represented as a zero-to-one value.
+     * @nota-bene This is only supported on the {@link Two.SVGRenderer}. You can get the same effect by encoding opacity into `rgba` strings in the color.
+     */
+    this.opacity = typeof opacity === 'number' ? opacity : 1;
+
+    /**
+     * @name Two.Stop#color
+     * @property {String} - The color of the stop.
+     */
+    this.color =
+      typeof color === 'string' ? color : Stop.Index <= 0 ? '#fff' : '#000';
+
+    Stop.Index = (Stop.Index + 1) % 2;
+  }
 
   /**
    * @name Two.Stop.Index
    * @property {Number} - The current index being referenced for calculating a stop's default offset value.
    */
-  Index: 0,
+  static Index = 0;
 
   /**
    * @name Two.Stop.Properties
    * @property {String[]} - A list of properties that are on every {@link Two.Stop}.
    */
-  Properties: [
-    'offset',
-    'opacity',
-    'color'
-  ],
+  static Properties = ['offset', 'opacity', 'color'];
 
   /**
-   * @name Two.Stop.MakeObservable
+   * @name Two.Stop.fromObject
    * @function
-   * @param {Object} object - The object to make observable.
-   * @description Convenience function to apply observable qualities of a {@link Two.Stop} to any object. Handy if you'd like to extend the {@link Two.Stop} class on a custom class.
+   * @param {Object} obj - Object notation of a {@link Two.Stop} to create a new instance
+   * @returns {Two.Stop}
+   * @description Create a new {@link Two.Stop} from an object notation of a {@link Two.Stop}.
+   * @nota-bene Works in conjunction with {@link Two.Stop#toObject}
    */
-  MakeObservable: function(object) {
+  static fromObject(obj) {
+    const stop = new Stop().copy(obj);
 
-    _.each(Stop.Properties, function(property) {
+    if ('id' in obj) {
+      stop.id = obj.id;
+    }
 
-      var object = this;
-      var secret = '_' + property;
-      var flag = '_flag' + property.charAt(0).toUpperCase() + property.slice(1);
-
-      Object.defineProperty(object, property, {
-        enumerable: true,
-        get: function() {
-          return this[secret];
-        },
-        set: function(v) {
-          this[secret] = v;
-          this[flag] = true;
-          if (this.parent) {
-            this.parent._flagStops = true;
-          }
-        }
-      });
-
-    }, object);
-
-    Object.defineProperty(object, 'renderer', {
-
-      enumerable: false,
-
-      get: function() {
-        return this._renderer;
-      },
-
-      set: function(obj) {
-        this._renderer = obj;
-      }
-
-    });
-
+    return stop;
   }
 
-});
+  /**
+   * @name Two.Stop#copy
+   * @function
+   * @param {Two.Stop} stop - The reference {@link Two.Stop}
+   * @description Copy the properties of one {@link Two.Stop} onto another.
+   */
+  copy(stop) {
+    super.copy.call(this, stop);
 
-_.extend(Stop.prototype, Events, {
+    for (let i = 0; i < Stop.Properties.length; i++) {
+      const k = Stop.Properties[i];
+      if (k in stop) {
+        this[k] = stop[k];
+      }
+    }
 
-  constructor: Stop,
+    return this;
+  }
 
   /**
    * @name Two.Stop#clone
    * @function
-   * @param {Two.Group} [parent] - The parent group or scene to add the clone to.
+   * @param {Two.Gradient} [parent] - The parent gradient to add the clone to.
    * @returns {Two.Stop}
    * @description Create a new instance of {@link Two.Stop} with the same properties of the current path.
    */
-  clone: function() {
+  clone(parent) {
+    const clone = new Stop();
 
-    var clone = new Stop();
+    _.each(
+      Stop.Properties,
+      function (property) {
+        clone[property] = this[property];
+      },
+      this
+    );
 
-    _.each(Stop.Properties, function(property) {
-      clone[property] = this[property];
-    }, this);
+    if (parent && parent.stops) {
+      parent.stops.push(clone);
+    }
 
     return clone;
-
-  },
+  }
 
   /**
    * @name Two.Stop#toObject
@@ -139,17 +165,20 @@ _.extend(Stop.prototype, Events, {
    * @returns {Object}
    * @description Return a JSON compatible plain object that represents the path.
    */
-  toObject: function() {
+  toObject() {
+    const result = super.toObject.call(this);
+    result.renderer.type = 'stop';
 
-    var result = {};
-
-    _.each(Stop.Properties, function(k) {
-      result[k] = this[k];
-    }, this);
+    _.each(
+      Stop.Properties,
+      (k) => {
+        result[k] = this[k];
+      },
+      this
+    );
 
     return result;
-
-  },
+  }
 
   /**
    * @name Two.Stop#flagReset
@@ -157,16 +186,53 @@ _.extend(Stop.prototype, Events, {
    * @private
    * @description Called internally to reset all flags. Ensures that only properties that change are updated before being sent to the renderer.
    */
-  flagReset: function() {
-
+  flagReset() {
     this._flagOffset = this._flagColor = this._flagOpacity = false;
 
+    super.flagReset.call(this);
+
     return this;
-
   }
+}
 
-});
-
-Stop.MakeObservable(Stop.prototype);
-
-export default Stop;
+const proto = {
+  offset: {
+    enumerable: true,
+    get: function () {
+      return this._offset;
+    },
+    set: function (v) {
+      this._offset = v;
+      this._flagOffset = true;
+      if (this.parent) {
+        this.parent._flagStops = true;
+      }
+    },
+  },
+  opacity: {
+    enumerable: true,
+    get: function () {
+      return this._opacity;
+    },
+    set: function (v) {
+      this._opacity = v;
+      this._flagOpacity = true;
+      if (this.parent) {
+        this.parent._flagStops = true;
+      }
+    },
+  },
+  color: {
+    enumerable: true,
+    get: function () {
+      return this._color;
+    },
+    set: function (v) {
+      this._color = v;
+      this._flagColor = true;
+      if (this.parent) {
+        this.parent._flagStops = true;
+      }
+    },
+  },
+};

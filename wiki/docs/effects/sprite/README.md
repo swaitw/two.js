@@ -22,6 +22,8 @@ A convenient package to display still or animated images through a tiled image s
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -54,7 +56,9 @@ A convenient package to display still or animated images through a tiled image s
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.Sprite](/docs/effects/sprite/).
+
 
 </div>
 
@@ -69,8 +73,8 @@ A list of properties that are on every [Two.Sprite](/docs/effects/sprite/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L86">
-    sprite.js:86
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L206">
+    sprite.js:206
   </a>
 
 </div>
@@ -84,12 +88,20 @@ A list of properties that are on every [Two.Sprite](/docs/effects/sprite/).
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.Sprite.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.Sprite.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.Sprite
+
+
+
+</div>
 
 
 
@@ -103,7 +115,7 @@ A list of properties that are on every [Two.Sprite](/docs/effects/sprite/).
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.Sprite](/docs/effects/sprite/) to create a new instance |
 </div>
 
 
@@ -111,7 +123,7 @@ A list of properties that are on every [Two.Sprite](/docs/effects/sprite/).
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.Sprite](/docs/effects/sprite/) to any object. Handy if you'd like to extend or inherit the [Two.Sprite](/docs/effects/sprite/) class on a custom class.
+Create a new [Two.Sprite](/docs/effects/sprite/) from an object notation of a [Two.Sprite](/docs/effects/sprite/).
 
 </div>
 
@@ -121,13 +133,23 @@ Convenience function to apply observable qualities of a [Two.Sprite](/docs/effec
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L94">
-    sprite.js:94
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L221">
+    sprite.js:221
   </a>
 
 </div>
 
 
+
+<div class="tags">
+
+
+::: tip nota-bene
+Works in conjunction with [Two.Sprite.toObject](/docs/effects/sprite/#toobject)
+:::
+
+
+</div>
 
 
 </div>
@@ -151,7 +173,9 @@ Convenience function to apply observable qualities of a [Two.Sprite](/docs/effec
 
 <div class="properties">
 
+
 The texture to be used as bitmap data to display image in the scene.
+
 
 </div>
 
@@ -166,8 +190,8 @@ The texture to be used as bitmap data to display image in the scene.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L37">
-    sprite.js:37
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L161">
+    sprite.js:161
   </a>
 
 </div>
@@ -196,7 +220,9 @@ The texture to be used as bitmap data to display image in the scene.
 
 <div class="properties">
 
+
 The number of columns to split the texture into. Defaults to `1`.
+
 
 </div>
 
@@ -211,8 +237,8 @@ The number of columns to split the texture into. Defaults to `1`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L52">
-    sprite.js:52
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L175">
+    sprite.js:175
   </a>
 
 </div>
@@ -241,7 +267,9 @@ The number of columns to split the texture into. Defaults to `1`.
 
 <div class="properties">
 
+
 The number of rows to split the texture into. Defaults to `1`.
+
 
 </div>
 
@@ -256,8 +284,8 @@ The number of rows to split the texture into. Defaults to `1`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L60">
-    sprite.js:60
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L183">
+    sprite.js:183
   </a>
 
 </div>
@@ -286,7 +314,9 @@ The number of rows to split the texture into. Defaults to `1`.
 
 <div class="properties">
 
+
 The number of frames to animate against per second. Defaults to `0` for non-animated sprites.
+
 
 </div>
 
@@ -301,8 +331,8 @@ The number of frames to animate against per second. Defaults to `0` for non-anim
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L68">
-    sprite.js:68
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L191">
+    sprite.js:191
   </a>
 
 </div>
@@ -331,7 +361,9 @@ The number of frames to animate against per second. Defaults to `0` for non-anim
 
 <div class="properties">
 
+
 The index of the current tile of the sprite to display. Defaults to `0`.
+
 
 </div>
 
@@ -346,8 +378,60 @@ The index of the current tile of the sprite to display. Defaults to `0`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L76">
-    sprite.js:76
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L199">
+    sprite.js:199
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.Sprite.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  sprite  | The reference [Two.Sprite](/docs/effects/sprite/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.Sprite](/docs/effects/sprite/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L239">
+    sprite.js:239
   </a>
 
 </div>
@@ -400,8 +484,8 @@ Initiate animation playback of a [Two.Sprite](/docs/effects/sprite/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L243">
-    sprite.js:243
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L258">
+    sprite.js:258
   </a>
 
 </div>
@@ -445,8 +529,8 @@ Halt animation playback of a [Two.Sprite](/docs/effects/sprite/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L279">
-    sprite.js:279
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L292">
+    sprite.js:292
   </a>
 
 </div>
@@ -490,8 +574,8 @@ Halt animation playback of a [Two.Sprite](/docs/effects/sprite/) and set the cur
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L291">
-    sprite.js:291
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L302">
+    sprite.js:302
   </a>
 
 </div>
@@ -550,8 +634,8 @@ Create a new instance of [Two.Sprite](/docs/effects/sprite/) with the same prope
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L305">
-    sprite.js:305
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L314">
+    sprite.js:314
   </a>
 
 </div>
@@ -603,8 +687,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L332">
-    sprite.js:332
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/sprite.js#L346">
+    sprite.js:346
   </a>
 
 </div>

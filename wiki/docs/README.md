@@ -1,1 +1,1 @@
-<redirect-page src="/docs/two"></redirect-page>
+<redirect-page src="/docs/two/"></redirect-page>

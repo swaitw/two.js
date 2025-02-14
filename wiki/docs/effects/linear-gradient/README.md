@@ -22,6 +22,8 @@ Extends: [Two.Gradient](/docs/effects/gradient/)
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -68,8 +70,8 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L55">
-    linear-gradient.js:55
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L64">
+    linear-gradient.js:64
   </a>
 
 </div>
@@ -83,12 +85,20 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.LinearGradient.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.LinearGradient.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.LinearGradient
+
+
+
+</div>
 
 
 
@@ -102,7 +112,7 @@ See: [Two.Stop](/docs/effects/stop/)
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.LinearGradient](/docs/effects/linear-gradient/) to create a new instance |
 </div>
 
 
@@ -110,7 +120,7 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.LinearGradient](/docs/effects/linear-gradient/) to any object. Handy if you'd like to extend the [Two.LinearGradient](/docs/effects/linear-gradient/) class on a custom class.
+Create a new [Two.LinearGradient](/docs/effects/linear-gradient/) from an object notation of a [Two.LinearGradient](/docs/effects/linear-gradient/).
 
 </div>
 
@@ -120,58 +130,23 @@ Convenience function to apply observable qualities of a [Two.LinearGradient](/do
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L61">
-    linear-gradient.js:61
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L72">
+    linear-gradient.js:72
   </a>
 
 </div>
 
 
 
+<div class="tags">
+
+
+::: tip nota-bene
+Works in conjunction with [Two.LinearGradient.toObject](/docs/effects/linear-gradient/#toobject)
+:::
+
 
 </div>
-
-
-
-<div class="static function ">
-
-## FlagEndPoints
-
-<h2 class="longname" aria-hidden="true"><a href="#FlagEndPoints"><span class="prefix">Two.LinearGradient.</span><span class="shortname">FlagEndPoints</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Cached method to let renderers know end points have been updated on a [Two.LinearGradient](/docs/effects/linear-gradient/).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L71">
-    linear-gradient.js:71
-  </a>
-
-</div>
-
-
 
 
 </div>
@@ -195,7 +170,9 @@ Cached method to let renderers know end points have been updated on a [Two.Linea
 
 <div class="properties">
 
+
 The x and y value for where the first end point is placed on the canvas.
+
 
 </div>
 
@@ -210,8 +187,8 @@ The x and y value for where the first end point is placed on the canvas.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L27">
-    linear-gradient.js:27
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L39">
+    linear-gradient.js:39
   </a>
 
 </div>
@@ -240,7 +217,9 @@ The x and y value for where the first end point is placed on the canvas.
 
 <div class="properties">
 
+
 The x and y value for where the second end point is placed on the canvas.
+
 
 </div>
 
@@ -255,8 +234,60 @@ The x and y value for where the second end point is placed on the canvas.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L32">
-    linear-gradient.js:32
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L44">
+    linear-gradient.js:44
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.LinearGradient.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  gradient  | The reference [Two.LinearGradient](/docs/effects/linear-gradient/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.LinearGradient](/docs/effects/linear-gradient/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L90">
+    linear-gradient.js:90
   </a>
 
 </div>
@@ -315,8 +346,8 @@ Create a new instance of [Two.LinearGradient](/docs/effects/linear-gradient/) wi
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L93">
-    linear-gradient.js:93
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L112">
+    linear-gradient.js:112
   </a>
 
 </div>
@@ -368,8 +399,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L121">
-    linear-gradient.js:121
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/linear-gradient.js#L147">
+    linear-gradient.js:147
   </a>
 
 </div>

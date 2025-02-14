@@ -22,6 +22,8 @@ This is a primary primitive class for quickly and easily drawing points in Two.j
 </div>
 
 
+<carbon-ads />
+
 
 ### Constructor
 
@@ -49,7 +51,9 @@ This is a primary primitive class for quickly and easily drawing points in Two.j
 
 <div class="properties">
 
-Boolean dictating whether Two.js should scale the size of the points based on its matrix hierarcy.
+
+Boolean dictating whether Two.js should scale the size of the points based on its matrix hierarchy.
+
 
 </div>
 
@@ -70,8 +74,8 @@ Set to `true` if you'd like the size of the points to be relative to the scale o
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L40">
-    points.js:40
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L74">
+    points.js:74
   </a>
 
 </div>
@@ -100,7 +104,9 @@ Set to `true` if you'd like the size of the points to be relative to the scale o
 
 <div class="properties">
 
+
 Number between zero and one to state the beginning of where the path is rendered.
+
 
 </div>
 
@@ -121,8 +127,8 @@ Number between zero and one to state the beginning of where the path is rendered
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L47">
-    points.js:47
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L81">
+    points.js:81
   </a>
 
 </div>
@@ -151,7 +157,9 @@ Number between zero and one to state the beginning of where the path is rendered
 
 <div class="properties">
 
+
 Number between zero and one to state the ending of where the path is rendered.
+
 
 </div>
 
@@ -172,8 +180,8 @@ Number between zero and one to state the ending of where the path is rendered.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L54">
-    points.js:54
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L88">
+    points.js:88
   </a>
 
 </div>
@@ -202,7 +210,9 @@ Number between zero and one to state the ending of where the path is rendered.
 
 <div class="properties">
 
+
 The value of what the path should be filled in with.
+
 
 </div>
 
@@ -223,8 +233,8 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L63">
-    points.js:63
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L97">
+    points.js:97
   </a>
 
 </div>
@@ -253,7 +263,9 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="properties">
 
+
 The value of what the path should be outlined in with.
+
 
 </div>
 
@@ -274,8 +286,8 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L70">
-    points.js:70
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L104">
+    points.js:104
   </a>
 
 </div>
@@ -304,7 +316,9 @@ See: [https://developer.mozilla.org/en-US/docs/Web/CSS/color_value](https://deve
 
 <div class="properties">
 
+
 A class to be applied to the element to be compatible with CSS styling.
+
 
 </div>
 
@@ -319,8 +333,8 @@ A class to be applied to the element to be compatible with CSS styling.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L77">
-    points.js:77
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L111">
+    points.js:111
   </a>
 
 </div>
@@ -359,7 +373,9 @@ Only available for the SVG renderer.
 
 <div class="properties">
 
+
 Display the points or not.
+
 
 </div>
 
@@ -374,8 +390,8 @@ Display the points or not.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L84">
-    points.js:84
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L118">
+    points.js:118
   </a>
 
 </div>
@@ -414,7 +430,9 @@ For [Two.CanvasRenderer](/docs/renderers/canvas/) and [Two.WebGLRenderer](/docs/
 
 <div class="properties">
 
+
 An ordered list of vector points for rendering points.
+
 
 </div>
 
@@ -435,8 +453,8 @@ A list of [Two.Vector](/docs/vector/) objects that consist of which coordinates 
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L91">
-    points.js:91
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L125">
+    points.js:125
   </a>
 
 </div>
@@ -475,7 +493,9 @@ The array when manipulating is actually a [Two.Collection](/docs/collection/).
 
 <div class="properties">
 
+
 Array of numbers. Odd indices represent dash length. Even indices represent dash space.
+
 
 </div>
 
@@ -502,8 +522,8 @@ See: [https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharra
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L99">
-    points.js:99
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L133">
+    points.js:133
   </a>
 
 </div>
@@ -532,7 +552,9 @@ See: [https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dasharra
 
 <div class="properties">
 
+
 A number in pixels to offset [Two.Points.dashes](/docs/shapes/points/#dashes) display.
+
 
 </div>
 
@@ -547,8 +569,8 @@ A number in pixels to offset [Two.Points.dashes](/docs/shapes/points/#dashes) di
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L107">
-    points.js:107
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L141">
+    points.js:141
   </a>
 
 </div>
@@ -560,13 +582,11 @@ A number in pixels to offset [Two.Points.dashes](/docs/shapes/points/#dashes) di
 
 
 
-<div class="instance member ">
+<div class="instance function ">
 
-## length
+## copy
 
-<h2 class="longname" aria-hidden="true"><a href="#length"><span class="prefix">Two.Points.</span><span class="shortname">length</span></a></h2>
-
-
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.Points.</span><span class="shortname">copy</span></a></h2>
 
 
 
@@ -575,9 +595,23 @@ A number in pixels to offset [Two.Points.dashes](/docs/shapes/points/#dashes) di
 
 
 
-<div class="properties">
 
-The sum of distances between all [Two.Points.vertices](/docs/shapes/points/#vertices).
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  points  | The reference [Two.Points](/docs/shapes/points/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.Points](/docs/shapes/points/) onto another.
 
 </div>
 
@@ -585,15 +619,10 @@ The sum of distances between all [Two.Points.vertices](/docs/shapes/points/#vert
 
 
 
-
-
-
-
-
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L190">
-    points.js:190
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L177">
+    points.js:177
   </a>
 
 </div>
@@ -652,8 +681,8 @@ Create a new instance of [Two.Points](/docs/shapes/points/) with the same proper
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L308">
-    points.js:308
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L205">
+    points.js:205
   </a>
 
 </div>
@@ -705,8 +734,8 @@ Return a JSON compatible plain object that represents the points object.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L348">
-    points.js:348
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L243">
+    points.js:243
   </a>
 
 </div>
@@ -740,7 +769,7 @@ Return a JSON compatible plain object that represents the points object.
 
 <div class="description">
 
-Short hand method to set fill to `transparent`.
+Short hand method to set fill to `none`.
 
 </div>
 
@@ -750,8 +779,8 @@ Short hand method to set fill to `transparent`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L382">
-    points.js:382
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L272">
+    points.js:272
   </a>
 
 </div>
@@ -785,7 +814,7 @@ Short hand method to set fill to `transparent`.
 
 <div class="description">
 
-Short hand method to set stroke to `transparent`.
+Short hand method to set stroke to `none`.
 
 </div>
 
@@ -795,8 +824,8 @@ Short hand method to set stroke to `transparent`.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L389">
-    points.js:389
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L279">
+    points.js:279
   </a>
 
 </div>
@@ -840,8 +869,8 @@ Orient the vertices of the shape to the upper left-hand corner of the points obj
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L396">
-    points.js:396
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L286">
+    points.js:286
   </a>
 
 </div>
@@ -885,53 +914,8 @@ Orient the vertices of the shape to the center of the points object.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L403">
-    points.js:403
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance function ">
-
-## remove
-
-<h2 class="longname" aria-hidden="true"><a href="#remove"><span class="prefix">Two.Points.</span><span class="shortname">remove</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Remove self from the scene / parent.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L410">
-    points.js:410
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L293">
+    points.js:293
   </a>
 
 </div>
@@ -992,8 +976,8 @@ Return an object with top, left, right, bottom, width, and height parameters of 
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L417">
-    points.js:417
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L300">
+    points.js:300
   </a>
 
 </div>
@@ -1044,8 +1028,55 @@ Insert a [Two.Vector](/docs/vector/) at the midpoint between every item in [Two.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L426">
-    points.js:426
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L309">
+    points.js:309
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance member ">
+
+## length
+
+<h2 class="longname" aria-hidden="true"><a href="#length"><span class="prefix">Two.Points.</span><span class="shortname">length</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+<div class="properties">
+
+
+The sum of distances between all [Two.Points.vertices](/docs/shapes/points/#vertices).
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/shapes/points.js#L529">
+    points.js:529
   </a>
 
 </div>

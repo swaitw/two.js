@@ -12,6 +12,8 @@ A two-dimensional drawing api geared towards modern web browsers. It is renderer
 <custom-button text="Sponsor" type="sponsor" href="https://github.com/sponsors/jonobr1" />
 </div>
 
+<carbon-ads />
+
 ## Download
 
 <h3 class="visible"><a href="#download">Download</a></h3>
@@ -161,11 +163,11 @@ two.bind('update', update);
 two.play();
 
 function update(frameCount) {
-  // This code is called everytime two.update() is called; effectively 60 times per second.
+  // This code is called every time two.update() is called.
   if (group.scale > 0.9999) {
     group.scale = group.rotation = 0;
   }
-  var t = (1 - group.scale) * 0.125;
+  var t = (1 - group.scale) * 0.04;
   group.scale += t;
   group.rotation += t * 4 * Math.PI;
 }

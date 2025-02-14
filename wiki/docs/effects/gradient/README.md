@@ -7,6 +7,12 @@ lang: en-US
 # Two.Gradient
 
 
+<div class="extends">
+
+Extends: [Two.Element](/docs/element/)
+
+</div>
+
 
 This is the base class for constructing different types of gradients with Two.js. The two common gradients are [Two.LinearGradient](/docs/effects/linear-gradient/) and [Two.RadialGradient](/docs/effects/radial-gradient/).
 
@@ -15,6 +21,8 @@ This is the base class for constructing different types of gradients with Two.js
   <custom-button text="Source" type="source" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js" />
 </div>
 
+
+<carbon-ads />
 
 
 ### Constructor
@@ -88,7 +96,9 @@ See: [Two.Stop](/docs/effects/stop/)
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.Gradient](/docs/effects/gradient/).
+
 
 </div>
 
@@ -118,12 +128,20 @@ A list of properties that are on every [Two.Gradient](/docs/effects/gradient/).
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.Gradient.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.Gradient.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.Gradient
+
+
+
+</div>
 
 
 
@@ -137,7 +155,7 @@ A list of properties that are on every [Two.Gradient](/docs/effects/gradient/).
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.Gradient](/docs/effects/gradient/) to create a new instance |
 </div>
 
 
@@ -145,7 +163,7 @@ A list of properties that are on every [Two.Gradient](/docs/effects/gradient/).
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.Gradient](/docs/effects/gradient/) to any object. Handy if you'd like to extend the [Two.Gradient](/docs/effects/gradient/) class on a custom class.
+Create a new [Two.Gradient](/docs/effects/gradient/) from an object notation of a [Two.Gradient](/docs/effects/gradient/).
 
 </div>
 
@@ -155,194 +173,8 @@ Convenience function to apply observable qualities of a [Two.Gradient](/docs/eff
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L71">
-    gradient.js:71
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## FlagStops
-
-<h2 class="longname" aria-hidden="true"><a href="#FlagStops"><span class="prefix">Two.Gradient.</span><span class="shortname">FlagStops</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Cached method to let renderers know stops have been updated on a [Two.Gradient](/docs/effects/gradient/).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L146">
-    gradient.js:146
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## BindVertices
-
-<h2 class="longname" aria-hidden="true"><a href="#BindVertices"><span class="prefix">Two.Gradient.</span><span class="shortname">BindVertices</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Cached method to let [Two.Gradient](/docs/effects/gradient/) know vertices have been added to the instance.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L155">
-    gradient.js:155
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## UnbindStops
-
-<h2 class="longname" aria-hidden="true"><a href="#UnbindStops"><span class="prefix">Two.Gradient.</span><span class="shortname">UnbindStops</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Cached method to let [Two.Gradient](/docs/effects/gradient/) know vertices have been removed from the instance.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L174">
-    gradient.js:174
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## renderer
-
-<h2 class="longname" aria-hidden="true"><a href="#renderer"><span class="prefix">Two.Gradient.</span><span class="shortname">renderer</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-
-
-</div>
-
-
-
-
-
-
-<div class="description">
-
-Object access to store relevant renderer specific variables. Warning: manipulating this object can create unintended consequences.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L17">
-    gradient.js:17
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L69">
+    gradient.js:69
   </a>
 
 </div>
@@ -353,62 +185,7 @@ Object access to store relevant renderer specific variables. Warning: manipulati
 
 
 ::: tip nota-bene
-With the [Two.SvgRenderer](/docs/two/) you can access the underlying SVG element created via `shape.renderer.elem`.
-:::
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## id
-
-<h2 class="longname" aria-hidden="true"><a href="#id"><span class="prefix">Two.Gradient.</span><span class="shortname">id</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-Session specific unique identifier.
-
-</div>
-
-
-
-
-
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L26">
-    gradient.js:26
-  </a>
-
-</div>
-
-
-
-<div class="tags">
-
-
-::: tip nota-bene
-In the [Two.SvgRenderer](/docs/two/) change this to change the underlying SVG element's id too.
+Works in conjunction with [Two.Gradient.toObject](/docs/effects/gradient/#toobject)
 :::
 
 
@@ -436,7 +213,9 @@ In the [Two.SvgRenderer](/docs/two/) change this to change the underlying SVG el
 
 <div class="properties">
 
+
 Indicates what happens if the gradient starts or ends inside the bounds of the target rectangle. Possible values are `'pad'`, `'reflect'`, and `'repeat'`.
+
 
 </div>
 
@@ -457,8 +236,61 @@ See: [https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMetho
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L38">
-    gradient.js:38
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L34">
+    gradient.js:34
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance member ">
+
+## units
+
+<h2 class="longname" aria-hidden="true"><a href="#units"><span class="prefix">Two.Gradient.</span><span class="shortname">units</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+<div class="properties">
+
+
+Indicates how coordinate values are interpreted by the renderer. Possible values are `'userSpaceOnUse'` and `'objectBoundingBox'`.
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="see">
+
+See: [https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementGradientUnitsAttribute](https://www.w3.org/TR/SVG11/pservers.html#RadialGradientElementGradientUnitsAttribute) for more information
+
+</div>
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L41">
+    gradient.js:41
   </a>
 
 </div>
@@ -487,7 +319,9 @@ See: [https://www.w3.org/TR/SVG11/pservers.html#LinearGradientElementSpreadMetho
 
 <div class="properties">
 
+
 An ordered list of [Two.Stop](/docs/effects/stop/)s for rendering the gradient.
+
 
 </div>
 
@@ -502,8 +336,8 @@ An ordered list of [Two.Stop](/docs/effects/stop/)s for rendering the gradient.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L45">
-    gradient.js:45
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L48">
+    gradient.js:48
   </a>
 
 </div>
@@ -562,8 +396,60 @@ Create a new instance of [Two.Gradient](/docs/effects/gradient/) with the same p
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L219">
-    gradient.js:219
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L91">
+    gradient.js:91
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.Gradient.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  gradient  | The reference [Two.Gradient](/docs/effects/gradient/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.Gradient](/docs/effects/gradient/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L120">
+    gradient.js:120
   </a>
 
 </div>
@@ -615,8 +501,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L246">
-    gradient.js:246
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/gradient.js#L139">
+    gradient.js:139
   </a>
 
 </div>

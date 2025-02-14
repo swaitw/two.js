@@ -16,6 +16,8 @@ Object inherited by many Two.js objects in order to facilitate custom events.
 </div>
 
 
+<carbon-ads />
+
 
 
 
@@ -38,8 +40,10 @@ Object inherited by many Two.js objects in order to facilitate custom events.
 
 <div class="properties">
 
+
 Object of different types of Two.js specific events.
 
+
 </div>
 
 
@@ -53,98 +57,8 @@ Object of different types of Two.js specific events.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L73">
-    events.js:73
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## bind
-
-<h2 class="longname" aria-hidden="true"><a href="#bind"><span class="prefix">Two.Events.</span><span class="shortname">bind</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Alias for [Two.Events.on](/docs/events/#on).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L93">
-    events.js:93
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="static function ">
-
-## unbind
-
-<h2 class="longname" aria-hidden="true"><a href="#unbind"><span class="prefix">Two.Events.</span><span class="shortname">unbind</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="description">
-
-Alias for [Two.Events.off](/docs/events/#off).
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L100">
-    events.js:100
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L167">
+    events.js:167
   </a>
 
 </div>
@@ -158,9 +72,9 @@ Alias for [Two.Events.off](/docs/events/#off).
 
 <div class="instance function ">
 
-## on
+## addEventListener
 
-<h2 class="longname" aria-hidden="true"><a href="#on"><span class="prefix">Two.Events.</span><span class="shortname">on</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#addEventListener"><span class="prefix">Two.Events.</span><span class="shortname">addEventListener</span></a></h2>
 
 
 
@@ -196,8 +110,151 @@ Call to add a listener to a specific event name.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L8">
-    events.js:8
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L13">
+    events.js:13
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## on
+
+<h2 class="longname" aria-hidden="true"><a href="#on"><span class="prefix">Two.Events.</span><span class="shortname">on</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="description">
+
+Alias for [Two.Events.addEventListener](/docs/events/#addeventlistener).
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L30">
+    events.js:30
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## bind
+
+<h2 class="longname" aria-hidden="true"><a href="#bind"><span class="prefix">Two.Events.</span><span class="shortname">bind</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="description">
+
+Alias for [Two.Events.addEventListener](/docs/events/#addeventlistener).
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L38">
+    events.js:38
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## removeEventListener
+
+<h2 class="longname" aria-hidden="true"><a href="#removeEventListener"><span class="prefix">Two.Events.</span><span class="shortname">removeEventListener</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  name  | The name of the event intended to be removed. |
+|  handler  | The handler intended to be removed. |
+</div>
+
+
+
+
+<div class="description">
+
+Call to remove listeners from a specific event. If only `name` is passed then all the handlers attached to that `name` will be removed. If no arguments are passed then all handlers for every event on the obejct are removed.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L47">
+    events.js:47
   </a>
 
 </div>
@@ -226,20 +283,12 @@ Call to add a listener to a specific event name.
 
 
 
-<div class="params">
-
-| Argument | Description |
-| ---- | ----------- |
-|  name  | The name of the event intended to be removed. |
-|  handler  | The handler intended to be reomved. |
-</div>
-
 
 
 
 <div class="description">
 
-Call to remove listeners from a specific event. If only `name` is passed then all the handlers attached to that `name` will be removed. If no arguments are passed then all handlers for every event on the obejct are removed.
+Alias for [Two.Events.removeEventListener](/docs/events/#removeeventlistener).
 
 </div>
 
@@ -249,8 +298,8 @@ Call to remove listeners from a specific event. If only `name` is passed then al
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L17">
-    events.js:17
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L90">
+    events.js:90
   </a>
 
 </div>
@@ -264,9 +313,54 @@ Call to remove listeners from a specific event. If only `name` is passed then al
 
 <div class="instance function ">
 
-## trigger
+## unbind
 
-<h2 class="longname" aria-hidden="true"><a href="#trigger"><span class="prefix">Two.Events.</span><span class="shortname">trigger</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#unbind"><span class="prefix">Two.Events.</span><span class="shortname">unbind</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="description">
+
+Alias for [Two.Events.removeEventListener](/docs/events/#removeeventlistener).
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L98">
+    events.js:98
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## dispatchEvent
+
+<h2 class="longname" aria-hidden="true"><a href="#dispatchEvent"><span class="prefix">Two.Events.</span><span class="shortname">dispatchEvent</span></a></h2>
 
 
 
@@ -284,7 +378,7 @@ Call to remove listeners from a specific event. If only `name` is passed then al
 | Argument | Description |
 | ---- | ----------- |
 |  name  | The name of the event to dispatch. |
-|  arguments  | Anything can be passed after the name and those will be passed on to handlers attached to the event in the order they are passed. |
+|  args  | Anything can be passed after the name and those will be passed on to handlers attached to the event in the order they are passed. |
 </div>
 
 
@@ -302,8 +396,8 @@ Call to trigger a custom event. Any additional arguments passed after the name w
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L26">
-    events.js:26
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/events.js#L107">
+    events.js:107
   </a>
 
 </div>

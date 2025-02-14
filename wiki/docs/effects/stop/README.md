@@ -7,6 +7,12 @@ lang: en-US
 # Two.Stop
 
 
+<div class="extends">
+
+Extends: [Two.Element](/docs/element/)
+
+</div>
+
 
 
 
@@ -15,6 +21,8 @@ lang: en-US
   <custom-button text="Source" type="source" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js" />
 </div>
 
+
+<carbon-ads />
 
 
 ### Constructor
@@ -45,7 +53,9 @@ lang: en-US
 
 <div class="properties">
 
+
 The current index being referenced for calculating a stop's default offset value.
+
 
 </div>
 
@@ -60,8 +70,8 @@ The current index being referenced for calculating a stop's default offset value
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L49">
-    stop.js:49
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L88">
+    stop.js:88
   </a>
 
 </div>
@@ -90,7 +100,9 @@ The current index being referenced for calculating a stop's default offset value
 
 <div class="properties">
 
+
 A list of properties that are on every [Two.Stop](/docs/effects/stop/).
+
 
 </div>
 
@@ -105,8 +117,8 @@ A list of properties that are on every [Two.Stop](/docs/effects/stop/).
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L55">
-    stop.js:55
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L94">
+    stop.js:94
   </a>
 
 </div>
@@ -120,12 +132,20 @@ A list of properties that are on every [Two.Stop](/docs/effects/stop/).
 
 <div class="static function ">
 
-## MakeObservable
+## fromObject
 
-<h2 class="longname" aria-hidden="true"><a href="#MakeObservable"><span class="prefix">Two.Stop.</span><span class="shortname">MakeObservable</span></a></h2>
+<h2 class="longname" aria-hidden="true"><a href="#fromObject"><span class="prefix">Two.Stop.</span><span class="shortname">fromObject</span></a></h2>
 
 
 
+
+<div class="returns">
+
+__Returns__: Two.Stop
+
+
+
+</div>
 
 
 
@@ -139,7 +159,7 @@ A list of properties that are on every [Two.Stop](/docs/effects/stop/).
 
 | Argument | Description |
 | ---- | ----------- |
-|  object  | The object to make observable. |
+|  obj  | Object notation of a [Two.Stop](/docs/effects/stop/) to create a new instance |
 </div>
 
 
@@ -147,7 +167,7 @@ A list of properties that are on every [Two.Stop](/docs/effects/stop/).
 
 <div class="description">
 
-Convenience function to apply observable qualities of a [Two.Stop](/docs/effects/stop/) to any object. Handy if you'd like to extend the [Two.Stop](/docs/effects/stop/) class on a custom class.
+Create a new [Two.Stop](/docs/effects/stop/) from an object notation of a [Two.Stop](/docs/effects/stop/).
 
 </div>
 
@@ -157,59 +177,8 @@ Convenience function to apply observable qualities of a [Two.Stop](/docs/effects
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L65">
-    stop.js:65
-  </a>
-
-</div>
-
-
-
-
-</div>
-
-
-
-<div class="instance member ">
-
-## renderer
-
-<h2 class="longname" aria-hidden="true"><a href="#renderer"><span class="prefix">Two.Stop.</span><span class="shortname">renderer</span></a></h2>
-
-
-
-
-
-
-
-
-
-
-<div class="properties">
-
-
-
-</div>
-
-
-
-
-
-
-<div class="description">
-
-Object access to store relevant renderer specific variables. Warning: manipulating this object can create unintended consequences.
-
-</div>
-
-
-
-
-
-<div class="meta">
-
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L14">
-    stop.js:14
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L100">
+    stop.js:100
   </a>
 
 </div>
@@ -220,7 +189,7 @@ Object access to store relevant renderer specific variables. Warning: manipulati
 
 
 ::: tip nota-bene
-With the [Two.SvgRenderer](/docs/two/) you can access the underlying SVG element created via `shape.renderer.elem`.
+Works in conjunction with [Two.Stop.toObject](/docs/effects/stop/#toobject)
 :::
 
 
@@ -248,7 +217,9 @@ With the [Two.SvgRenderer](/docs/two/) you can access the underlying SVG element
 
 <div class="properties">
 
+
 The offset percentage of the stop represented as a zero-to-one value.
+
 
 </div>
 
@@ -263,8 +234,8 @@ The offset percentage of the stop represented as a zero-to-one value.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L23">
-    stop.js:23
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L65">
+    stop.js:65
   </a>
 
 </div>
@@ -293,7 +264,9 @@ The offset percentage of the stop represented as a zero-to-one value.
 
 <div class="properties">
 
+
 The alpha percentage of the stop represented as a zero-to-one value.
+
 
 </div>
 
@@ -308,13 +281,23 @@ The alpha percentage of the stop represented as a zero-to-one value.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L30">
-    stop.js:30
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L71">
+    stop.js:71
   </a>
 
 </div>
 
 
+
+<div class="tags">
+
+
+::: tip nota-bene
+This is only supported on the [Two.SVGRenderer](/docs/renderers/svg/). You can get the same effect by encoding opacity into `rgba` strings in the color.
+:::
+
+
+</div>
 
 
 </div>
@@ -338,7 +321,9 @@ The alpha percentage of the stop represented as a zero-to-one value.
 
 <div class="properties">
 
+
 The color of the stop.
+
 
 </div>
 
@@ -353,8 +338,60 @@ The color of the stop.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L36">
-    stop.js:36
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L78">
+    stop.js:78
+  </a>
+
+</div>
+
+
+
+
+</div>
+
+
+
+<div class="instance function ">
+
+## copy
+
+<h2 class="longname" aria-hidden="true"><a href="#copy"><span class="prefix">Two.Stop.</span><span class="shortname">copy</span></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="params">
+
+| Argument | Description |
+| ---- | ----------- |
+|  stop  | The reference [Two.Stop](/docs/effects/stop/) |
+</div>
+
+
+
+
+<div class="description">
+
+Copy the properties of one [Two.Stop](/docs/effects/stop/) onto another.
+
+</div>
+
+
+
+
+
+<div class="meta">
+
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L118">
+    stop.js:118
   </a>
 
 </div>
@@ -395,7 +432,7 @@ __Returns__: Two.Stop
 
 | Argument | Description |
 | ---- | ----------- |
-|  parent  | The parent group or scene to add the clone to. |
+|  parent  | The parent gradient to add the clone to. |
 </div>
 
 
@@ -413,8 +450,8 @@ Create a new instance of [Two.Stop](/docs/effects/stop/) with the same propertie
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L117">
-    stop.js:117
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L137">
+    stop.js:137
   </a>
 
 </div>
@@ -466,8 +503,8 @@ Return a JSON compatible plain object that represents the path.
 
 <div class="meta">
 
-  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L136">
-    stop.js:136
+  <a class="lineno" target="_blank" rel="noopener noreferrer" href="https://github.com/jonobr1/two.js/blob/main/src/effects/stop.js#L162">
+    stop.js:162
   </a>
 
 </div>
